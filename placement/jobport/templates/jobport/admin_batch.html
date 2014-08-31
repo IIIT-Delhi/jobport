@@ -1,0 +1,31 @@
+
+
+{% extends "jobport/base_admin.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>{{ batch.text }}</h1>
+    <a class="btn btn-danger" style="margin-left:350px" href="/batch/{{batch.id}}/addstudentstobatch/" role="button" target="_blank">Add Students</a>
+  </div>
+</div>
+
+    <div class="container">
+    {% for l in student %}
+        <div class="list-group">
+            <a href="/students/{{ l.pk }}/edit" class="list-group-item">
+                <h4 class="list-group-item-heading">{{ l.name }}</h4>
+                <h5 class="list-group-item-heading">{{ l.rollno }}</h5>
+                <h6 class="list-group-item-heading">{{ l.get_status_display }}</h6>
+                <h6 class="list-group-item-heading">Offers: {% for offer in l.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+    {% if not student %}
+        <div class="container">
+            <h4 align="center">There are no students right now.</h4>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

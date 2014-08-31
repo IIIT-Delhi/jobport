@@ -1,0 +1,85 @@
+{% extends "jobport/base_admin.html" %}
+{% load googlecharts %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>JobPort</h1>
+    <h3>Admin Home</h3>
+  </div>
+</div>
+<div class="container">
+    <div class="list-group">
+        <li class="list-group-item">
+            <h4 class="list-group-item-heading">Number of Students</h4>
+            <h4 class="list-group-item-heading">{{ numstudents }}</h4>
+        </li>
+    </div>
+    <div class="list-group">
+        <li class="list-group-item">
+            <h4 class="list-group-item-heading">Number of Students Placed</h4>
+            <h4 class="list-group-item-heading">{{ numstudentsplaced }}</h4>
+        </li>
+    </div>
+    <div class="list-group">
+        <li class="list-group-item">
+            <h4 class="list-group-item-heading">Number of Jobs</h4>
+            <h4 class="list-group-item-heading">{{ numjobs }}</h4>
+        </li>
+    </div>
+    <div align="center" id="cgpahistogram"></div>
+    <div align="center" id="placedunplacedpie"></div>
+    <div align="center" id="jobcgpahistogram"></div>
+</div>
+{% googlecharts %}
+    {# named data and options can be reused #}
+    {% data cgpahistdata "out_data" %}
+        {% col "string" "Student" %}"{{ val }}"{% endcol %}
+        {% col "number" "CGPA" %}{{ val }}{% endcol %}
+    {% enddata %}
+
+    {% data placedunplaceddata "placedunplacedpie_data" %}
+        {% col "string" "" %}"{{ val }}"{% endcol %}
+        {% col "number" "Number" %}{{ val }}{% endcol %}
+    {% enddata %}
+
+
+    {% data jobcgpahistdata "jobcgpahistogram_data" %}
+        {% col "string" "" %}"{{ val }}"{% endcol %}
+        {% col "number" "Number" %}{{ val }}{% endcol %}
+    {% enddata %}
+
+
+    {% options "out_options" %}
+        kind: "Histogram",
+        options: {
+            title:'CGPA Distribution',
+            width: 800,
+            height: 500
+        }
+    {% endoptions %}
+
+    {% options "jobcgpahistogram_options" %}
+        kind: "Histogram",
+        options: {
+            title:'Job CGPA Distribution',
+            width: 800,
+            height: 500
+        }
+    {% endoptions %}
+
+    {% options "placedunplacedpie_options" %}
+        kind: "PieChart",
+        options: {
+            title:'Placed/Unplaced Distribution',
+            width: 800,
+            height: 500
+        }
+    {% endoptions %}
+
+    {# chart is assembled from container, data and options #}
+    {% graph "cgpahistogram" "out_data" "out_options" %}
+    {% graph "placedunplacedpie" "placedunplacedpie_data" "placedunplacedpie_options" %}
+    {% graph "jobcgpahistogram" "jobcgpahistogram_data" "jobcgpahistogram_options" %}
+{% endgooglecharts %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "jobport/base_student.html" %}
+
+{% load bootstrap3 %}
+
+{% block pagelibraries %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>Your Profile</h1>
+  </div>
+</div>
+<div class="container">
+    <form class="form-horizontal">
+    {% if student.batch.pg_or_not == 'G' %}
+		<div class="form-group"><label class="col-md-2 control-label">CGPA</label><div class="col-md-4"><input class="form-control" maxlength="70" placeholder="CGPA" title="" value="{{ student.cgpa_ug }}" disabled/></div></div>
+            <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
+
+
+    {% else %}
+	        <div class="form-group"><label class="col-md-2 control-label">CGPA</label><div class="col-md-4"><input class="form-control" maxlength="70" placeholder="CGPA" title="" value="{{ student.cgpa_pg }}" disabled/></div></div>
+                  <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
+
+    {% endif %} 
+     </form>
+    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout="horizontal" %}
+        {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
+    </form>
+</div>
+{% endblock %}

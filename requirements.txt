@@ -1,0 +1,12 @@
+MySQL-python
+South
+django-bootstrap3
+django-bootstrap3-datetimepicker
+django-datetimezone-field
+django-google-charts
+django-post-office
+django-qsstats-magic
+django-suit
+django-timezone-field
+python-social-auth
+pytz

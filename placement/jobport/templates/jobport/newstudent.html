@@ -1,0 +1,32 @@
+{% extends "jobport/base_newuser.html" %}
+
+{% load bootstrap3 %}
+
+{% block pagelibraries %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>Hi there!</h1>
+    <h3>You seem to be new here. Let's get started by filling in your profile.</h3>
+    <h6>UG Students should leave the PG fields blank.</h6>
+    <h6>Check the Sample Resume Format at the bottom of this Page</h6>
+  </div>
+</div>
+
+
+<div class="container">
+    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout="horizontal" %}
+    <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
+        {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
+    </form>
+    </br>
+    <div align="center">
+
+     </div>
+</div>
+{% endblock %}

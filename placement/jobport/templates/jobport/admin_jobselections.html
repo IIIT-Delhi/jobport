@@ -1,0 +1,50 @@
+{% extends "jobport/base_admin.html" %}
+
+{% load bootstrap3 %}
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>Applicants for {{ job.company_name }}</h1>
+    <h4>{{ job.profile }}</h4>
+  </div>
+</div>
+<div class="container">
+    <h3>Selected Candidates</h3>
+    <p>{{ selected.count }}</p>
+    <h3>List of Selected Candidates</h3>
+    <ul>
+    {% for selects in selected %}
+        <li><h5>{{ selects.name }}</h5></li>
+    {% endfor %}
+    </ul>
+
+    <div class="btn-group">
+          <a class="btn btn-primary" href="/job/{{ job.pk }}/getresumes/?req=selected">Download Selected Students' Resumes</a>
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/job/{{ job.pk }}/getresumes/?&req=selected">Download Selected UG. Resumes</a></li>
+            <li><a href="/job/{{ job.pk }}/getresumes/?&req=selected">Download Selected PG Resumes</a></li>
+          </ul>
+    </div>
+    <div class="btn-group">
+          <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=selected">Download Selected Students' List</a>
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=selected">Download Selected UG CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=selected">Download Selected PG CSV</a></li>
+          </ul>
+          <a href="/job/{{ job.pk }}/sendselectedemail"><button type="button" class="btn btn-primary">Send Email to Selected Students</button> </a>
+    </div>
+    <br>
+    <h3>Add Selected Candidates</h3>
+    <form role="form" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout="horizontal" %}
+        {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
+    </form>
+</div>
+{% endblock %}

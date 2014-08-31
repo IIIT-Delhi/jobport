@@ -1,0 +1,44 @@
+{% extends "jobport/base_admin.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>Applicants for {{ job.company_name }}</h1>
+    <h4>{{ job.profile }}</h4>
+  </div>
+</div>
+<div class="container">
+    <h3>Eligible Students</h3>
+    <p>{{ eligiblestudentcount }}</p>
+    <h3>Total Applicants</h3>
+    <p>{{ applicants.count }}</p>
+    <h3>List of Applicants</h3>
+    <ul>
+    {% for applicant in applicants %}
+        <li><h5>{{ applicant.name }}</h5></li>
+    {% endfor %}
+    </ul>
+      <div class="btn-group">
+          <a class="btn btn-primary" href="/job/{{ job.pk }}/getresume">Download Resumes</a>
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/job/{{ job.pk }}/getresume/?batch.pg_or_not">Download Resumes</a></li>
+            <!-- <li><a href="/job/{{ job.pk }}/getresume/??batch.pg_or_not">Download PG resumes</a></li> -->
+          </ul>
+      </div>
+      <div class="btn-group">
+          <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=applied">Download Applicant List</a>
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=applied">Download B.Tech. Applicants CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=applied">Download M.Tech. Applicants CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=eligible">Download B.Tech. Eligible CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=eligible">Download M.Tech. Eligible CSV</a></li>
+          </ul>
+      </div>
+</div>
+{% endblock %}
