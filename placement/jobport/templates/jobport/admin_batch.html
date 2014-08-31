@@ -6,7 +6,10 @@
 <div class="jumbotron">
   <div align="center" class="container">
     <h1>{{ batch.text }}</h1>
-    <a class="btn btn-danger" style="margin-left:350px" href="/batch/{{batch.id}}/addstudentstobatch/" role="button" target="_blank">Add Students</a>
+    <a class="btn btn-warning" href="/batch/{{batch.id}}/edit/" role="button">Edit</a>
+    <a class="btn btn-danger" href="/batch/{{batch.id}}/addstudentstobatch/" role="button">Add Students</a>
+    <a class="btn btn-success" href="/batch/{{batch.id}}/getbatchlist/" role="button" target="_blank">Batch List</a>
+    <a class="btn btn-info" href="/batch/{{batch.id}}/getbatchresume/" role="button" target="_blank">Batch Resumes</a>    
   </div>
 </div>
 

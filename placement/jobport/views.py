@@ -164,15 +164,15 @@ def getresumes(request,jobid):
             filenames=[]
             if (request.GET.get('req')=='selected'):
                 checklist=Job.objects.get(pk=jobid).selectedcandidates.all()
-                zip_subdir = Job.objects.get(pk=jobid).company_name + "_" + Job.objects.get(pk=jobid).profile + "_Selected_resumes"
+                zip_subdir = Job.objects.get(pk=jobid).company_name + "_" + Job.objects.get(pk=jobid).profile + "_Selected_Resumes"
             else:
                 checklist=Job.objects.get(pk=jobid).applicants.all() #AllApplicants
-                zip_subdir = Job.objects.get(pk=jobid).company_name + "_" + Job.objects.get(pk=jobid).profile + "_Applicant_resumes"
+                zip_subdir = Job.objects.get(pk=jobid).company_name + "_" + Job.objects.get(pk=jobid).profile + "_Applicant_Resumes"
             for student in checklist:
-                if (request.GET.get('batch.pg_or_not')=='G' and student.batch.pg_or_not=='G'):
+                if (request.GET.get('qual')=='G' and student.batch.pg_or_not=='G'):
                     continue
-                # if (request.GET.get('batch.pg_or_not')=='P' and student.qualification=='P'):
-                    # continue
+                if (request.GET.get('qual')=='P' and student.batch.pg_or_not=='P'):
+                    continue
                 filenames.append(student.resume.path)
             # Folder name in ZIP archive which contains the above files
             # E.g [thearchive.zip]/somefiles/file2.txt
@@ -406,26 +406,6 @@ def adminjobselected(request, jobid):
                 return render(request,'jobport/admin_jobselections.html', context)
     return render(request, 'jobport/needlogin.html') #403 Error
 
-# def students(request):
-#     if request.user.is_authenticated():
-#         if is_admin(request.user):
-#             if (request.GET.get('req')=='btech'):
-#                 context={'students': Student.objects.filter(qualification='B'), 'active': "B"}
-#             elif (request.GET.get('req')=='mtech'):
-#                 context={'students': Student.objects.filter(qualification='M'), 'active': "M"}
-#             elif (request.GET.get('req')=='placed'):
-#                 context={'students': Student.objects.filter(status='P'), 'active': "P"}
-#             elif (request.GET.get('req')=='unplaced'):
-#                 context={'students': Student.objects.filter(status='N'), 'active': "N"}
-#             elif (request.GET.get('req')=='blocked'):
-#                 context={'students': Student.objects.filter(status='B'), 'active': "BL"}
-#             else:
-#                 context={'students': Student.objects.all(), 'active': "A"}
-#             return render(request,'jobport/admin_students.html', context)
-#         else:
-#             return render(request, 'jobport/needlogin.html') #403 Error
-#     # return render(request, 'jobport/needlogin.html') #403 Error
-
 def uploadcgpa(request):
     if request.user.is_authenticated():
         if is_admin(request.user):
@@ -503,82 +483,30 @@ def getjobcsv(request, jobid):
             response['Content-Disposition'] = str('attachment; filename="'+name+'"')
             writer = csv.writer(response)
             writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
-            writer.writerow(["RollNo", "Name", "Email", "Gender", "CGPA","Batch", "Graduating University", "10th Marks", "12th Marks", "Backlogs", "Conact No."])
             for student in studlist:
-                # if (student.qualification=='B' and request.GET.get('qualification')!='mtech'):
-                    # writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_btech, student.get_qualification_display(), student.get_stream_display(), student.university_btech, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
-                # if (student.qualification=='M' and request.GET.get('qualification')!='btech'):
-                writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa, student.batch, student.university, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone ,student.cgpa])
+                if (student.batch.pg_or_not=='G' and request.GET.get('qualification')!='pg'):
+                    writer.writerow(["RollNo", "Name", "Email", "Gender", "CGPA" ,"Batch", "Graduating University", "10th Marks", "12th Marks", "Backlogs", "Conact No."])
+                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug, student.university_ug, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
+                if (student.batch.pg_or_not=='P' and request.GET.get('qualification')!='ug'):
+                    writer.writerow(["RollNo", "Name", "Email", "Gender", "CGPA" ,"Batch", "Graduating University", "10th Marks", "12th Marks", "Backlogs", "Conact No.","UnderGrad CGPA"])                    
+                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg, student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone ,student.cgpa_ug])
             return response
         else:
             return render(request, 'jobport/badboy.html')
     else:
         return render(request, 'jobport/needlogin.html')
 
-def getstudentcsv(request):
+def getbatchlist(request,batchid):
     if request.user.is_authenticated():
         if is_admin(request.user):
             response = HttpResponse(content_type='text/csv')
-            if (request.GET.get('req')=='B'):
-                studlist=Student.objects.filter(qualification='B')
-                name="BTech_Students.csv"
-            elif (request.GET.get('req')=='M'):
-                studlist=Student.objects.filter(qualification='M')
-                name="MTech_Students.csv"
-            elif (request.GET.get('req')=='N'):
-                studlist=Student.objects.filter(status='N')
-                name="Unplaced_Students.csv"
-            elif (request.GET.get('req')=='P'):
-                studlist=Student.objects.filter(status='P')
-                name="Placed_Students.csv"
-            elif (request.GET.get('req')=='B'):
-                studlist=Student.objects.filter(status='B')
-                name="Blocked_Students.csv"
-            elif (request.GET.get('req')=='A'):
-                studlist=Student.objects.all()
-                name="All_Students.csv"
-            response['Content-Disposition'] = str('attachment; filename="'+name+'"')
+            studlist = Batch.objects.get(pk=batchid).studentsinbatch.all()
+            name = Batch.objects.get(pk=batchid).text
+            response['Content-Disposition'] = str('attachment; filename="'+name+'_list.csv"')
             writer = csv.writer(response)
-            writer.writerow(["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks", "12th Marks", "Backlogs","Contact No."])
+            writer.writerow(["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA","PostGrad CGPA", "Graduating University","PostGraduating University", "10th Marks", "12th Marks", "Backlogs","Contact No."])
             for student in studlist:
-                # if (student.qualification=='B' and request.GET.get('qualification')!='mtech'):
-                    # writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_btech, student.get_qualification_display(), student.get_stream_display(), student.university_btech, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
-                # if (student.qualification=='M' and request.GET.get('qualification')!='btech'):
-                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa, student.batch.text, student.university, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone,student.cgpa_mtech])
-            return response
-        else:
-            return render(request, 'jobport/badboy.html')
-    else:
-        return render(request, 'jobport/needlogin.html')
-
-def getjobcsv(request, jobid):
-    if request.user.is_authenticated():
-        if is_admin(request.user):
-            response = HttpResponse(content_type='text/csv')
-            if (request.GET.get('req')=='selected'):
-                studlist=Job.objects.get(pk=jobid).selectedcandidates.all()
-                name=Job.objects.get(pk=jobid).company_name + "_" +Job.objects.get(pk=jobid).profile + "_Selected.csv"
-            elif (request.GET.get('req')=='applied'):
-                studlist=Job.objects.get(pk=jobid).applicants.all()
-                name=Job.objects.get(pk=jobid).company_name + "_" +Job.objects.get(pk=jobid).profile + "_Applicants.csv"
-            elif (request.GET.get('req')=='eligible'):
-                studlist=[]
-                for student in Student.objects.all():
-                    if is_eligible(student, Job.objects.get(pk=jobid))['value']:
-                        studlist.append(student)
-                name=Job.objects.get(pk=jobid).company_name + "_" +Job.objects.get(pk=jobid).profile + "_Eligible.csv"
-            #else:
-            #    studlist=Student.objects.all()
-            #    name="Students.csv"
-            response['Content-Disposition'] = str('attachment; filename="'+name+'"')
-            writer = csv.writer(response)
-            writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
-            writer.writerow(["RollNo", "Name", "Email", "Gender", "Batch","UG CGPA","Graduating University", "10th Marks", "12th Marks", "Backlogs", "Conact No. ","PG CGPA", ])
-            for student in studlist:
-                if (student.batch.pg_or_not == 'G' and request.GET.get('batch.pg_or_not')!='P'):
-                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(),student.batch.text, student.cgpa_ug, student.university_ug, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
-                if (student.batch.pg_or_not =='P' and request.GET.get('batch.pg_or_not')!='G'):
-                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(),student.batch.text, student.cgpa_ug, student.university_ug, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone ,student.cgpa_pg])
+                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,student.cgpa_pg, student.university_ug,student.university_pg, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
             return response
         else:
             return render(request, 'jobport/badboy.html')
@@ -662,7 +590,7 @@ def batchcreate(request):
 def batchdestroy(request,batchid):
     if request.user.is_authenticated():
         if is_admin(request.user):
-            batch.objects.get(pk=batchid).delete()
+            Batch.objects.get(pk=batchid).delete()
             return HttpResponseRedirect('/')
     else:
         return render(request, 'jobport/needlogin.html')
@@ -712,42 +640,19 @@ def is_batch(candidate,batch):
      eligibilty['value']=False
   return eligibility
 
-def getbatchlist(request):
-  if request.user.is_authenticated():
-      if is_admin(request.user):
-          response = HttpResponse(content_type='text/csv')
-          studlist=[]
-          for student in Student.objects.all():
-              if is_batch(student, batch.objects.get(pk=batchid))['value']:
-                  studlist.append(student)
-              name=Batch.objects.get(pk=batchid).text + "_" +batch.objects.get(pk=batchid).profile + ".csv"
-          response['Content-Disposition'] = str('attachment; filename="'+name+'"')
-          writer = csv.writer(response)
-          writer.writerow(["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks", "12th Marks", "Backlogs", "Conact No."])
-          for student in studlist:
-              # if (student.qualification=='B' and request.GET.get('qualification')!='mtech'):
-              writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa, student.batch.text, student.university, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
-              # if (student.qualification=='M' and request.GET.get('qualification')!='btech'):
-                  # writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_btech, student.get_qualification_display(), student.get_stream_display(), student.university_btech, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone ,student.cgpa_mtech])
-          return response
-      else:
-          return render(request, 'jobport/badboy.html')
-  else:
-      return render(request, 'jobport/needlogin.html')
-
-def batchresumes(request,jobid):
+def getbatchresumes(request,batchid):
     if request.user.is_authenticated():
         if is_admin(request.user):
             # Files (local path) to put in the .zip
             filenames=[]
-            checklist=batch.objects.get(pk=batchid).studentsinbatch.all()
-            zip_subdir = Job.objects.get(pk=batchid).text + "_resumes"
+            checklist=Batch.objects.get(pk=batchid).studentsinbatch.all()
+            zip_subdir = Batch.objects.get(pk=batchid).text + "_resumes"
             for student in checklist:
                 # if (request.GET.get('qualification')=='btech' and student.qualification!='B'):
                     # continue
                 # if (request.GET.get('qualification')=='mtech' and student.qualification!='M'):
-                continue
                 filenames.append(student.resume.path)
+                # continue
             # Folder name in ZIP archive which contains the above files
             # E.g [thearchive.zip]/somefiles/file2.txt
 
