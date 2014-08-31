@@ -11,6 +11,7 @@ from django.contrib import messages
 from urlparse import urlparse
 from .models import Job, Student, Batch
 from post_office import mail
+from django.conf import settings
 import hashlib
 import os
 import zipfile
@@ -461,6 +462,30 @@ def stats(request):
             return render(request,'jobport/admin_stats.html', context)
     return render(request, 'jobport/needlogin.html') #403 Error
 
+def blockedUnplacedlist(request):
+    if request.user.is_authenticated():
+        if is_admin(request.user):
+            response = HttpResponse(content_type='text/csv')
+            
+            if (request.GET.get('req')=='blocked'):
+                students = Student.objects.filter(status='BL')
+                response['Content-Disposition'] = str('attachment; filename="'+'BlockedStudents_list.csv"')
+            elif(request.GET.get('req')=='unplaced'):
+                students = Student.objects.filter(status='N')
+                response['Content-Disposition'] = str('attachment; filename="'+'UnplacedStudents_list.csv"')
+            elif(request.GET.get('req')=='placed'):
+                students = Student.objects.filter(status='P')
+                response['Content-Disposition'] = str('attachment; filename="'+'PlacedStudents_list.csv"')
+            writer = csv.writer(response)
+            writer.writerow(["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA","PostGrad CGPA", "Graduating University","PostGraduating University", "10th Marks", "12th Marks", "Backlogs","Contact No."])
+            for student in students:
+                    writer.writerow([student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,student.cgpa_pg, student.university_ug,student.university_pg, student.percentage_tenth, student.percentage_twelfth, student.get_backlogs_display(),student.phone])
+            return response
+        else:
+            return render(request, 'jobport/badboy.html')
+    else:
+        return render(request, 'jobport/needlogin.html')
+
 def getjobcsv(request, jobid):
     if request.user.is_authenticated():
         if is_admin(request.user):
@@ -544,26 +569,26 @@ def feedback(request):
         else:
             return render(request,'jobport/feedback_loggedout.html', context)
 
-#@@login_required
-# def fileview(request):
-    #current_url = request.get_full_path()
-    #geturl = urlparse(current_url)
-    #name = request.user.username.split('@')[0].lower()
-    #if name != geturl.path.split('/')[-1].split('.')[0].split('_')[0].lower():
-     #   return render(request, "jobport/notallowed.html")
-    #else:
-    #filename = name + "_resume." + 'pdf'
-   #hash_object = hashlib.sha512(filename)
-   # hex_digest = hash_object.hexdigest()
-    #with open(request.user.resume.path, 'r') as pdf:
-#    response = HttpResponse(pdf.read(), mimetype='application/pdf')
-    #if request.user.is_authenticated():
-    	# response = HttpResponse()
-    #	response['Content-Type'] = 'application/pdf'
-    #	response['Content-Disposition'] = 'attachment; filename=%s'%request.user.resume
-    #	response['X-Accel-Redirect'] = "/protected/%s"%request.user.resume
-    #    pdf.close()
-    	# return response
+# @@login_required
+def fileview(request, filename):
+    # current_url = request.get_full_path()
+    # geturl = urlparse(current_url)
+    # name = request.user.username.split('@')[0].lower()
+    # if name != geturl.path.split('/')[-1].split('.')[0].split('_')[0].lower():
+       # return render(request, "jobport/notallowed.html")
+    # else:
+    # filename = name + "_resume." + 'pdf'
+   # hash_object = hashlib.sha512(filename)
+   # hex_digest = hash_object.hexdigsest()
+    # print filename
+    # response = HttpResponse(pdf.read(), mimetype='application/pdf')
+    # if request.user.is_authenticated():
+    response = HttpResponse()
+    response['Content-Type'] = 'application/pdf'
+    response['Content-Disposition'] = 'attachment; filename=%s'%os.path.join(settings.MEDIA_ROOT, "resume" + "filename")
+    	# response['X-Accel-Redirect'] = "/protected/%s"%request.user.resume
+    
+    return response
 
 # def blank(request):
 	# return render(request, 'jobport/badboy.html')
