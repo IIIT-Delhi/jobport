@@ -6,7 +6,7 @@
   <div align="center" class="container">
     <h1>JobPort</h1>
     <h3>All Batches</h3>
-    <a class="btn btn-danger" style="margin-left:350px" href="/openbatch/" role="button" target="_blank">Create a Batch!</a>
+    <a class="btn btn-danger" href="/openbatch/" role="button" target="_blank">Create a Batch!</a>
   </div>
 </div>
 {% for l in batch%}
@@ -16,14 +16,12 @@
             <h4 class="list-group-item-heading">{{ l.text }}</h4>
             <h6 class="list-group-item-heading">Created on: {{ l.createdon }}</h6>
             <h6 class="list-group-item-heading">{{ l.pg_or_not }}</h6>
-        <a href="/batch/{{ l.pk }}/edit/">Edit</a>
-        <!-- <a href="/batches{{ l.pk }}/delete">Delete</a> -->
-
-
+        </a>
     </div>
 </div>
+
 {% endfor %}
-{% if not batches%}
+{% if not batch%}
     <div class="container">
         <h4 align="center">There are no batches right now.</h4>
     </div>

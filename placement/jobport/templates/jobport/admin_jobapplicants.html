@@ -24,8 +24,9 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/job/{{ job.pk }}/getresume/?batch.pg_or_not">Download Resumes</a></li>
-            <!-- <li><a href="/job/{{ job.pk }}/getresume/??batch.pg_or_not">Download PG resumes</a></li> -->
+            <!-- <li><a href="/job/{{ job.pk }}/getresume/">Download Resumes</a></li> -->
+            <li><a href="/job/{{ job.pk }}/getresume/?qual=G">Download UG resumes</a></li>
+            <li><a href="/job/{{ job.pk }}/getresume/?qual=P">Download PG resumes</a></li>
           </ul>
       </div>
       <div class="btn-group">
@@ -34,10 +35,10 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=applied">Download B.Tech. Applicants CSV</a></li>
-            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=applied">Download M.Tech. Applicants CSV</a></li>
-            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=eligible">Download B.Tech. Eligible CSV</a></li>
-            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=eligible">Download M.Tech. Eligible CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=ug&req=applied">Download UG Applicants CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=pg&req=applied">Download PG Applicants CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=ug&req=eligible">Download UG Eligible CSV</a></li>
+            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=pg&req=eligible">Download PG Eligible CSV</a></li>
           </ul>
       </div>
 </div>
