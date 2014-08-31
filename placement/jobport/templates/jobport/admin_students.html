@@ -1,0 +1,35 @@
+{% extends "jobport/base_admin.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>JobPort</h1>
+    <h3>Students</h3>
+  </div>
+</div>
+<div class="container">
+<ul class="nav nav-tabs">
+  <li {% if active == 'A' %}class="active"{% endif %}><a href="/students/">All</a></li>
+  <li {% if active == 'B' %}class="active"{% endif %}><a href="?req=btech">B.Tech.</a></li>
+  <li {% if active == 'M' %}class="active"{% endif %}><a href="?req=mtech">M.Tech.</a></li>
+  <li {% if active == 'P' %}class="active"{% endif %}><a href="?req=placed">Placed</a></li>
+  <li {% if active == 'N' %}class="active"{% endif %}><a href="?req=unplaced">Unplaced</a></li>
+  <li {% if active == 'BL' %}class="active"{% endif %}><a href="?req=blocked">Blocked</a></li>
+</ul>
+<br>
+<a href="/students/getcsv/?req={{ active }}"><button type="button" class="btn btn-primary">Download CSV of this List</button> </a>
+<p> </p>
+{% for student in students %}
+<div class="container">
+    <div class="list-group">
+        <a href="/students/{{ student.pk }}/edit" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ student.name }}</h4>
+            <h5 class="list-group-item-heading">{{ student.rollno }}</h5>
+            <h6 class="list-group-item-heading">{{ student.get_status_display }}</h6>
+            <h6 class="list-group-item-heading">Offers: {% for offer in student.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
+        </a>
+    </div>
+</div>
+{% endfor %}
+d</div>
+{% endblock %}

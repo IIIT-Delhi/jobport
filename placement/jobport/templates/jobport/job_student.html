@@ -1,0 +1,68 @@
+{% extends "jobport/base_student.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>{{ job.company_name }}</h1>
+    <h4>{{ job.profile }}</h4>
+
+         {% if hasapplied %}
+          <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-primary">Withdraw</button> </a>
+         {% else %}
+         {% if deadlinepassed %}
+                <h3>Deadline has passed!</h3>
+         {% elif not iseligible %}
+    <p><b>You can't apply for this Job because {{ iseligiblereason }}</b></p> 
+         {% else %}
+                <a href="/job/{{ job.pk }}/apply"><button type="button" class="btn btn-primary">Apply</button> </a>
+        {% endif %}
+     {% endif %}
+
+  </div>
+
+</div>
+<div class="container">
+
+</br>
+    <h2>Details<h2>
+ 
+    <h3>Date of Visit:</h3>
+    <p>{{ job.dateofvisit.time }}, {{ job.dateofvisit.date }} <br>{{ job.dateofvisit|naturaltime }}</p>
+    <h3>Deadline:</h3>
+    <p>{{ job.deadline.time }}, {{ job.deadline.date }} <br>{{ job.deadline|naturaltime }}</p>
+
+
+    <h4>Description: {{ job.details }}</h4>
+    
+    <h3>Location:</h3>
+    <p>{{ job.location }}</p>
+    <h3>Compensation:</h3>
+    {% if job.package == None %}
+    <p>Not Disclosed</p>
+    {% else %}
+    <p>{{ job.package }}</p>
+    {% endif %}
+    <h3>Selection Process:</h3>
+    <p>{{ job.selectionprocess }}</p>
+    <hr class="featurette-divider">
+    <h3>Minimum Eligibility Criteria</h3>
+    <h4>For Batches:</h4> 
+    {% for b in job.batch.all %}
+        {{b.text }}, 
+    
+    {% endfor %}
+
+        <h4>10th Marks: </h4><p>{{ job.min_tenthmarks }}</p>
+        <h4>12th Marks: </h4><p>{{ job.min_twelfthmarks }}</p>
+        <h4>Minimum CGPA: </h4><p>{{ job.cgpa_min }}</p>
+        <h4>Max Backlogs allowed: </h4><p>{{ job.max_blacklogs }}</p>
+    <hr class="featurette-divider">
+
+    {% if job.jobfile %}
+    <h3></h3>
+        <a href="/files/{{ job.jobfile }}"><button type="button" class="btn btn-primary">Download Job Related Files</button> </a>
+    {% endif %}
+
+</div>
+{% endblock %}

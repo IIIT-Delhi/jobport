@@ -1,0 +1,30 @@
+{% extends "jobport/base_admin.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div align="center" class="container">
+    <h1>JobPort</h1>
+    <h3>Admin Home</h3>
+  </div>
+</div>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="cgpafile">CGPA CSV File</label>
+            <input type="file" id="cgpafile" name="cgpafile">
+            <p class="help-block">Upload the CGPA CSV File here</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% if notfound %}
+    <h3>List of Students who were not found in the JobPort database</h3>
+    <ul>
+    {% for rollno in notfound %}
+        <li>{{ rollno }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+</div>
+{% endblock %}
