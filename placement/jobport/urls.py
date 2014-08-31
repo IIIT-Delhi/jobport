@@ -31,4 +31,6 @@ urlpatterns = patterns('',
     url(r'^batch/(?P<batchid>\d+)/addstudentstobatch/$',views.uploadstudentsinbatch,name='uploadstudentsinbatch'),
     url(r'^batch/(?P<batchid>\d+)/getbatchresume/$',views.getbatchresumes,name='getbatchresumes'),
     url(r'^feedback/$', views.feedback, name='feedback'),
+    url(r'^extraStuff/$', views.blockedUnplacedlist, name='blockedUnplacedlist'),
+    url(r'files/resume/(.+)',views.fileview,name='fileview'),
 )
