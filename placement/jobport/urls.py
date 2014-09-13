@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
 from jobport import views
 
+handler404 = 'views.my_404_view'
+
 urlpatterns = patterns('',
     url(r'^$', views.home, name='home'),
     url(r'^logout/$', views.logout, name='logout'),

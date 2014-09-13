@@ -7,8 +7,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-#ALLOWED_HOSTS = ['jobport.iiitd.edu.in','jobport.iiitd.edu.in:8081']
-
+# ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',
@@ -93,7 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
     'django.core.context_processors.request',
-)
+    )
 MEDIA_ROOT = 'files'
 MEDIA_URL = '/files/'
 

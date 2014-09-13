@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import Group, User
 from django.core.mail import send_mail
-import re
 from django.utils import timezone
 from jobport.forms import StudentForm, NewStudentForm, JobForm, AdminStudentForm, AdminSelectedApplicantsForm, FeedbackForm, BatchForm
 from django.contrib import messages
@@ -12,11 +11,16 @@ from urlparse import urlparse
 from .models import Job, Student, Batch
 from post_office import mail
 from django.conf import settings
-import hashlib
-import os
-import zipfile
-import StringIO
-import csv
+import hashlib, os, zipfile, StringIO, csv, re, urllib2, simplejson
+
+def server_error(request):
+    response = render(request, "jobport/500.html")
+    response.status_code = 500
+    return response
+def not_found(request):
+    response = render(request, "jobport/404.html")
+    response.status_code =404
+    return response
 
 def is_member(user,group):
     return user.groups.filter(name=group)
@@ -53,6 +57,7 @@ def is_eligible(candidate, job):
         if(b!= candidate.batch): Vals.append(False)
         else: Vals.append(True)
     if not any(Vals):
+        temp = True
         eligibility['value'] = temp
         eligibility['value'] = "This job is not for you!"
     return eligibility
@@ -98,11 +103,13 @@ def jobapply(request, jobid):
             return render(request, 'jobport/latedeadline.html')
 
 def jobwithdraw(request, jobid):
-    #Check Deadline Here
     if request.user.is_authenticated():
-        request.user.student.companyapplications.remove(Job.objects.get(pk=jobid))
-        messages.success(request, 'You have withdrawn!')
-        return HttpResponseRedirect('/')
+        if (timezone.now()>Job.objects.get(pk=jobid).deadline):
+            request.user.student.companyapplications.remove(Job.objects.get(pk=jobid))
+            messages.success(request, 'You have withdrawn!')
+            return HttpResponseRedirect('/')
+        else:
+            return render(request, 'jobport/latedeadline.html')
 
 def myapplications(request):
     if request.user.is_authenticated():
@@ -131,7 +138,6 @@ def admineditstudent(request, studentid):
         if is_admin(request.user):
             if request.method == 'POST':
                 form = AdminStudentForm(request.POST, request.FILES, instance=Student.objects.get(pk=studentid))
-                #print form.cleaned_data
                 if form.is_valid():
                     usr = form.save(commit=False)
                     if(request.FILES.__len__()==0):
@@ -144,7 +150,6 @@ def admineditstudent(request, studentid):
                     messages.success(request, 'Your form was saved')
                     return HttpResponseRedirect('/batches')
                 else:
-                    #Invalid form
                     messages.error(request, 'Error in form!')
                     context={'form': form}
                     return render(request,'jobport/admin_editstudent.html', context)
@@ -161,7 +166,6 @@ def admineditstudent(request, studentid):
 def getresumes(request,jobid):
     if request.user.is_authenticated():
         if is_admin(request.user):
-            # Files (local path) to put in the .zip
             filenames=[]
             if (request.GET.get('req')=='selected'):
                 checklist=Job.objects.get(pk=jobid).selectedcandidates.all()
@@ -283,6 +287,11 @@ def logout(request):
 def needlogin(request):
     return render(request, 'jobport/needlogin.html')
 
+# def BingSearchAPI(request):
+#     uri = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Query=%27"
+#     appid =" hXUWxK4P+SdIi16Frvubczbv4jQVRnPMi4QOD+YpJo4"
+#     return https://api.datamarket.azure.com/Bing/Search/v1/Image?Query=%27xbox%27
+
 def openjob(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
@@ -291,11 +300,9 @@ def openjob(request):
                 tosavejob = form.save(commit=False)
                 tosavejob.createdon=timezone.now()
                 tosavejob.save()
-                #messages.success(request, 'Your form was saved')
                 recipients=[]
                 for student in Student.objects.all():
                     recipients.append(student.email)
-                #send_mail('New Job in JobPort', 'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort.', 'jobportiiitd@gmail.com', recipients, fail_silently=False)
                 mail.send(
                     recipients,
                     'jobportiiitd@gmail.com',
@@ -306,9 +313,6 @@ def openjob(request):
                 )
                 return HttpResponseRedirect('/')
             else:
-                #Invalid form
-                #messages.error(request, 'Error in form!')
-                #print form
                 context={'form': form}
                 return render(request,'jobport/openjob.html', context)
         else:
@@ -317,7 +321,6 @@ def openjob(request):
             return render(request,'jobport/openjob.html', c)
     else:
         return render(request, 'jobport/needlogin.html')
-        #return render(request, 'home.html')
 
 def jobdelete(request,jobid):
     if request.user.is_authenticated():
@@ -412,6 +415,9 @@ def uploadcgpa(request):
         if is_admin(request.user):
             if request.method == 'POST':
                 file = request.FILES['cgpafile']
+                if not file:
+                    messages.error(request,'File Not Found!')
+                    return render(request, 'jobport/admin_uploadcgpa.html')
                 notfound=[]
                 for row in csv.reader(file.read().splitlines()):
                     try:
