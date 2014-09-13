@@ -6,6 +6,10 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
+
+handler500 = "jobport.views.server_error"
+handler404 = "jobport.views.not_found"
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'placement.views.home', name='home'),

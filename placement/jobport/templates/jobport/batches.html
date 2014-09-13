@@ -9,8 +9,8 @@
     <a class="btn btn-danger" href="/openbatch/" role="button" target="_blank">Create a Batch!</a>
   </div>
 </div>
-{% for l in batch%}
 <div class="container">
+{% for l in batch%}
     <div class="list-group">
         <a href="/batch/{{ l.pk }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ l.text }}</h4>
@@ -18,9 +18,8 @@
             <h6 class="list-group-item-heading">{{ l.pg_or_not }}</h6>
         </a>
     </div>
-</div>
-
 {% endfor %}
+</div>
 {% if not batch%}
     <div class="container">
         <h4 align="center">There are no batches right now.</h4>
