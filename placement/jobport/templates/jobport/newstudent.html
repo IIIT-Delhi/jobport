@@ -29,4 +29,21 @@
 
      </div>
 </div>
+
+   <script>
+        $(document).ready(function (){
+            $("#id_batch").change(function() {
+                // foo is the id of the other select box
+
+                if ($(this).val() != "Mtech") {
+                    $("#foo").show();
+
+                }else{
+                    $("#foo").hide();
+
+                }
+            });
+        });
+    </script>
+
 {% endblock %}

@@ -6,6 +6,7 @@ from .models import Job, Student, Feedback, Batch
 from django.forms import RadioSelect
 import re
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 EXTENSIONS = ['pdf']
 MAX_UPLOAD_SIZE = "5242880"
@@ -22,6 +23,35 @@ class JobForm(forms.ModelForm):
         if type(jobfile)==FieldFile:
             return jobfile
         return jobfile
+
+    def clean_percentage_tenth(self):
+        percent10=self.cleaned_data['percentage_tenth']
+        if (percent10>100):
+            raise forms.ValidationError("10th Percentage cannot be more than 100%!")
+        if (percent10<0):
+            raise forms.ValidationError("10th Percentage cannot be less than 0!")
+        return percent10
+
+    def clean_percentage_twelfth(self):
+        percent12=self.cleaned_data['percentage_twelfth']
+        if (percent12>100):
+            raise forms.ValidationError("12th Percentage cannot be more than 100%!")
+        if (percent12<0):
+            raise forms.ValidationError("12th Percentage cannot be less than 0!")
+        return percent12
+
+    def clean_dateofvisit(self):
+        DateOfVisit = self.cleaned_data['dateofvisit']
+        if (DateOfVisit < timezone.now()):
+                raise forms.ValidationError("Date of Visit cannot be in the Past.")
+        return DateOfVisit
+
+    def clean_deadline(self):
+        deadline = self.cleaned_data['deadline']
+        if (deadline < timezone.now()):
+                raise forms.ValidationError("Deadline cannot be in the Past.")
+        return deadline
+
 
 class AdminSelectedApplicantsForm(forms.ModelForm):
 
@@ -94,12 +124,16 @@ class StudentForm(forms.ModelForm):
         percent10=self.cleaned_data['percentage_tenth']
         if (percent10>100):
             raise forms.ValidationError("10th Percentage cannot be more than 100%!")
+        if (percent10<0):
+            raise forms.ValidationError("10th Percentage cannot be less than 0!")
         return percent10
 
     def clean_percentage_twelfth(self):
         percent12=self.cleaned_data['percentage_twelfth']
         if (percent12>100):
             raise forms.ValidationError("12th Percentage cannot be more than 100%!")
+        if (percent12<0):
+            raise forms.ValidationError("12th Percentage cannot be less than 0!")
         return percent12
 
     def clean_phone(self):
@@ -107,6 +141,13 @@ class StudentForm(forms.ModelForm):
         if (not phoneno.isdigit()):
             raise forms.ValidationError("Phone number must contain only numbers!")
         return phoneno
+
+    def clean_dob(self):
+        DateOB = self.cleaned_data['dob']
+        if (DateOB > timezone.now()):
+                raise forms.ValidationError("Are you from the Future?")
+        return DateOB
+
 
 
 class NewStudentForm(forms.ModelForm):
@@ -191,6 +232,12 @@ class NewStudentForm(forms.ModelForm):
         if (not phoneno.isdigit()):
             raise forms.ValidationError("Phone number must contain only numbers!")
         return phoneno
+
+    def clean_dob(self):
+        DateOB = self.cleaned_data['dob']
+        if (DateOB > timezone.now()):
+                raise forms.ValidationError("Are you from the Future?")
+        return DateOB
 
 
 def onlynumbers(strg,search= re.compile(r'^[0-9]').search):

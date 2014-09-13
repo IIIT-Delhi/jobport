@@ -8,7 +8,9 @@
     <h4>{{ job.profile }}</h4>
 
          {% if hasapplied %}
-          <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-primary">Withdraw</button> </a>
+          {% if not deadlinepassed %}
+            <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-primary">Withdraw</button> </a>
+          {% endif %}
          {% else %}
          {% if deadlinepassed %}
                 <h3>Deadline has passed!</h3>
@@ -21,12 +23,12 @@
 
   </div>
 
+
 </div>
 <div class="container">
 
 </br>
     <h2>Details<h2>
- 
     <h3>Date of Visit:</h3>
     <p>{{ job.dateofvisit.time }}, {{ job.dateofvisit.date }} <br>{{ job.dateofvisit|naturaltime }}</p>
     <h3>Deadline:</h3>
@@ -38,7 +40,7 @@
     <h3>Location:</h3>
     <p>{{ job.location }}</p>
     <h3>Compensation:</h3>
-    {% if job.package == None %}
+    {% if job.package == None %}W
     <p>Not Disclosed</p>
     {% else %}
     <p>{{ job.package }}</p>

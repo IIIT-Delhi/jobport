@@ -3,30 +3,36 @@
 
 {% block content %}
     </br>
+    </br>
+    </br>
+
+    <div align="center">
     <a class="btn btn-warning" href="/extraStuff/?req=unplaced" role="button">Unplaced</a>
     <a class="btn btn-danger" href="/extraStuff/?req=blocked" role="button">Blocked</a>
-    <a class="btn btn-success" href="/extraStuff/?req=placed" role="button">Placed</a>
+    <a class="btn btn-success" href="/extraStuff/?req=placed" role="button" >Placed</a>
+    </div>
+    </br></br>
     </br>
 
 <div class="container">
-    <div class="list-group">
+    <!-- <div class="list-group"> -->
         <li class="list-group-item">
             <h4 class="list-group-item-heading">Number of Students</h4>
             <h4 class="list-group-item-heading">{{ numstudents }}</h4>
         </li>
-    </div>
-    <div class="list-group">
+    <!-- </div> -->
+    <!-- <div class="list-group"> -->
         <li class="list-group-item">
             <h4 class="list-group-item-heading">Number of Students Placed</h4>
             <h4 class="list-group-item-heading">{{ numstudentsplaced }}</h4>
         </li>
-    </div>
-    <div class="list-group">
+    <!-- </div> -->
+    <!-- <div class="list-group"> -->
         <li class="list-group-item">
             <h4 class="list-group-item-heading">Number of Jobs</h4>
             <h4 class="list-group-item-heading">{{ numjobs }}</h4>
         </li>
-    </div>
+    <!-- </div> -->
     <div align="center" id="cgpahistogram"></div>
     <div align="center" id="placedunplacedpie"></div>
     <div align="center" id="jobcgpahistogram"></div>
