@@ -414,12 +414,12 @@ def uploadcgpa(request):
     if request.user.is_authenticated():
         if is_admin(request.user):
             if request.method == 'POST':
-                file = request.FILES['cgpafile']
-                if not file:
+                if (not request.FILES.get('cgpafile', None)) or not request.FILES['cgpafile'].size :
                     messages.error(request,'File Not Found!')
                     return render(request, 'jobport/admin_uploadcgpa.html')
+                upload_file = request.FILES['cgpafile']
                 notfound=[]
-                for row in csv.reader(file.read().splitlines()):
+                for row in csv.reader(upload_file.read().splitlines()):
                     try:
                         stud = Student.objects.get(pk=row[0])
                         if (row[0][:2].upper()=='MT'):
@@ -435,7 +435,7 @@ def uploadcgpa(request):
             else:
                 return render(request,'jobport/admin_uploadcgpa.html')
         else:
-            return render(request, 'jobport/needlogin.html') #403 Error
+            return render(request, 'jobport/notallowed.html') #403 Error
     return render(request, 'jobport/needlogin.html') #403 Error
 
 def stats(request):
