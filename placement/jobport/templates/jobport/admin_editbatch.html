@@ -9,7 +9,7 @@
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
-    <h1>Edit Label</h1>
+    <h1>Edit Batch</h1>
     <h3></h3>
   </div>
 </div>
@@ -17,7 +17,7 @@
     <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
-        {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
+        {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
     </form>
 </div>
 {% endblock %}
