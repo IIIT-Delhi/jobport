@@ -1,4 +1,4 @@
-{% extends "jobport/base_student.html" %}
+{% extends "jobport/base_modals.html" %}
 
 {% block content %}
 <div class="jumbotron">
@@ -7,7 +7,7 @@
   </div>
 </div>
 {% for job in jobs %}
-<div class="container">
+<!-- <div class="container"> -->
     <div class="list-group">
         <a href="/job/{{ job.pk }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ job.company_name }}</h4>
@@ -15,7 +15,7 @@
             <p class="list-group-item-text">{{ job.details }}</p>
         </a>
     </div>
-</div>
+<!-- </div> -->
 {% endfor %}
 {% if not jobs %}
     <div class="container">

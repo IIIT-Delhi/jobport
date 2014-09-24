@@ -8,10 +8,6 @@
     <!-- Bootstrap -->
 
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-        <link rel="stylesheet" href="{% static "css/showup.css" %}">
-
-
-
     <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script-->
 
     {% block pagelibraries %}{% endblock %}
@@ -40,60 +36,18 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-        <li><a href="/openjob/">New Job Opening!</a></li>
-        <li><a href="/stats">Statistics</a></li>
-        <li><a href="/batches/">Batches</a></li>
-        </ul>
-         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/feedback/">Feedback</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="/uploadcgpa">Upload Student CGPA CSV</a></li>
-                <li class="divider"></li>
-              <li><a href="/logout">Sign Out</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
+       </div><!-- /.navbar-collapse -->
     </div>
     </nav>
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
-{% endfor %}
+        {% endfor %}
         {% block content %}{% endblock %}
-         <a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
-    <div class="container">
-        <hr class="featurette-divider">
-        <footer>
-          <p>&copy; 2014 IIIT-Delhi JobPort &middot;</p>
-<p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
-        </footer>
-    </div>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="{% static "js/showup.js" %}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-
-    <script>
-              $().showUp('.navbar', {
-              upClass: 'navbar-show',
-              downClass: 'navbar-hide'
-              });
-      </script>
-     <script>
-   $('#loginclick').click(function(){
-    $('#login').modal('show')
-   });
-
-
-
-</script>
-  </body>
+      </body>
 </html>
