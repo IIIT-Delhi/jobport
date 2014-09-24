@@ -1,4 +1,4 @@
-{% extends "jobport/base_admin.html" %}
+{% extends "jobport/base_modals.html" %}
 
 {% load bootstrap3 %}
 
@@ -14,10 +14,10 @@
   </div>
 </div>
 <div class="container">
-       <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+       <form role="form" class="form-horizontal" action="{% url 'openbatch' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
-        {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
+        {% buttons submit='Done' layout='horizontal' %}{% endbuttons %}
     </form>
 
       </div>

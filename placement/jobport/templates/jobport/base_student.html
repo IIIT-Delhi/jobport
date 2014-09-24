@@ -40,8 +40,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="/myapplications/">My Applications</a></li>
-
+          <li style="margin:1em"><button id="myjobs" class="btn-sm">My Applications</button></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/feedback/">Feedback</a></li>
@@ -69,6 +68,33 @@
 <p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
         </footer>
     </div>
+
+<div id="base-modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body" id="dataLoad">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    window.onload = function(){
+        $("#myjobs").on('click', function(){
+         $("#dataLoad").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#base-modal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+    }
+</script>
+
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="{% static "js/showup.js" %}"></script>
