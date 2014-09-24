@@ -15,8 +15,12 @@
         <a href="/batch/{{ l.pk }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ l.text }}</h4>
             <h6 class="list-group-item-heading">Created on: {{ l.createdon }}</h6>
-            <h6 class="list-group-item-heading">{{ l.pg_or_not }}</h6>
-        </a>
+			{% ifequal l.pg_or_not 'G' %}
+			<h6 class="list-group-item-heading">Graduate</h6>
+				{% else %}
+			<h6 class="list-group-item-heading">Post-Graduate</h6>
+			{% endifequal %}
+		</a>
     </div>
 {% endfor %}
 </div>
