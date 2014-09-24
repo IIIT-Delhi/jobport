@@ -9,8 +9,7 @@
     <!-- Bootstrap -->
 
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
+        <link rel="stylesheet" href="{% static "css/showup.css" %}">
 
     {% block pagelibraries %}{% endblock %}
 
@@ -55,15 +54,25 @@
         <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
     {% endfor %}
         {% block content %}{% endblock %}
+         <a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
     <div class="container">
         <hr class="featurette-divider">
         <footer>
-          <p class="pull-right"><a href="#">Back to top</a></p>
           <p>&copy; 2014 IIIT-Delhi JobPort &middot;</p>
 <p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
         </footer>
     </div>
+     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="{% static "js/showup.js" %}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+
+    <script>
+              $().showUp('.navbar', {
+              upClass: 'navbar-show',
+              downClass: 'navbar-hide'
+              });
+      </script>
   </body>
 </html>
