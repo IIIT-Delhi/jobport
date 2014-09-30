@@ -26,7 +26,6 @@ class Job(models.Model):
             return False
     company_name = models.CharField("Organization", max_length=200)
     profile = models.CharField("Job Profile", max_length=50)
-    details = models.CharField("Job Description", max_length=1000, blank=True, null=True)
     location = models.CharField("Location", max_length=50, blank=True, null=True)
     dateofvisit = models.DateTimeField("Date of Visit", default=datetime.now)
     package = models.CharField("Package", max_length=10, blank=True, null=True)
