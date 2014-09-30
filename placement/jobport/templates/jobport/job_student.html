@@ -9,16 +9,20 @@
 
          {% if hasapplied %}
           {% if not deadlinepassed %}
-            <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-primary">Withdraw</button> </a>
-          {% endif %}
+	  <div class="col-lg-6 col-center-block" style="margin-left:3.3m">
+            <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-danger">Withdraw</button> </a>
+	  </div>
+		  {% endif %}
          {% else %}
          {% if deadlinepassed %}
                 <h3>Deadline has passed!</h3>
          {% elif not iseligible %}
     <p><b>You can't apply for this Job because {{ iseligiblereason }}</b></p> 
          {% else %}
-                <a href="/job/{{ job.pk }}/apply"><button type="button" class="btn btn-primary">Apply</button> </a>
-        {% endif %}
+	  			<div class="col-lg-6 col-center-block" style="margin-left:3.3m">
+      <a href="/job/{{ job.pk }}/apply" ><button type="button" class="btn btn-success">Apply</button> </a>
+        		</div>
+					{% endif %}
      {% endif %}
 
   </div>
