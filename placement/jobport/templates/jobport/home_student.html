@@ -14,11 +14,11 @@
         <a href="/job/{{ job.pk }}" class="list-group-item" >
             <h4 class="list-group-item-heading">{{ job.company_name }}</h4>
             <h6 class="list-group-item-heading">{{ job.profile }}</h6>
+            <p class="list-group-item-text">{{ job.details }}</p>
             <h6 class="list-group-item-heading">Posted on: {{ job.createdon }}</h6>
 
             <h6 class="list-group-item-heading">Deadline: {{ job.deadline }} {% if job.deadlineexpired %} <span class="label label-danger"> {{ job.deadline|naturaltime }} {% elif not job.deadlineexpired %} <span class="label label-success"> {{ job.deadline|naturaltime }}</span> {% endif %}</span></h6>
             <h6 class="list-group-item-heading">Date of Visit: {{ job.dateofvisit }}</h6>
-            <p class="list-group-item-text">{{ job.details }}</p>
         </a>
     </div>
         {% endfor %}
