@@ -7,13 +7,13 @@ from storage import OverwriteStorage
 from datetime import datetime
 
 class Batch(models.Model):
-  text=models.CharField("Name", max_length=120, null=True,blank=True)
+  text=models.CharField("Name", max_length=120, null=True)
   createdon= models.DateTimeField(auto_now_add=True)
   QUALIFICATION = (
         ('G','UnderGraduate'),
         ('P','PostGraduate'),
     )
-  pg_or_not = models.CharField("Post-Graduate Or Not?", max_length = 1, choices = QUALIFICATION, default='G')
+  pg_or_not = models.CharField("Graduate or Post-Graduate", max_length = 1, choices = QUALIFICATION, default='G')
 
   def __str__(self):
     return self.text
@@ -45,9 +45,9 @@ class Job(models.Model):
     )
     jobtype=models.CharField("Job Type", max_length=2, choices=JOBTYPES, default='T')
 
-    batch = models.ManyToManyField(Batch, related_name='jobbatch', null=True,blank=True )
+    batch = models.ManyToManyField(Batch, related_name='jobbatch', null=True)
 
-    cgpa_min = models.FloatField("Minimum CGPA", max_length=2, default=1)
+    cgpa_min = models.FloatField("Minimum CGPA", max_length=2, default=0)
     min_tenthmarks = models.IntegerField("Minimum Class X Marks", max_length = 3, default = 0)
     min_twelfthmarks = models.IntegerField("Minimum Class XII Marks", max_length = 3, default = 0)
     backs = (
@@ -78,7 +78,6 @@ class Student(models.Model):
     user = models.OneToOneField(User)
     rollno = models.CharField("Roll No", max_length=10, primary_key = True)
     name = models.CharField("Full Name", max_length = 100)
-    # pg_or_not = models.BooleanField('Post-Graduate Or Not?', default = False)
     batch = models.ForeignKey(Batch,related_name='studentsinbatch')
     dob = models.DateTimeField("Date of Birth")
     genderchoices = (
@@ -112,7 +111,6 @@ class Student(models.Model):
         (2014,'2014'),
         (2015,'2015'),
         (2016,'2016'),
-    #    ('2012','2012'),
     )
 
     phone = models.CharField("Phone Number", max_length = 10)
@@ -174,7 +172,6 @@ class Student(models.Model):
         ('G','UnderGraduate'),
         ('P','PostGraduate'),
     )
-    # pg_or_not = models.CharField("Post-Graduate Or Not?", max_length = 1, choices = QUALIFICATION, default='G')
 
     def __str__(self):              # __unicode__ on Python 2
         return  self.pk + ' ' + self.name
