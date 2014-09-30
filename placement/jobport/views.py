@@ -105,7 +105,7 @@ def jobapply(request, jobid):
 
 def jobwithdraw(request, jobid):
 	if request.user.is_authenticated():
-		if (timezone.now()>Job.objects.get(pk=jobid).deadline):
+		if (timezone.now()<Job.objects.get(pk=jobid).deadline):
 			request.user.student.companyapplications.remove(Job.objects.get(pk=jobid))
 			messages.success(request, 'You have withdrawn!')
 			return HttpResponseRedirect('/')
@@ -144,7 +144,8 @@ def admineditstudent(request, studentid):
 					if(request.FILES.__len__()==0):
 						usr.resume = Student.objects.get(pk=studentid).resume;
 					else:
-						usr.resume.name = Student.objects.get(pk=studentid).user.username.split('@')[0] +'_resume_' + hashlib.sha1(request.user.username.split('@')[0]).hexdigest() + "." + usr.resume.name.split('.')[-1]
+						salt="1eT4nfB5mR"
+						usr.resume.name = Student.objects.get(pk=studentid).user.username.split('@')[0] +'_resume_' + hashlib.sha1(request.user.username.split('@')[0]+salt).hexdigest() + "." + usr.resume.name.split('.')[-1]
 					usr.email = Student.objects.get(pk=studentid).user.username
 					usr.save()
 					form.save_m2m()
@@ -228,7 +229,8 @@ def profile(request):
 				if(request.FILES.__len__()==0):
 					usr.resume = request.user.student.resume;
 				else:
-					usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(request.user.username.split('@')[0]).hexdigest() + "." + usr.resume.name.split('.')[-1]
+					salt="1eT4nfB5mR"
+					usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(request.user.username.split('@')[0]+salt).hexdigest() + "." + usr.resume.name.split('.')[-1]
 				#print str("Hello " + str(usr.resume))
 				usr.save()
 				messages.success(request, 'Your details were saved.')
@@ -260,7 +262,8 @@ def newuser(request):
 				usr.email= request.user.username
 				#usr.resume.name = request.user.username.split('@')[0]  + "_resume." + usr.resume.name.split('.')[-1]
 			   # usr.resume.name = hashlib.sha256(request.user.username.split('@')[0] + "_resume." + usr.resume.name.split('.')[-1]).hexdigest() + '.pdf'
-				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(request.user.username.split('@')[0]).hexdigest() +  "." + usr.resume.name.split('.')[-1]
+				salt="1eT4nfB5mR"
+				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(request.user.username.split('@')[0]+salt).hexdigest() +  "." + usr.resume.name.split('.')[-1]
 				usr.save()
 				#messages.success(request, 'Your form was saved')
 				studentgroup.user_set.add(request.user)
