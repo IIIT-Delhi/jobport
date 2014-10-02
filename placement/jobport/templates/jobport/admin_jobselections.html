@@ -30,13 +30,7 @@
     </div>
     <div class="btn-group">
           <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=selected">Download Selected Students' List</a>
-            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-            <span class="sr-only">Toggle Dropdown</span>
           </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/job/{{ job.pk }}/getcsv/?qualification=btech&req=selected">Download Selected UG CSV</a></li>
-            <!-- <li><a href="/job/{{ job.pk }}/getcsv/?qualification=mtech&req=selected">Download Selected PG CSV</a></li> -->
-          </ul>
           <a href="/job/{{ job.pk }}/sendselectedemail"><button type="button" class="btn btn-primary">Send Email to Selected Students</button> </a>
     </div>
     <br>
