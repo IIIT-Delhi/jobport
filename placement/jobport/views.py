@@ -515,9 +515,7 @@ def getjobcsv(request, jobid):
 					if is_eligible(student, Job.objects.get(pk=jobid))['value']:
 						studlist.append(student)
 				name=Job.objects.get(pk=jobid).company_name + "_" +Job.objects.get(pk=jobid).profile + "_Eligible.csv"
-			#else:
-			#    studlist=Student.objects.all()
-			#    name="Students.csv"
+
 			response['Content-Disposition'] = str('attachment; filename="'+name+'"')
 			writer = csv.writer(response)
 			writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
@@ -539,7 +537,7 @@ def getbatchlist(request,batchid):
 		if is_admin(request.user):
 			response = HttpResponse(content_type='text/csv')
 			studlist = Batch.objects.get(pk=batchid).studentsinbatch.all()
-			name = Batch.objects.get(pk=batchid).text
+			name = Batch.objects.get(pk=batchid).title
 			response['Content-Disposition'] = str('attachment; filename="'+name+'_list.csv"')
 			writer = csv.writer(response)
 			writer.writerow(["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA","PostGrad CGPA", "Graduating University","PostGraduating University", "10th Marks", "12th Marks", "Backlogs","Contact No."])
@@ -686,7 +684,7 @@ def getbatchresumes(request,batchid):
 			# Files (local path) to put in the .zip
 			filenames=[]
 			checklist=Batch.objects.get(pk=batchid).studentsinbatch.all()
-			zip_subdir = Batch.objects.get(pk=batchid).text + "_resumes"
+			zip_subdir = Batch.objects.get(pk=batchid).title + "_resumes"
 			for student in checklist:
 				# if (request.GET.get('qualification')=='btech' and student.qualification!='B'):
 					# continue
