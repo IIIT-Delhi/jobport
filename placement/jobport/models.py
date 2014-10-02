@@ -7,13 +7,13 @@ from storage import OverwriteStorage
 from datetime import datetime
 
 class Batch(models.Model):
-  text=models.CharField("Name", max_length=120, null=True)
-  createdon= models.DateTimeField(auto_now_add=True)
+  title=models.CharField("Name", max_length=120, null=True)
   QUALIFICATION = (
         ('G','UnderGraduate'),
         ('P','PostGraduate'),
-    )
+  )
   pg_or_not = models.CharField("Graduate or Post-Graduate", max_length = 1, choices = QUALIFICATION, default='G')
+  createdon= models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
     return self.text
