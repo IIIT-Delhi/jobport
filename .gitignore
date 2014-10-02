@@ -52,6 +52,11 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+#staticfiles
 staticfiles/
+
+#migrations
+placement/jobport/migrations/
+
 #CVs
 *.pdf
