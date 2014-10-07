@@ -1,0 +1,3 @@
+{{ object.title }}
+{{ object.pg_or_not }}
+{{ object.createdon }}

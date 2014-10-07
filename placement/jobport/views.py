@@ -5,7 +5,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import Group, User
 from django.core.mail import send_mail
 from django.utils import timezone
-from jobport.forms import StudentForm, NewStudentForm, JobForm, AdminStudentForm, AdminSelectedApplicantsForm, FeedbackForm, BatchForm
+from jobport.forms import StudentForm, NewStudentForm, JobForm, AdminStudentForm, AdminSelectedApplicantsForm, FeedbackForm, BatchForm, RootSearchForm
 from django.contrib import messages
 from urlparse import urlparse
 from .models import Job, Student, Batch
@@ -746,7 +746,16 @@ def uploadstudentsinbatch(request,batchid):
 			else:
 				return render(request,'jobport/admin_addstudentstobatch.html')
 		else:
-			return render(request, 'jobport/needlogin.html') #403 Error
+			return render(request, 'jobport/notallowed.html') #403 Error
+	return render(request, 'jobport/needlogin.html') #403 Error
+
+def search(request):
+	if request.user.is_authenticated():
+		if is_admin(request.user):
+			form = RootSearchForm(request.GET)
+			return render(request,'jobport/result.html',{'search_query':request.GET.get('q'),'results':form.search()})
+		else:
+			return render(request, 'jobport/notallowed.html') #403 Error
 	return render(request, 'jobport/needlogin.html') #403 Error
 
 def special_match(strg,search=re.compile(r'[^A-Za-z0-9., -]').search):

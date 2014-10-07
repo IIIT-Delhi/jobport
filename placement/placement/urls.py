@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'placement.views.home', name='home'),
     url('', include('jobport.urls')),
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^search/', include('haystack.urls')),
 
     # url(r'^blog/', include('blog.urls')),
 
