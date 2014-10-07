@@ -16,7 +16,7 @@
 {% for l in batch%}
     <div class="list-group">
         <a href="/batch/{{ l.pk }}" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ l.text }}</h4>
+            <h4 class="list-group-item-heading">{{ l.title }}</h4>
             <h6 class="list-group-item-heading">Created on: {{ l.createdon }}</h6>
 			{% ifequal l.pg_or_not 'G' %}
 			<h6 class="list-group-item-heading">Graduate</h6>
@@ -29,8 +29,7 @@
 </div>
 {% if not batch%}
     <div class="container">
-        <h4 align="center">There are no batches right now.<button id="createBatch" class="btn btn-danger">Create Batch!</button>
-	</h4>
+        <h4 align="center">There are no batches right now.</h4>
     </div>
 {% endif %}
 
