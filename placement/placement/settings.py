@@ -18,15 +18,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'south',
+    'django.contrib.humanize',
     'jobport',
+    'south',
     'bootstrap3',
     'timezone_field',
     'datetimezone_field',
     'bootstrap3_datetime',
-    'django.contrib.humanize',
-    "post_office",
+    'post_office',
     'googlecharts',
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -38,7 +39,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'jobport.middleware.MyMiddleware',
-#    'jobport.middleware.CvControlMiddleware',
 )
 
 ROOT_URLCONF = 'placement.urls'
@@ -104,6 +104,13 @@ EMAIL_HOST_PASSWORD = 'qweasdzxc#1'
 EMAIL_PORT = 587
 
 GOOGLECHARTS_API = '1.1'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 #Make sure to add this to cron
 #* * * * * (/usr/bin/python manage.py send_queued_mail >> send_mail.log 2>&1)
