@@ -1,0 +1,10 @@
+{{ object.name }}
+{{ object.rollno }}
+{{ object.phone }}
+{{ object.home_state }}
+{{ object.home_city }}
+{{ object.institution_ug }}
+{{ object.institution_pg }}
+{{ object.university_ug }}
+{{ object.university_pg }}
+{{ object.createdon }}
