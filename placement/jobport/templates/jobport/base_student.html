@@ -43,7 +43,7 @@
           <li ><a id="myjobs">My Applications</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/feedback/">Feedback</a></li>
+          <li><a id="feedback">Feedback</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -94,6 +94,21 @@
         })
     }
 </script>
+
+<script type="text/javascript">
+    window.onload = function(){
+        $("#feedback").on('click', function(){
+         $("#dataLoad").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#base-modal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+    }
+</script>
+
 
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
