@@ -17,7 +17,7 @@ class JobForm(forms.ModelForm):
 	class Meta:
 			model = Job
 			exclude = ['createdon']
-			widgets = { 'deadline': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickTime": True}),'dateofvisit': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickTime": True})  }
+			widgets = { 'deadline': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickTime": True}),'dateofvisit': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm", "pickTime": True}),'batch':forms.CheckboxSelectMultiple  }
 
 	def clean_jobfile(self):
 		jobfile = self.cleaned_data['jobfile']
@@ -59,9 +59,10 @@ class AdminSelectedApplicantsForm(forms.ModelForm):
 	class Meta:
 		model = Job
 		fields = ['selected']
+#		widgets = {'CB':forms.CheckBoxSelectMultiple}
 
 	# Representing the many to many related field in Job
-	selected = forms.ModelMultipleChoiceField(queryset=Student.objects.all(), required=False)
+	selected = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,queryset=Student.objects.all(), required=False)
 
 	# Overriding __init__ here allows us to provide initial
 	# data for 'selected' field
