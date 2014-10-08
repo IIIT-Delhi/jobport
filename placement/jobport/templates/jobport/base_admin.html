@@ -44,7 +44,7 @@
         </ul>
          <ul class="nav navbar-nav navbar-right">
           <li><a id="search" class="glyphicon glyphicon-search"></a>
-          <li><a href="/feedback/">Feedback</a></li>
+          <li><a id="feedback">Feedback</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -70,8 +70,6 @@
         </footer>
     </div>
 
-
-
 <div id="base-modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -84,10 +82,25 @@
   </div>
 </div>
 
+
 <script type="text/javascript">
     window.onload = function(){
-        $("#search").on('click', function(){
-         $("#dataLoad").load("/search",function(responseTxt,statusTxt,xhr){
+        $("#feedback").on('click', function(){
+         $("#dataLoad").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#base-modal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    window.onload = function(){
+        $("#feedback").on('click', function(){
+         $("#dataLoad").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
             $("#base-modal").modal('show');
@@ -117,8 +130,6 @@
    $('#loginclick').click(function(){
     $('#login').modal('show')
    });
-
-
 
 </script>
   </body>

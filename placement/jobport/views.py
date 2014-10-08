@@ -568,17 +568,11 @@ def feedback(request):
 			return HttpResponseRedirect('/')
 		else:
 			context={'form': form}
-			return render(request,'jobport/admin_jobselections.html', context)
+			return render(request,'jobport/feedback.html', context)
 	else:
 		form = FeedbackForm()
 		context = { 'form' : form }
-		if request.user.is_authenticated():
-			 if is_admin(request.user):
-				 return render(request,'jobport/feedback_admin.html', context)
-			 else:
-				 return render(request,'jobport/feedback_student.html', context)
-		else:
-			return render(request,'jobport/feedback_loggedout.html', context)
+		return render(request,'jobport/feedback.html', context)
 
 # @@login_required
 def fileview(request, filename):
