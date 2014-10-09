@@ -9,49 +9,49 @@
 	     {% for result in results %}
 
 	     <!-- if result is a SearchObject of Batch -->
-	     {% ifequal result 'SearchResult: jobport.batch' %}
-	     <div class="container">
-		   	<div class="list-group">
-		        <a href="/batch/{{ result.pk }}" class="list-group-item">
-		            <h4 class="list-group-item-heading">{{ result.title }}</h4>
+		     {% ifequal result.model_name 'batch' %}
+		     <!-- <div class="container"> -->
+			   	<div class="list-group">
+			        <a href="/batch/{{ result.pk }}" class="list-group-item">
+			            <h4 class="list-group-item-heading">{{ result.title }}</h4>
+						{% ifequal result.pg_or_not 'G' %}
+			            <h4 class="list-group-item-heading">Graduate</h4>
+						{% else %}
+							<h4 class="list-group-item-heading">Post Graduate</h4>
+						{% endifequal %}
+			            <h6 class="list-group-item-heading">Created on: {{ result.createdon }}</h6>
+					</a>
+			    </div>
+			  <!-- </div> -->
+			  {% endifequal %}
+			  <!-- if reuslt is a SearchObject of student -->
+
+			  {% ifequal result.model_name 'student' %}
+			 <div class="list-group">
+		            <a href="/students/{{ result.pk }}/edit" class="list-group-item">
+		                <h4 class="list-group-item-heading">{{ result.name }}</h4>
+		                <h5 class="list-group-item-heading">{{ result.rollno }}</h5>
+		                <h6 class="list-group-item-heading">{{ result.get_status_display }}</h6>
+		                <h6 class="list-group-item-heading">Offers: {% for offer in result.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
+		            </a>
+		        </div>
+			  {% endifequal %}
+
+
+			  <!-- if result is a SearchObject of job -->
+			  {% ifequal result.model_name 'job' %}
+			  <div class="list-group">
+		        <a href="/job/{{ result.pk }}" class="list-group-item">
 		            <h4 class="list-group-item-heading">{{ result.company_name }}</h4>
-		            <h6 class="list-group-item-heading">Created on: {{ result.createdon }}</h6>
-				</a>
+		            <h6 class="list-group-item-heading">Posted on: {{ result.createdon }}</h6>
+		            <h6 class="list-group-item-heading">Deadline: {{ result.deadline }} {% if result.deadlineexpired %} <span class="label label-danger"> {{ result.deadline }} {% elif not result.deadlineexpired %} <span class="label label-success"> {{ result.deadline }}</span> {% endif %}</span></h6>
+		            <h6 class="list-group-item-heading">Date of Visit: {{ result.dateofvisit }}</h6>
+		            <div>
+		          </div>
+		        </a>
 		    </div>
-		  </div>
-		  {% endifequal %}
-		  <!-- if reuslt is a SearchObject of student -->
-		{{result}}
+			  {% endifequal %}
 
-
-		  {% ifequal result 'SearchResult: jobport.student' %}
-		 <div class="list-group">
-	            <a href="/students/{{ result.pk }}/edit" class="list-group-item">
-	                <h4 class="list-group-item-heading">{{ result.name }}</h4>
-	                <h5 class="list-group-item-heading">{{ result.rollno }}</h5>
-	                <h6 class="list-group-item-heading">{{ result.get_status_display }}</h6>
-	                <h6 class="list-group-item-heading">Offers: {% for offer in result.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
-	            </a>
-	        </div>
-		  {% endifequal %}
-
-
-		  <!-- if result is a SearchObject of job -->
-		  {% if result == '<SearchResult: jobport.job (pk=u\'1\')>' %}
-		  <div class="list-group">
-	        <a href="/job/{{ result.pk }}" class="list-group-item">
-	            <h4 class="list-group-item-heading">{{ result.company_name }}</h4>
-	            <h6 class="list-group-item-heading">{{ result.profile }}</h6>
-	            <p class="list-group-item-text">{{ result.details }}</p>
-	            <h6 class="list-group-item-heading">Posted on: {{ result.createdon }}</h6>
-	            <h6 class="list-group-item-heading">Deadline: {{ result.deadline }} {% if result.deadlineexpired %} <span class="label label-danger"> {{ result.deadline }} {% elif not result.deadlineexpired %} <span class="label label-success"> {{ result.deadline }}</span> {% endif %}</span></h6>
-	            <h6 class="list-group-item-heading">Date of Visit: {{ result.dateofvisit }}</h6>
-	            <div>
-	          </div>
-	        </a>
-	    </div>
-		  {% endif %}
-
-	     {% endfor %}
      </div>
+	{% endfor %}
 {% endblock %}
