@@ -70,26 +70,37 @@
         </footer>
     </div>
 
-<div id="base-modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="feedback-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
       </div>
-      <div class="modal-body" id="dataLoad">
+      <div class="modal-body" id="searchdata">
       </div>
     </div>
   </div>
 </div>
 
+<div id="search-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body" id="feedbackdata">
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
     window.onload = function(){
-        $("#feedback").on('click', function(){
-         $("#dataLoad").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+        $("#search").on('click', function(){
+         $("#searchdata").load("/search",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#base-modal").modal('show');
+            $("#search-modal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
@@ -100,10 +111,10 @@
 <script type="text/javascript">
     window.onload = function(){
         $("#feedback").on('click', function(){
-         $("#dataLoad").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+         $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#base-modal").modal('show');
+            $("#feedback-modal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
@@ -114,7 +125,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="{% static "js/showup.js" %}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -132,5 +143,6 @@
    });
 
 </script>
-  </body>
+
+</body>
 </html>

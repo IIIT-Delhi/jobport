@@ -17,6 +17,19 @@
         <li><h5>{{ selects.name }}</h5></li>
     {% endfor %}
     </ul>
+    <br/>
+    <h4>Selecte Candidates:</h4>
+    <form role="form" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout="horizontal" %}
+        {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
+    </form>
+
+    <div class="btn-group">
+          <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=selected">Download Selected Students' List</a>
+          </button>
+          <a href="/job/{{ job.pk }}/sendselectedemail"><button type="button" class="btn btn-primary">Send Email to Selected Students</button> </a>
+    </div>
 
     <div class="btn-group">
           <a class="btn btn-primary" href="/job/{{ job.pk }}/getresumes/?req=selected">Download Selected Students' Resumes</a>
@@ -28,17 +41,6 @@
             <li><a href="/job/{{ job.pk }}/getresumes/?&req=selected">Download Selected PG Resumes</a></li>
           </ul>
     </div>
-    <div class="btn-group">
-          <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=selected">Download Selected Students' List</a>
-          </button>
-          <a href="/job/{{ job.pk }}/sendselectedemail"><button type="button" class="btn btn-primary">Send Email to Selected Students</button> </a>
-    </div>
-    <br>
-    <h3>Add Selected Candidates</h3>
-    <form role="form" class="form-horizontal" method="post">
-        {% csrf_token %}
-        {% bootstrap_form form layout="horizontal" %}
-        {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
-    </form>
+
 </div>
 {% endblock %}
