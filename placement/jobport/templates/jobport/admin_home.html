@@ -18,7 +18,13 @@
             <h6 class="list-group-item-heading">Posted on: {{ job.createdon }}</h6>
             <h6 class="list-group-item-heading">Deadline: {{ job.deadline }} {% if job.deadlineexpired %} <span class="label label-danger"> {{ job.deadline|naturaltime }} {% elif not job.deadlineexpired %} <span class="label label-success"> {{ job.deadline|naturaltime }}</span> {% endif %}</span></h6>
             <h6 class="list-group-item-heading">Date of Visit: {{ job.dateofvisit }}</h6>
-            <div>
+
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<!--
             <script>
                       (function() {
                         var cx = '012742927787870246921:awu6ouvfwzi';
@@ -32,11 +38,7 @@
                       })();
                     </script>
                 <gcse:search></gcse:search>
-            </div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
+-->
 
 {% if not jobs %}
     <div class="container">
