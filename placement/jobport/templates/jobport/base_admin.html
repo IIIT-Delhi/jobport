@@ -69,7 +69,7 @@
         </footer>
     </div>
 
-<div id="searchmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="searchmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -105,6 +105,20 @@
 
 <script type="text/javascript">
     window.onload = function(){
+        $("#batch").on('click', function(){
+         $("#batchdata").load("{% url 'openbatch' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#batchmodal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    window.onload = function(){
         $("#search").on('click', function(){
          $("#searchdata").load("/search",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
@@ -116,6 +130,7 @@
         })
     }
 </script>
+
 
 </body>
 </html>
