@@ -40,10 +40,10 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a id="myjobs">My Applications</a></li>
+          <li><a id="myjobs" href="#">My Applications</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a id="feedback">Feedback</a></li>
+          <li><a id="feedback" href="#">Feedback</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -68,8 +68,8 @@
 <p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
         </footer>
     </div>
-
-<div id="feedback-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--
+<div id="feedbackmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -80,9 +80,9 @@
     </div>
   </div>
 </div>
+-->
 
-
-<div id="myapps-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="myappsmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -94,44 +94,49 @@
   </div>
 </div>
 
-<script type="text/javascript">
-    window.onload = function(){
-        $("#myjobs").on('click', function(){
-         $("#myappsdata").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success")
-            // alert("External content loaded successfully!");
-            $("#myapps-modal").modal('show');
-          if(statusTxt=="error")
-            alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
-    }
-</script>
-
-<script type="text/javascript">
-    window.onload = function(){
-        $("#feedback").on('click', function(){
-         $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success")
-            // alert("External content loaded successfully!");
-            $("#feedback-modal").modal('show');
-          if(statusTxt=="error")
-            alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
-    }
-</script>
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-<!--    <script src="https://code.jquery.com/jquery.js"></script>-->
-    <script src="{% static "js/showup.js" %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+<!--    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery.js"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+<!--    <script src="{% static "js/showup.js" %}"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
 
+<!--
     <script>
               $().showUp('.navbar', {
               upClass: 'navbar-show',
               downClass: 'navbar-hide'
               });
       </script>
-  </body>
+-->
+
+<script type="text/javascript">
+//    window.onload = function(){
+        $("#myjobs").on('click', function(){
+         $("#myappsdata").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#myappsmodal").modal("show");
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        });
+//    }
+</script>
+
+	  <!--
+<script type="text/javascript">
+    window.onload = function(){
+        $("#feedback").on('click', function(){
+         $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#feedbackmodal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+    }
+</script>
+-->
+	</body>
 </html>
