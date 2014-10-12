@@ -7,10 +7,9 @@
     <h1>JobPort</h1>
     <h3>All Batches</h3>
 	  <div class="col-lg-6 col-center-block" style="margin-left:3.3em">
-		  <button id="createBatch" class="btn btn-success">Create Batch!</button>
+		  <a id="createbatch" href="">Create Batch!</a>
 	  </div>
     </div>
-
 </div>
 <div class="container">
 {% for l in batch%}
@@ -34,7 +33,7 @@
 {% endif %}
 
 <!-- Modal -->
-<div id="batch-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="batchmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -48,17 +47,17 @@
 
 <script type="text/javascript">
     window.onload = function(){
-		$("#createBatch").on('click', function(){
-			console.log('jsnfd');
-         $("#batchdata").load("{% url 'openbatch' %}",function(responseTxt,statusTxt,xhr){
-//          if(statusTxt=="success")
+		$("#createbatch").on('click', function(){
+         $("#batchdata").load("{% url "openbatch" %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success"){
             // alert("External content loaded successfully!");
-           	console.log('jsnfd');
-			 $("#batch-modal").modal('show');
-//          if(statusTxt=="error")
-//            alert("Error: "+xhr.status+": "+xhr.statusText);
+			  console.log('jsnfd');
+			 $("#batchmodal").modal('show');
+		  }
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
           });
-        });
+        })
     }
 </script>
 
