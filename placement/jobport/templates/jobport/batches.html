@@ -7,7 +7,7 @@
     <h1>JobPort</h1>
     <h3>All Batches</h3>
 	  <div class="col-lg-6 col-center-block" style="margin-left:3.3em">
-		  <a id="createbatch" href="">Create Batch!</a>
+		  <a id="batch" class="btn btn-primary">Create Batch!</a>
 	  </div>
     </div>
 </div>
@@ -33,6 +33,7 @@
 {% endif %}
 
 <!-- Modal -->
+
 <div id="batchmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -45,20 +46,5 @@
   </div>
 </div>
 
-<script type="text/javascript">
-    window.onload = function(){
-		$("#createbatch").on('click', function(){
-         $("#batchdata").load("{% url "openbatch" %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success"){
-            // alert("External content loaded successfully!");
-			  console.log('jsnfd');
-			 $("#batchmodal").modal('show');
-		  }
-          if(statusTxt=="error")
-            alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
-    }
-</script>
 
 {% endblock %}
