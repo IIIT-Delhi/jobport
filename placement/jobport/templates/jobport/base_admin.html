@@ -8,8 +8,8 @@
     <!-- Bootstrap -->
 
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-        <link rel="stylesheet" href="{% static "css/showup.css" %}">
 
+     <link rel="stylesheet" href="{% static "css/showup.css" %}">
 
     {% block pagelibraries %}{% endblock %}
 
@@ -43,8 +43,8 @@
         <li><a href="/batches/">Batches</a></li>
         </ul>
          <ul class="nav navbar-nav navbar-right">
-          <li><a id="search" class="glyphicon glyphicon-search"></a>
-          <li><a id="feedback">Feedback</a></li>
+		<li><a id="search" class="glyphicon glyphicon-search"></a></li>
+          <li><a id="feedback" >Feedback</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -57,7 +57,8 @@
       </div><!-- /.navbar-collapse -->
     </div>
     </nav>
-    {% for message in messages %}
+
+	  {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
 {% endfor %}
         {% block content %}{% endblock %}
@@ -70,7 +71,7 @@
         </footer>
     </div>
 
-<div id="feedback-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="feedbackmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -82,7 +83,7 @@
   </div>
 </div>
 
-<div id="search-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="searchmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -94,13 +95,17 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/showup.js" %}"></script>
+
 <script type="text/javascript">
     window.onload = function(){
         $("#search").on('click', function(){
          $("#searchdata").load("/search",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#search-modal").modal('show');
+            $("#searchmodal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
@@ -114,7 +119,7 @@
          $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#feedback-modal").modal('show');
+            $("#feedbackmodal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
@@ -122,22 +127,13 @@
     }
 </script>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script-->
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="{% static "js/showup.js" %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-
-    <script>
+<script>
               $().showUp('.navbar', {
               upClass: 'navbar-show',
               downClass: 'navbar-hide'
               });
       </script>
-     <script>
+ <script>
    $('#loginclick').click(function(){
     $('#login').modal('show')
    });
