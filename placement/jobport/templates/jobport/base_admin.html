@@ -42,7 +42,7 @@
         </ul>
          <ul class="nav navbar-nav navbar-right">
 			 <li><a id="search" href="#" class="glyphicon glyphicon-search"></a></li>
-		<li><a href="{% url 'feedback' %}">Feedback</a></li>
+		<li><a href="#" id="fb">Feedback</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -82,6 +82,18 @@
 </div>
 
 
+<div id="fbmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body" id="fbdata">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
 	<script src="{% static "js/jquery-2.1.1.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
@@ -94,28 +106,6 @@
               downClass: 'navbar-hide'
               });
       </script>
-<!--
-<script>
-   $('#loginclick').click(function(){
-    $('#login').modal('show')
-   });
-</script>
-
--->
-
-<script type="text/javascript">
-    window.onload = function(){
-        $("#batch").on('click', function(){
-         $("#batchdata").load("{% url 'openbatch' %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success")
-            // alert("External content loaded successfully!");
-            $("#batchmodal").modal('show');
-          if(statusTxt=="error")
-            alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
-    }
-</script>
 
 <script type="text/javascript">
     window.onload = function(){
@@ -124,6 +114,24 @@
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
             $("#searchmodal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+		$("#batch").on('click', function(){
+         $("#batchdata").load("{% url 'openbatch' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#batchmodal").modal('show');
+          if(statusTxt=="error")
+            alert("Error: "+xhr.status+": "+xhr.statusText);
+          });
+        })
+		$("#fb").on('click', function(){
+         $("#fbdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+          if(statusTxt=="success")
+            // alert("External content loaded successfully!");
+            $("#fbmodal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
