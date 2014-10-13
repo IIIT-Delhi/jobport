@@ -59,3 +59,5 @@ staticfiles/
 *.pdf
 
 /placement/jobport/migrations/*.py
+
+placement/placement/whoosh_index/
