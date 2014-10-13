@@ -68,7 +68,6 @@
 <p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
         </footer>
     </div>
-<!--
 <div id="feedbackmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -80,7 +79,6 @@
     </div>
   </div>
 </div>
--->
 
 <div id="myappsmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -94,23 +92,16 @@
   </div>
 </div>
 
-<!--    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery.js"></script>-->
     <script src="{% static "js/bootstrap.min.js" %}"></script>
-<!--    <script src="{% static "js/showup.js" %}"></script>-->
+    <script src="{% static "js/showup.js" %}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-<!--
-    <script>
-              $().showUp('.navbar', {
-              upClass: 'navbar-show',
-              downClass: 'navbar-hide'
-              });
-      </script>
--->
+
 
 <script type="text/javascript">
-//    window.onload = function(){
+    window.onload = function(){
         $("#myjobs").on('click', function(){
          $("#myappsdata").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
@@ -119,14 +110,8 @@
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
           });
-        });
-//    }
-</script>
-
-	  <!--
-<script type="text/javascript">
-    window.onload = function(){
-        $("#feedback").on('click', function(){
+        })
+	$("#feedback").on('click', function(){
          $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
           if(statusTxt=="success")
             // alert("External content loaded successfully!");
@@ -137,6 +122,6 @@
         })
     }
 </script>
--->
+
 	</body>
 </html>

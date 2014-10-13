@@ -2,10 +2,11 @@
 
 {% block content %}
      <br/><br/>
-     <div class="container">
+     <div class="container" align="center">
 
-     	<p>Your query '{{ search_query }}' has returned {{ results.count }} result{{ results|pluralize }}!</p>
 
+     	<h3 align="center">Your query '{{ search_query }}' returned {{ results.count }} result{{ results|pluralize }}!</h3>
+		 <p></p>
 	     {% for result in results %}
 
 	     <!-- if result is a SearchObject of Batch -->
