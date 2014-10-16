@@ -1,5 +1,6 @@
 Django==1.6.5
 MySQL-python==1.2.5
+PyJWT==0.2.1
 South==1.0
 Whoosh==2.6.0
 argparse==1.2.1
@@ -16,10 +17,10 @@ jsonfield==0.9.22
 oauthlib==0.6.3
 python-dateutil==2.2
 python-openid==2.2.5
-python-social-auth==0.1.26
+python-social-auth==0.2.1
 pytz==2014.4
-requests==2.3.0
+requests==2.4.3
 requests-oauthlib==0.4.1
 simplejson==3.6.3
-six==1.7.3
+six==1.8.0
 wsgiref==0.1.2

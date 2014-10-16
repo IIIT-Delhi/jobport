@@ -5,12 +5,12 @@
 {% endblock %}
 {% block content %}
 <br/>
-<div class="container center">
+<div class="container" style="margin-left:-15px">
     <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
-        {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
-    <h5 align="pull-left" style="color:gray">You can always reach me directly at <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman@iiitd</a>.</h5>
+        {% buttons submit='Shoot' layout='horizontal' %}{% endbuttons %}
+    <h5 style="color:gray">You can always reach me directly at <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman@iiitd</a>.</h5>
     </form>
 </div>
 {% endblock %}
