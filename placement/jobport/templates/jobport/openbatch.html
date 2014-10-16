@@ -14,11 +14,11 @@
   </div>
 </div>
 
-  <div class="container">
+  <div class="container" style="margin-left:-45px">
        <form role="form" class="form-horizontal" action="{% url 'openbatch' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
-        {% buttons submit='Done' layout='horizontal' %}{% endbuttons %}
+        {% buttons submit='Create' layout='horizontal' %}{% endbuttons %}
     </form>
   </div>
 {% endblock %}
