@@ -9,7 +9,7 @@
 
          {% if hasapplied %}
           {% if not deadlinepassed %}
-	  <div class="col-lg-6 col-center-block" style="margin-left:3.3m">
+	  <div class="col-lg-6 col-center-block" style="margin-left:2.6em">
             <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-danger">Withdraw</button> </a>
 	  </div>
 		  {% endif %}
@@ -19,7 +19,7 @@
          {% elif not iseligible %}
     <p><b>You can't apply for this Job because {{ iseligiblereason }}</b></p> 
          {% else %}
-	  			<div class="col-lg-6 col-center-block" style="margin-left:3.3m">
+	  			<div class="col-lg-6 col-center-block" style="margin-left:2.1em">
       <a href="/job/{{ job.pk }}/apply" ><button type="button" class="btn btn-success">Apply</button> </a>
         		</div>
 					{% endif %}
