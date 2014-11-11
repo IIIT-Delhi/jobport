@@ -8,7 +8,10 @@
   </div>
 </div>
 <div class="container">
-    <h3>Details</h3>
+<!--    <h3>Details</h3>-->
+
+  <div class="row vertical-divider">
+     <div class="col-xs-6">
     <p>{{ job.details }}</p>
     <h3>Location:</h3>
     <p>{{ job.location }}</p>
@@ -32,9 +35,14 @@
         <h4>12th Marks: </h4><p>{{ job.min_twelfthmarks }}</p>
         <h4>CGPA: </h4><p>{{ job.cgpa_min }}</p>
         <h4>Max Backlogs: </h4><p>{{ job.max_blacklogs }}</p>
+    </div>
+
+     <div class="col-xs-6">
     <a href="/job/{{ job.pk }}/edit"><button type="button" class="btn btn-primary">Edit</button> </a>
     <a href="/job/{{ job.pk }}/applicants"><button type="button" class="btn btn-primary">View Applicants</button> </a>
     <a href="/job/{{ job.pk }}/selections"><button type="button" class="btn btn-primary">Add Selected Applicants</button> </a>
     <a href="/job/{{ job.pk }}/delete"><button type="button" class="btn btn-primary">Delete this Job</button> </a>
 </div>
-{% endblock %}
+  </div>
+</div>
+    {% endblock %}
