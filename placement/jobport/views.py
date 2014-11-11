@@ -574,29 +574,18 @@ def feedback(request):
 		context = { 'form' : form }
 		return render(request,'jobport/feedback.html', context)
 
-# @@login_required
 def fileview(request, filename):
-	# current_url = request.get_full_path()
-	# geturl = urlparse(current_url)
-	# name = request.user.username.split('@')[0].lower()
-	# if name != geturl.path.split('/')[-1].split('.')[0].split('_')[0].lower():
-	   # return render(request, "jobport/notallowed.html")
-	# else:
-	# filename = name + "_resume." + 'pdf'
-   # hash_object = hashlib.sha512(filename)
-   # hex_digest = hash_object.hexdigsest()
-	# print filename
-	# response = HttpResponse(pdf.read(), mimetype='application/pdf')
-	# if request.user.is_authenticated():
-	response = HttpResponse()
-	response['Content-Type'] = 'application/pdf'
-	response['Content-Disposition'] = 'attachment; filename=%s'%os.path.join(settings.MEDIA_ROOT, "resume" + "filename")
-		# response['X-Accel-Redirect'] = "/protected/%s"%request.user.resume
+  if request.user.is_authenticated():
+    response = HttpResponse()
+    response['Content-Type'] = 'application/pdf'
+#      response['X-Accel-Redirect'] = "/protected/%s"%filename
+#    response['Content-Disposition'] = 'filename="somefilename.pdf"'
+    return response
+  else:
+    render(request, 'jobport/needlogin.html')
 
-	return response
-
-# def blank(request):
-	# return render(request, 'jobport/badboy.html')
+def blank(request):
+    return render(request, 'jobport/badboy.html')
 
 def batchcreate(request):
 	if request.user.is_authenticated():
