@@ -35,17 +35,16 @@ def not_found(request):
 	return response
 
 
-@login_required()
 def home(request):
-#	if request.user.is_authenticated():
-	context = {'user': request.user, 'jobs': Job.objects.all().order_by('-deadline')}
-	if is_member(request.user, 'admin'):
-		return render(request, 'jobport/admin_home.html', context)
-	else:
-		studentgroup = Group.objects.get(name='student')
-		if (not is_member(request.user, studentgroup)):
-			return HttpResponseRedirect('/newuser')
-		return render(request, 'jobport/home_student.html', context)
+	if request.user.is_authenticated():
+		context = {'user': request.user, 'jobs': Job.objects.all().order_by('-deadline')}
+		if is_member(request.user, 'admin'):
+			return render(request, 'jobport/admin_home.html', context)
+		else:
+			studentgroup = Group.objects.get(name='student')
+			if (not is_member(request.user, studentgroup)):
+				return HttpResponseRedirect('/newuser')
+			return render(request, 'jobport/home_student.html', context)
 	return render(request, 'jobport/welcome.html')
 
 
