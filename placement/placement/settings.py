@@ -74,7 +74,10 @@ SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/newuser/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-#SOCIAL_AUTH_LOGIN_ERROR_URL = '/needlogin/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/needlogin/'
+
+
+LOGIN_URL = '/needlogin/'
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
