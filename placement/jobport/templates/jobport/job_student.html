@@ -20,6 +20,7 @@
       <p><b>You can't apply for this Job because</b></p>
       {% for reason in iseligiblereasons %}
       <p>{{reason}}, </p>
+	  {% endfor %}
          {% else %}
 	  			<div class="col-lg-6 col-center-block" style="margin-left:2.1em">
       <a href="/job/{{ job.pk }}/apply" ><button type="button" class="btn btn-success">Apply</button> </a>
