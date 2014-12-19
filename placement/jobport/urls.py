@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, url
-from jobport import views
+
+from . import views
+
 
 handler404 = 'views.my_404_view'
 
