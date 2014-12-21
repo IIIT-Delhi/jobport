@@ -3,11 +3,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = '$8gtwkoh^#$x%a4=s)j5mn2a6x5s7%yzj&@dq$%46*u^s(yc6^'
 
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',
@@ -45,15 +45,25 @@ ROOT_URLCONF = 'placement.urls'
 WSGI_APPLICATION = 'placement.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME': 'jobport',
-        'USER': 'jobadmin',
-        'PASSWORD': 'placement@iiitd',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
+    #'default': {
+      #  'ENGINE':'django.db.backends.mysql',
+     #   'NAME': 'jobport',
+    #    'USER': 'jobadmin',
+   #     'PASSWORD': 'placement@iiitd',
+  #      'HOST': '127.0.0.1',
+ #       'PORT': '3306',
+#    }
+	'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'jobport',                      # Or path to database file if using sqlite3.
+            # The following settings are not used with sqlite3:
+            'USER': 'admin',
+            'PASSWORD': 'placement@iiitd',
+            'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
+            'PORT': '',                      # Set to empty string for default.
+        }
 }
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
@@ -63,7 +73,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles/')
 STATIC_URL = '/static/'
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['iiitd.ac.in']
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['iiitd.ac.in']
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
 SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True
 
@@ -96,6 +106,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social.apps.django_app.context_processors.login_redirect',
     'django.core.context_processors.request',
     )
+
 MEDIA_ROOT = 'files'
 MEDIA_URL = '/files/'
 
