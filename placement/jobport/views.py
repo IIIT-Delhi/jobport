@@ -310,7 +310,7 @@ def openjob(request):
 #				)
 				send_mail(
 				'New Job in JobPort!',
-				"Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n Please login at jobport.iiitd.edu.in:8081", recipients
+				'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n Please login at jobport.iiitd.edu.in:8081', recipients
 				)
 				return HttpResponseRedirect('/')
 			else:
