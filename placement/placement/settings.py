@@ -25,9 +25,10 @@ INSTALLED_APPS = (
     'timezone_field',
     'datetimezone_field',
     'bootstrap3_datetime',
-    'post_office',
+#    'post_office',
     'googlecharts',
     'haystack',
+	'djrill',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,12 +111,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MEDIA_ROOT = 'files'
 MEDIA_URL = '/files/'
 
-EMAIL_BACKEND = 'post_office.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'jobportiiitd@gmail.com'
-EMAIL_HOST_PASSWORD = 'qweasdzxc#1'
-EMAIL_PORT = 587
+
+MANDRILL_API_KEY = "y_lu9KYL9JuZxKisWjT_tg"
+EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
 
 GOOGLECHARTS_API = '1.1'
 
