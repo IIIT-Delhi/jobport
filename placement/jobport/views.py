@@ -14,14 +14,29 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from django.contrib import messages
-from post_office import mail
+from django.core.mail import EmailMultiAlternatives
+from multiprocessing import Process
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-
+from placement import settings
 from . import forms
 from .models import Job, Student, Batch
 from .helpers import is_admin, is_member, is_eligible, checkdeadline
 
+
+def _send_mail(subject, text_content, host_user, recipient_list):
+	msg = EmailMultiAlternatives(subject, text_content, host_user, recipient_list)
+	a=msg.send()
+	print "sent", a
+
+def send_mail(subject, text_content, recipient_list):
+	p = Process(target=_send_mail, args=(subject, text_content, settings.EMAIL_HOST_USER, recipient_list))
+	p.start()
+
+def sendDataToAdmin(content):
+	p = Process(target=_send_mail, args=("DB Backup Addition", content,
+	 settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER]))
+	p.start()
 
 def server_error(request):
 	response = render(request, "jobport/500.html")
@@ -284,14 +299,18 @@ def openjob(request):
 				recipients = []
 				for student in Student.objects.all():
 					recipients.append(student.email)
-				mail.send(
-					recipients,
-					'jobportiiitd@gmail.com',
-					subject='New Job in JobPort',
-					message=(
-					'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n login @ jobport.iiitd.edu.in:8081'),
-					headers={'Reply-to': 'rashmil@iiitd.ac.in'},
-					priority="high"
+#				mail.send(
+#					recipients,
+#					'jobportiiitd@gmail.com',
+#					subject='New Job in JobPort',
+#					message=(
+#					'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n login @ jobport.iiitd.edu.in:8081'),
+#					headers={'Reply-to': 'rashmil@iiitd.ac.in'},
+#					priority="high"
+#				)
+				send_mail(
+				'New Job in JobPort!',
+				"Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n Please login at jobport.iiitd.edu.in:8081", recipients
 				)
 				return HttpResponseRedirect('/')
 			else:
@@ -355,15 +374,19 @@ def sendselectedemail(request, jobid):
 			candidate.status = 'P'
 			candidate.save()
 			candemail = candemail + [str(candidate.email)]
-		mail.send(
-			candemail,
-			'jobportiiitd@gmail.com',
-			subject='Congratulations! You\'ve been placed! :D',
-			message=(
-			'Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name + '! Party Hard now!'),
-			headers={'Reply-to': 'rashmil@iiitd.ac.in'},
-			priority="high"
-		)
+#		mail.send(
+#			candemail,
+#			'jobportiiitd@gmail.com',
+#			subject='Congratulations! You\'ve been placed! :D',
+#			message=(
+#			'Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name + '! Party Hard now!'),
+#			headers={'Reply-to': 'rashmil@iiitd.ac.in'},
+#			priority="high"
+#		)
+		send_mail(
+				'Congratulations! You\'ve been placed! :D',
+				"Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name!!", candemail
+				)
 		messages.success(request, 'Mails Sent!')
 	return HttpResponseRedirect('/')
 
@@ -557,14 +580,19 @@ def feedback(request):
 			form.save()
 			type = form.cleaned_data['type']
 			type = dict(form.fields['type'].choices)[type]
-			mail.send(
-				['jobportiiitd@gmail.com'],
-				'jobportiiitd@gmail.com',
-				subject=('[' + type + '] ' + form.cleaned_data['title']),
-				message=('A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body']),
-				# headers={'Reply-to': form.cleaned_data['email']},
-				priority="high"
-			)
+#			mail.send(
+#				['jobportiiitd@gmail.com'],
+#				'jobportiiitd@gmail.com',
+#				subject=('[' + type + '] ' + form.cleaned_data['title']),
+#				message=('A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body']),
+#				# headers={'Reply-to': form.cleaned_data['email']},
+#				priority="high"
+#			)
+
+			send_mail(
+				''[' + type + '] ' + form.cleaned_data['title'],
+				'A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body'], ['jobportiiitd@gmail.com']
+				)
 			messages.success(request, 'Thanks for filling your precious feedback! :) ')
 			return HttpResponseRedirect('/')
 		else:
