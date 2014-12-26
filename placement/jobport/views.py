@@ -590,7 +590,7 @@ def feedback(request):
 #			)
 
 			send_mail(
-				''[' + type + '] ' + form.cleaned_data['title'],
+				'[' + type + '] ' + form.cleaned_data['title'],
 				'A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body'], ['jobportiiitd@gmail.com']
 				)
 			messages.success(request, 'Thanks for filling your precious feedback! :) ')
