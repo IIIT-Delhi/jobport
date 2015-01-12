@@ -6,7 +6,7 @@
 {% block content %}
 <br/>
 <div class="container" style="margin-left:-15px">
-    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+    <form action="{% url 'feedback' %}" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
         {% buttons submit='Shoot' layout='horizontal' %}{% endbuttons %}

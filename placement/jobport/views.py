@@ -27,22 +27,16 @@ from .helpers import is_admin, is_member, is_eligible, checkdeadline
 def _send_mail(subject, text_content, host_user, recipient_list):
 	msg = EmailMultiAlternatives(subject, text_content, host_user, recipient_list)
 	a=msg.send()
-	print "sent", a
+	print "Mail sent"
 
 def send_mail(subject, text_content, recipient_list):
 	p = Process(target=_send_mail, args=(subject, text_content, settings.EMAIL_HOST_USER, recipient_list))
-	p.start()
-
-def sendDataToAdmin(content):
-	p = Process(target=_send_mail, args=("DB Backup Addition", content,
-	 settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER]))
 	p.start()
 
 def server_error(request):
 	response = render(request, "jobport/500.html")
 	response.status_code = 500
 	return response
-
 
 def not_found(request):
 	response = render(request, "jobport/404.html")
@@ -295,23 +289,17 @@ def openjob(request):
 			if form.is_valid():
 				tosavejob = form.save(commit=False)
 				tosavejob.createdon = timezone.now()
+				allowed_batches  = tosavejob.batch
 				tosavejob.save()
 				recipients = []
 				for student in Student.objects.all():
 					recipients.append(student.email)
-#				mail.send(
-#					recipients,
-#					'jobportiiitd@gmail.com',
-#					subject='New Job in JobPort',
-#					message=(
-#					'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n login @ jobport.iiitd.edu.in:8081'),
-#					headers={'Reply-to': 'rashmil@iiitd.ac.in'},
-#					priority="high"
-#				)
+				settings.EMAIL_HOST_USER+='JobPort'
 				send_mail(
 				'New Job in JobPort!',
 				'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n Please login at jobport.iiitd.edu.in:8081', recipients
 				)
+				settings.EMAIL_HOST_USER+=''
 				return HttpResponseRedirect('/')
 			else:
 				context = {'form': form}
@@ -374,15 +362,6 @@ def sendselectedemail(request, jobid):
 			candidate.status = 'P'
 			candidate.save()
 			candemail = candemail + [str(candidate.email)]
-#		mail.send(
-#			candemail,
-#			'jobportiiitd@gmail.com',
-#			subject='Congratulations! You\'ve been placed! :D',
-#			message=(
-#			'Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name + '! Party Hard now!'),
-#			headers={'Reply-to': 'rashmil@iiitd.ac.in'},
-#			priority="high"
-#		)
 		send_mail(
 				'Congratulations! You\'ve been placed! :D',
 				"Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name!!", candemail
@@ -576,23 +555,17 @@ def getbatchlist(request, batchid):
 def feedback(request):
 	if (request.method == 'POST'):
 		form = forms.FeedbackForm(request.POST)
+		pdb.set_trace()
 		if form.is_valid():
 			form.save()
 			type = form.cleaned_data['type']
 			type = dict(form.fields['type'].choices)[type]
-#			mail.send(
-#				['jobportiiitd@gmail.com'],
-#				'jobportiiitd@gmail.com',
-#				subject=('[' + type + '] ' + form.cleaned_data['title']),
-#				message=('A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body']),
-#				# headers={'Reply-to': form.cleaned_data['email']},
-#				priority="high"
-#			)
-
+			settings.EMAIL_HOST_USER+='Tester'
 			send_mail(
 				'[' + type + '] ' + form.cleaned_data['title'],
-				'A new feedback was posted on JobPort  -> ' + '\n\n' + form.cleaned_data['body'], ['jobportiiitd@gmail.com']
+				'A new feedback was posted on JobPort' + '\n\n' + form.cleaned_data['body'], ['jobportiiitd@gmail.com']
 				)
+			settings.EMAIL_HOST_USER+=''
 			messages.success(request, 'Thanks for filling your precious feedback! :) ')
 			return HttpResponseRedirect('/')
 		else:

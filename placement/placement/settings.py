@@ -3,11 +3,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = '$8gtwkoh^#$x%a4=s)j5mn2a6x5s7%yzj&@dq$%46*u^s(yc6^'
 
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',
@@ -59,7 +59,7 @@ DATABASES = {
             'NAME': 'jobport',                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
             'USER': 'admin',
-            'PASSWORD': 'placement@iiitd',
+            'PASSWORD': 'admin',
             'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         }
@@ -126,3 +126,6 @@ HAYSTACK_CONNECTIONS = {
 
 #Make sure to add this to cron
 #* * * * * (/usr/bin/python manage.py send_queued_mail >> send_mail.log 2>&1)
+
+
+EMAIL_HOST_USER = ''
