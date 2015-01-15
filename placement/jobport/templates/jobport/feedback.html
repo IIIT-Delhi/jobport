@@ -1,11 +1,12 @@
 {% extends "jobport/base_modals.html" %}
+
 {% load bootstrap3 %}
 {% block pagelibraries %}
     {{ form.media }}
 {% endblock %}
 {% block content %}
 <br/>
-<div class="container" style="margin-left:-55px">
+<div class="container-fluid" >
     <form action="{% url 'feedback' %}" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
