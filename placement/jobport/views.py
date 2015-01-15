@@ -44,6 +44,10 @@ def not_found(request):
 	return response
 
 
+
+def test(request):
+	return render(request, 'jobport/material.min.js.map')
+
 def home(request):
 	if request.user.is_authenticated():
 		context = {'user': request.user, 'jobs': Job.objects.all().order_by('-deadline')}
@@ -287,7 +291,7 @@ def openjob(request):
 		if request.method == 'POST':
 			form = forms.JobForm(request.POST)
 			if form.is_valid():
-				tosavejob = form.save(commit=False)
+				tosavejob = form.save(commit=False	)
 				tosavejob.createdon = timezone.now()
 				allowed_batches  = tosavejob.batch
 				tosavejob.save()
@@ -723,7 +727,12 @@ def uploadstudentsinbatch(request, batchid):
 def search(request):
 	if is_admin(request.user):
 		form = forms.RootSearchForm(request.GET)
-		return render(request, 'jobport/result.html',
-					  {'search_query': request.GET.get('q'), 'results': form.search()})
+		query = request.GET.get('q')
+		if query=='':
+			messages.error(request, 'Please enter a Query!')
+			return render(request, 'jobport/notallowed.html')
+		else:
+			return render(request, 'jobport/result.html',
+					  {'search_query': query, 'results': form.search()})
 	else:
 		return render(request, 'jobport/notallowed.html')  # 403 Error

@@ -1,13 +1,17 @@
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
 
 SECRET_KEY = '$8gtwkoh^#$x%a4=s)j5mn2a6x5s7%yzj&@dq$%46*u^s(yc6^'
 
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',
@@ -29,6 +33,7 @@ INSTALLED_APPS = (
     'googlecharts',
     'haystack',
 	'djrill',
+    # 'djangobower',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,8 +76,22 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles/')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
 STATIC_URL = '/static/'
+
+# BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
+
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'djangobower.finders.BowerFinder',
+# )
+
+# BOWER_INSTALLED_APPS = (
+#     'jquery',
+#     'bootstrap-material-design',
+# )
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['iiitd.ac.in']
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True

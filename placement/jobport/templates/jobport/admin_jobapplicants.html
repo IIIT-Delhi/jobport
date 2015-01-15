@@ -1,26 +1,33 @@
 {% extends "jobport/base_admin.html" %}
-
+{% load bootstrap3 %}
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
+        <br/>
+    <br/>
+    
     <h1>Applicants for {{ job.company_name }}</h1>
     <h4>{{ job.profile }}</h4>
   </div>
 </div>
 <div class="container">
+    <div class="well">
     <h3>Eligible Students</h3>
     <p>{{ eligiblestudentcount }}</p>
     <h3>Total Applicants</h3>
     <p>{{ applicants.count }}</p>
+    {% if applicants %}
     <h3>List of Applicants</h3>
     <ul>
     {% for applicant in applicants %}
         <li><h5>{{ applicant.name }}</h5></li>
     {% endfor %}
     </ul>
+    {% endif %}
+    </div>
       <div class="btn-group">
-          <a class="btn btn-primary" href="/job/{{ job.pk }}/getresume">Download Resumes</a>
-            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+          <a class="btn btn-default" href="/job/{{ job.pk }}/getresume">Download Resumes</a>
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu" role="menu">
