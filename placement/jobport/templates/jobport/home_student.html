@@ -4,29 +4,51 @@
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
-    <h1>Welcome to JobPort</h1>
+      <br/>
+      <br/>
+      <h1>Welcome to JobPort</h1>
   </div>
 </div>
 
 <div class="container">
-        {% for job in jobs %}
-    <div class="list-group">
-        <a href="/job/{{ job.pk }}" class="list-group-item" >
-            <h4 class="list-group-item-heading">{{ job.company_name }}</h4>
-            <h6 class="list-group-item-heading">{{ job.profile }}</h6>
-            <p class="list-group-item-text">{{ job.details }}</p>
-            <h6 class="list-group-item-heading">Posted on: {{ job.createdon }}</h6>
+  {% for job in jobs %}
 
-            <h6 class="list-group-item-heading">Deadline: {{ job.deadline }} {% if job.deadlineexpired %} <span class="label label-danger"> {{ job.deadline|naturaltime }} {% elif not job.deadlineexpired %} <span class="label label-success"> {{ job.deadline|naturaltime }}</span> {% endif %}</span></h6>
-            <h6 class="list-group-item-heading">Date of Visit: {{ job.dateofvisit }}</h6>
-        </a>
+  {% if job.deadlineexpired %} 
+  <div class="panel panel-danger" >
+    {% elif not job.deadlineexpired %} 
+    <div class="panel panel-primary" >
+     
+      {% endif %}
+      <div class="panel-heading" data-toggle="collapse" aria-expanded="false" href="#collapseExample{{ job.pk }}" aria-controls="collapseExample{{ job.pk }}">
+        <h3 class="panel-title" >{{ job.company_name }}</h3>
+      </div>
+      <div class="panel-body collapse" id="collapseExample{{ job.pk }}">
+        <a href="/job/{{ job.pk }}"><h6>{{ job.profile }}</h6></a>
+        <p>{{ job.details }}</p>
+        <h6>Posted on: {{ job.createdon }}</h6>
+        <h6>Date of Visit: {{ job.dateofvisit }}</h6>
+        <div class="panel-footer">
+          Deadline: {{ job.deadline }}
+          {% if job.deadlineexpired %} 
+          <span class="label label-danger"> 
+            {{ job.deadline|naturaltime }} 
+            {% elif not job.deadlineexpired %} 
+            <span class="label label-success"> {{ job.deadline|naturaltime }}</span> {% endif %}</span>
+          </div>
+          <h6></h6>
+        </div>
+      </div>
+
+      
+      
+
+      {% endfor %}
     </div>
-        {% endfor %}
+
+        {% if not jobs %}
+        <div class="container">
+            <h4 align="center">There are no jobs available right now.</h4>
+        </div>
+        {% endif %}
 </div>
-{% if not jobs %}
-    <div class="container">
-        <h4 align="center">There are no jobs available right now.</h4>
-    </div>
-{% endif %}
-
-{% endblock %}
+        {% endblock %}

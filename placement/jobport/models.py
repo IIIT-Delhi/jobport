@@ -10,9 +10,9 @@ from storage import OverwriteStorage
 class Batch(models.Model):
 	title = models.CharField("Name", max_length=120, null=True)
 	QUALIFICATION = (
-	('G', 'UnderGraduate'),
-	('P', 'PostGraduate'),
-	)
+		('G', 'UnderGraduate'),
+		('P', 'PostGraduate'),
+		)
 	pg_or_not = models.CharField("Graduate or Post-Graduate", max_length=1, choices=QUALIFICATION, default='G')
 	createdon = models.DateTimeField(auto_now_add=True)
 
@@ -22,10 +22,8 @@ class Batch(models.Model):
 
 class Job(models.Model):
 	def checkdeadline(self):
-		if (timezone.now() > self.deadline):
-			return True
-		else:
-			return False
+		if (timezone.now() > self.deadline):	return True
+		else:	return False
 
 	company_name = models.CharField("Organization", max_length=200)
 	profile = models.CharField("Job Profile", max_length=50)
@@ -35,16 +33,16 @@ class Job(models.Model):
 	selectionprocess = models.CharField("Selection Process", max_length=50, blank=True, null=True)
 
 	CATEGORYCHOICES = (
-	('AP', 'A+'),
-	('A', 'A'),
-	('B', 'B'),
-	)
+		('AP', 'A+'),
+		('A', 'A'),
+		('B', 'B'),
+		)
 	category = models.CharField("Company Category", max_length=2, choices=CATEGORYCHOICES)
 
 	JOBTYPES = (
-	('T', 'Technical'),
-	('NT', 'Non-Technical'),
-	)
+		('T', 'Technical'),
+		('NT', 'Non-Technical'),
+		)
 	jobtype = models.CharField("Job Type", max_length=2, choices=JOBTYPES, default='T')
 
 	batch = models.ManyToManyField(Batch, related_name='jobbatch', null=True)
@@ -53,22 +51,22 @@ class Job(models.Model):
 	min_tenthmarks = models.IntegerField("Minimum Class X Marks", max_length=3, default=0)
 	min_twelfthmarks = models.IntegerField("Minimum Class XII Marks", max_length=3, default=0)
 	backs = (
-	(0, '0'),
-	(1, '1'),
-	(2, '2'),
-	(3, '3'),
-	(4, '4+'),
-	)
+		(0, '0'),
+		(1, '1'),
+		(2, '2'),
+		(3, '3'),
+		(4, '4+'),
+		)
 	max_blacklogs = models.IntegerField("Maximum Backlogs", max_length=2, default=5, choices=backs)
 
 	OPENED_CLOSED = (
-	('O', 'Open'),
-	('A', 'Applications Closed'),
-	('C', 'Closed')
-	)
+		('O', 'Open'),
+		('A', 'Applications Closed'),
+		('C', 'Closed')
+		)
 	status = models.CharField("Status", max_length=1, choices=OPENED_CLOSED, default='O')
 	jobfile = models.FileField("File ", upload_to='jobfiles', default='', storage=OverwriteStorage(), blank=True,
-							   null=True)
+		null=True)
 
 	createdon = models.DateTimeField("Application Creation Date", default=datetime.now)
 	deadline = models.DateTimeField("Application Deadline", default=datetime.now)
@@ -85,37 +83,37 @@ class Student(models.Model):
 	batch = models.ForeignKey(Batch, related_name='studentsinbatch')
 	dob = models.DateTimeField("Date of Birth")
 	genderchoices = (
-	('M', 'Male'),
-	('F', 'Female'),
-	)
+		('M', 'Male'),
+		('F', 'Female'),
+		)
 	gender = models.CharField("Gender", max_length=1, choices=genderchoices, default='M')
 	STARTYEARS = (
-	(2003, '2003'),
-	(2004, '2004'),
-	(2005, '2005'),
-	(2006, '2006'),
-	(2007, '2007'),
-	(2008, '2008'),
-	(2009, '2009'),
-	(2010, '2010'),
-	(2011, '2011'),
-	(2012, '2012'),
-	)
+		(2003, '2003'),
+		(2004, '2004'),
+		(2005, '2005'),
+		(2006, '2006'),
+		(2007, '2007'),
+		(2008, '2008'),
+		(2009, '2009'),
+		(2010, '2010'),
+		(2011, '2011'),
+		(2012, '2012'),
+		)
 
 	ENDYEARS = (
-	(2007, '2007'),
-	(2008, '2008'),
-	(2009, '2009'),
-	(2009, '2009'),
-	(2010, '2010'),
-	(2011, '2011'),
-	(2011, '2011'),
-	(2012, '2012'),
-	(2013, '2013'),
-	(2014, '2014'),
-	(2015, '2015'),
-	(2016, '2016'),
-	)
+		(2007, '2007'),
+		(2008, '2008'),
+		(2009, '2009'),
+		(2009, '2009'),
+		(2010, '2010'),
+		(2011, '2011'),
+		(2011, '2011'),
+		(2012, '2012'),
+		(2013, '2013'),
+		(2014, '2014'),
+		(2015, '2015'),
+		(2016, '2016'),
+		)
 
 	phone = models.CharField("Phone Number", max_length=10)
 	email = models.EmailField(max_length=70)
@@ -132,33 +130,33 @@ class Student(models.Model):
 	cgpa_pg = models.FloatField("Pg. CGPA", max_length=4, default=0, blank=True, null=True)
 
 	startyear_ug = models.IntegerField("Undergraduate Starting Year", max_length=4, choices=STARTYEARS, default="2011",
-									   blank=True, null=True)
+		blank=True, null=True)
 	passingyear_ug = models.IntegerField("Undergraduate Completion Year", max_length=4, choices=ENDYEARS,
-										 default="2015", blank=True, null=True)
+		default="2015", blank=True, null=True)
 
 	startyear_pg = models.IntegerField("Postgraduate Starting Year", max_length=4, choices=STARTYEARS, blank=True,
-									   null=True)
+		null=True)
 	passingyear_pg = models.IntegerField("Postgraduate Completion Year", max_length=4, choices=ENDYEARS, blank=True,
-										 null=True)
+		null=True)
 
 	university_pg = models.CharField("Postgraduate University", max_length=100, blank=True, null=True)
 	institution_pg = models.CharField("Postgraduate College", max_length=100, blank=True, null=True)
 
 	backs = (
-	(0, '0'),
-	(1, '1'),
-	(2, '2'),
-	(3, '3'),
-	(4, '4+'),
-	)
+		(0, '0'),
+		(1, '1'),
+		(2, '2'),
+		(3, '3'),
+		(4, '4+'),
+		)
 	backlogs = models.IntegerField("Number of Backlogs", max_length=2, default=0, choices=backs)
 	years = (
-	(0, '0'),
-	(1, '1'),
-	(2, '2'),
-	(3, '3'),
-	(4, '4+'),
-	)
+		(0, '0'),
+		(1, '1'),
+		(2, '2'),
+		(3, '3'),
+		(4, '4+'),
+		)
 	work_experience = models.IntegerField("Previous Work Experience (Years)", choices=years, max_length=2, default=0)
 	home_city = models.CharField("Home City", max_length=20)
 	home_state = models.CharField("Home State", max_length=20)
@@ -169,18 +167,18 @@ class Student(models.Model):
 	companyapplications = models.ManyToManyField(Job, related_name='applicants', null=True, blank=True)
 
 	STATUS = (
-	('P', 'Placed'),
-	('N', 'Not Placed'),
-	('B', 'Blocked'),
-	)
+		('P', 'Placed'),
+		('N', 'Not Placed'),
+		('B', 'Blocked'),
+		)
 	placedat = models.ManyToManyField(Job, related_name='selectedcandidates', null=True, blank=True)
 	status = models.CharField(max_length=1, choices=STATUS, default='N')
 	createdon = models.DateTimeField("Student Creation Date", default=datetime.now)
 
 	QUALIFICATION = (
-	('G', 'Under Graduate'),
-	('P', 'Post Graduate'),
-	)
+		('G', 'Under Graduate'),
+		('P', 'Post Graduate'),
+		)
 
 	def __str__(self):  # __unicode__ on Python 2
 		return self.pk + ' ' + self.name
@@ -188,10 +186,10 @@ class Student(models.Model):
 
 class Feedback(models.Model):
 	TYPES = (
-	('B', 'Bug Report'),
-	('F', 'Feature Request'),
-	('C', 'Comment'),
-	)
+			('B', 'Bug Report'),
+			('F', 'Feature Request'),
+			('C', 'Comment'),
+		)
 	type = models.CharField("Feedback Type", max_length=1, choices=TYPES, default='C')
 	title = models.CharField("Title", max_length=100)
 	body = models.TextField("Feedback Details")

@@ -1,30 +1,36 @@
 {% extends "jobport/base_admin.html" %}
-
+{% load bootstrap3 %}
 {% load bootstrap3 %}
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
-    <h1>Applicants for {{ job.company_name }}</h1>
+        <br/>
+    <br/>
+    
+    <h1>Select students for {{ job.company_name }}</h1>
     <h4>{{ job.profile }}</h4>
   </div>
 </div>
 <div class="container">
-    <h3>Selected Candidates</h3>
-    <p>{{ selected.count }}</p>
+    <h3>Selected Candidates: <span style="font-size:80%">{{ selected.count }}</span></h3>
+    <p></p>
+    {% if selected %}
     <h3>List of Selected Candidates</h3>
     <ul>
     {% for selects in selected %}
         <li><h5>{{ selects.name }}</h5></li>
     {% endfor %}
     </ul>
+    {% endif %}
+    
     <br/>
-    <h4>Selecte Candidates:</h4>
+    <div class="well">
     <form role="form" class="form-horizontal" method="post">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
         {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
     </form>
-
+    </div>
     <div class="btn-group">
           <a class="btn btn-primary" href="/job/{{ job.pk }}/getcsv/?req=selected">Download Selected Students' List</a>
           </button>

@@ -3,22 +3,27 @@
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
+  <br/>
+  <br/>
     <h1>{{ batch.title }}</h1>
     <a class="btn btn-warning" href="/batch/{{batch.id}}/edit/" role="button">Edit</a>
     <a class="btn btn-danger" href="/batch/{{batch.id}}/addstudentstobatch/" role="button">Add Students</a>
-    <a class="btn btn-success" href="/batch/{{batch.id}}/getbatchlist/" role="button" target="_blank">Batch List</a>
-    <a class="btn btn-info" href="/batch/{{batch.id}}/getbatchresume/" role="button" target="_blank">Batch Resumes</a>    
+    <a class="btn btn-success" href="/batch/{{batch.id}}/getbatchlist/" role="button" target="_blank">List</a>
+    <a class="btn btn-info" href="/batch/{{batch.id}}/getbatchresume/" role="button" target="_blank">Resumes</a>    
   </div>
 </div>
     <div class="container">
     {% for l in student %}
-        <div class="list-group">
-            <a href="/students/{{ l.pk }}/edit" class="list-group-item">
-                <h4 class="list-group-item-heading">{{ l.name }}</h4>
-                <h5 class="list-group-item-heading">{{ l.rollno }}</h5>
-                <h6 class="list-group-item-heading">{{ l.get_status_display }}</h6>
-                <h6 class="list-group-item-heading">Offers: {% for offer in l.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
-            </a>
+        <div class="panel panel-default">
+            
+            <div class="panel-heading">
+                <a href="/students/{{ l.pk }}/edit"><h3 class="panel-title"  style="color:black">{{ l.name }}</a>
+            </div>
+          <div class="panel-body">
+                <h5 >{{ l.rollno }}</h5>
+                <h6 >{{ l.get_status_display }}</h6>
+                <h6 >Offers: {% for offer in l.placedat.all %}{{ offer.company_name }} ({{ offer.profile }}), {% endfor %}</h6>
+            </div>
         </div>
     {% endfor %}
     </div>

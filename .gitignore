@@ -53,7 +53,7 @@ coverage.xml
 docs/_build/
 
 #staticfiles
-staticfiles/
+placement/static/
 
 #CVs
 *.pdf

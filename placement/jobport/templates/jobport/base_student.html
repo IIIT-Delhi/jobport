@@ -1,30 +1,20 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-{% load bootstrap3 %}
-{% load humanize %}
 <html>
-  <head>
-    <title>JobPort</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
+<head>
+  {% load humanize %}
+  {% load staticfiles %}
+  <title>JobPort</title>
+  <link rel="stylesheet" href="{% static "css/showup.css" %}">
+  {% block pagelibraries %}{% endblock %}
 
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <link rel="stylesheet" href="{% static "css/showup.css" %}">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static "css/ripples.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/material-wfont.min.css" %}" rel="stylesheet">
+</head>
 
-    {% block pagelibraries %}{% endblock %}
+<body>
 
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -48,80 +38,104 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="/profile">Edit Profile/CV</a></li>
-                <li class="divider"></li>
+              <li class="divider"></li>
               <li><a href="/logout">Sign Out</a></li>
             </ul>
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div>
-    </nav>
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
-    {% endfor %}
-        {% block content %}{% endblock %}
-         <a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
-    <div class="container">
-        <hr class="featurette-divider">
-        <footer>
-          <p>&copy; 2014 IIIT-Delhi JobPort &middot;</p>
-<p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
-        </footer>
+  </nav>
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+  <a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
+  
+  <!-- <div class="container">
+    <hr class="featurette-divider">
+    <footer>
+      <p>&copy; 2014 IIIT-Delhi JobPort &middot;</p>
+      <p>Made by <a href="mailto:romil110092@iiitd.ac.in" target=”_blank”>Romil</a> and <a href="mailto:naman13064@iiitd.ac.in" target=”_blank”>Naman</a></p>
+    </footer>
+  </div>
+   -->
+
+   <div class="container text-center">
+    <hr />
+      <hr>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-pills nav-justified">
+                <li><a href="/">2015 JobPort.</a></li>
+                <li><a href="mailto:naman13064@iiitd.ac.in">&hearts; Admin</a></li>
+                <li><a href="iiitd.ac.in" target="_blank">© IIIT Delhi</a></li>
+            </ul>
+        </div>
     </div>
-<div id="feedbackmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      </div>
-      <div class="modal-body" id="feedbackdata">
+</div>
+  <div id="feedbackmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+        <div class="modal-body" id="feedbackdata">
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div id="myappsmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      </div>
-      <div class="modal-body" id="myappsdata">
+  <div id="myappsmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+        <div class="modal-body" id="myappsdata">
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-<!--    <script src="https://code.jquery.com/jquery.js"></script>-->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/showup.js" %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!--    <script src="https://code.jquery.com/jquery.js"></script>-->
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <script src="{% static "js/showup.js" %}"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 
-<script type="text/javascript">
+
+  <script type="text/javascript">
     window.onload = function(){
-        $("#myjobs").on('click', function(){
-         $("#myappsdata").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success")
+      $("#myjobs").on('click', function(){
+       $("#myappsdata").load("{% url 'myapplications' %}",function(responseTxt,statusTxt,xhr){
+        if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#myappsmodal").modal("show");
+          $("#myappsmodal").modal("show");
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
-	$("#feedback").on('click', function(){
-         $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
-          if(statusTxt=="success")
+        });
+     })
+      $("#feedback").on('click', function(){
+       $("#feedbackdata").load("{% url 'feedback' %}",function(responseTxt,statusTxt,xhr){
+        if(statusTxt=="success")
             // alert("External content loaded successfully!");
-            $("#feedbackmodal").modal('show');
+          $("#feedbackmodal").modal('show');
           if(statusTxt=="error")
             alert("Error: "+xhr.status+": "+xhr.statusText);
-          });
-        })
+        });
+     })
     }
-</script>
+  </script>
 
-	</body>
+  
+  <script>
+    $(document).ready(function() {
+      $.material.init();
+    });
+  </script>
+
+
+</body>
 </html>
