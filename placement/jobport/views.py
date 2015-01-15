@@ -559,7 +559,7 @@ def getbatchlist(request, batchid):
 def feedback(request):
 	if (request.method == 'POST'):
 		form = forms.FeedbackForm(request.POST)
-		pdb.set_trace()
+		# pdb.set_trace()
 		if form.is_valid():
 			form.save()
 			type = form.cleaned_data['type']

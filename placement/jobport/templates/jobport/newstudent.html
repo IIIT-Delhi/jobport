@@ -1,5 +1,5 @@
 {% extends "jobport/base_newuser.html" %}
-
+{% load bootstrap3 %}
 
 {% block pagelibraries %}
     {{ form.media }}
@@ -26,26 +26,7 @@
     <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
         {% buttons submit='OK' layout='horizontal' %}{% endbuttons %}
     </form>
-    </br>
-    <div align="center">
-
-     </div>
 </div>
 
-   <script>
-        $(document).ready(function (){
-            $("#id_batch").change(function() {
-                // foo is the id of the other select box
-
-                if ($(this).val() != "Mtech") {
-                    $("#foo").show();
-
-                }else{
-                    $("#foo").hide();
-
-                }
-            });
-        });
-    </script>
 
 {% endblock %}
