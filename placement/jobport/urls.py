@@ -37,5 +37,7 @@ urlpatterns = patterns('',
 	url(r'^feedback/$', views.feedback, name='feedback'),
 	url(r'^extraStuff/$', views.blockedUnplacedlist, name='blockedUnplacedlist'),
 	url(r'files/resume/(.+)',views.fileview,name='fileview'),
-	url(r'search/results/$',views.search,name='search')
+	url(r'search/results/$',views.search,name='search'),
+	url(r'material.min.js.map$',views.test,name='test'),
+
 )

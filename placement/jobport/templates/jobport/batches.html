@@ -4,32 +4,36 @@
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
-    <h1>JobPort</h1>
-    <h3>All Batches</h3>
-	  <div class="col-lg-6 col-center-block" style="margin-left:3.3em">
-		  <button id="batch" class="btn btn-primary">Create Batch!</button>
-	  </div>
-    </div>
+    <br/>
+    <br/>
+
+    <h1>Batches</h1>
+  </div>
+  <button id="batch" class="btn btn-primary btn-fab btn-raised mdi-action-grade"></button>
 </div>
 <div class="container">
-{% for l in batch%}
-    <div class="list-group">
-        <a href="/batch/{{ l.pk }}" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ l.title }}</h4>
-            <h6 class="list-group-item-heading">Created on: {{ l.createdon }}</h6>
-			{% ifequal l.pg_or_not 'G' %}
-			<h6 class="list-group-item-heading">Graduate</h6>
-				{% else %}
-			<h6 class="list-group-item-heading">Post-Graduate</h6>
-			{% endifequal %}
-		</a>
-    </div>
-{% endfor %}
+  {% for l in batch%}
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+     <a href="/batch/{{ l.pk }}"> <h3 class="panel-title" style="color:white">{{ l.title }}</h3> 
+
+     </a>
+   </div>
+   <div class="panel-body">
+   <h4 >Created on: {{ l.createdon }}</h4>
+   {% ifequal l.pg_or_not 'G' %}
+   <h5 >Graduate</h5>
+   {% else %}
+   <h5>Post-Graduate</h5>
+   {% endifequal %}
+   </div>
+ </div>
+ {% endfor %}
 </div>
-{% if not batch%}
-    <div class="container">
-        <h4 align="center">There are no batches right now.</h4>
-    </div>
+{% if not batch %}
+<div class="container">
+  <h4 align="center">There are no batches right now.</h4>
+</div>
 {% endif %}
 
 <!-- Modal -->
