@@ -58,6 +58,8 @@ class JobForm(forms.ModelForm):
 		return deadline
 
 
+
+
 class AdminSelectedApplicantsForm(forms.ModelForm):
 	class Meta:
 		model = Job
@@ -258,7 +260,7 @@ class AdminStudentForm(forms.ModelForm):
 	class Meta:
 		model = Student
 		exclude = ['user']
-		widgets = {'dob': DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 'gender': RadioSelect()}
+		widgets = {'dob': DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 'gender': RadioSelect(),'companyapplications': forms.CheckboxSelectMultiple,'placedat': forms.CheckboxSelectMultiple}
 
 	"""def clean(self):
         cleaned_data = super(AdminStudentForm, self).clean()
