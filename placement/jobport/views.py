@@ -293,12 +293,12 @@ def openjob(request):
 			if form.is_valid():
 				tosavejob = form.save(commit=False	)
 				tosavejob.createdon = timezone.now()
-				allowed_batches  = tosavejob.batch
+				# allowed_batches  = tosavejob.batch
 				tosavejob.save()
 				recipients = []
 				for student in Student.objects.all():
 					recipients.append(student.email)
-				settings.EMAIL_HOST_USER+='JobPort'
+				settings.EMAIL_HOST_USER+='jobportiiitd@gmail.com'
 				send_mail(
 				'New Job in JobPort!',
 				'Hey!\n\nA new job for ' + tosavejob.profile + ', ' + tosavejob.company_name + ' was added on JobPort. \n Please login at jobport.iiitd.edu.in:8081', recipients
@@ -366,10 +366,12 @@ def sendselectedemail(request, jobid):
 			candidate.status = 'P'
 			candidate.save()
 			candemail = candemail + [str(candidate.email)]
+		settings.EMAIL_HOST_USER+='jobportiiitd@gmail.com'
 		send_mail(
 				'Congratulations! You\'ve been placed! :D',
-				"Hey!\n\nCongratulations! You have been placed as ' + thejob.profile + ' at ' + thejob.company_name!!", candemail
+				"Hey!\n\nCongratulations! You have been placed as " + thejob.profile + ' at ' + thejob.company_name +"!!", candemail
 				)
+		settings.EMAIL_HOST_USER+=''
 		messages.success(request, 'Mails Sent!')
 	return HttpResponseRedirect('/')
 
@@ -564,7 +566,7 @@ def feedback(request):
 			form.save()
 			type = form.cleaned_data['type']
 			type = dict(form.fields['type'].choices)[type]
-			settings.EMAIL_HOST_USER+='Tester'
+			settings.EMAIL_HOST_USER+='Tester@jobport.iiitd.edu.in'
 			send_mail(
 				'[' + type + '] ' + form.cleaned_data['title'],
 				'A new feedback was posted on JobPort' + '\n\n' + form.cleaned_data['body'], ['jobportiiitd@gmail.com']
