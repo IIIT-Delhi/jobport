@@ -20,7 +20,7 @@
 
 
 <div class="container">
-    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+    <form role="form" class="form-horizontal" action="{% url 'newuser' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form layout="horizontal" %}
     <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
