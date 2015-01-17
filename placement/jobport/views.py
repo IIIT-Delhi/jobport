@@ -244,6 +244,7 @@ def newuser(request):
 				usr = form.save(commit=False)
 				usr.user = request.user
 				usr.email = request.user.username
+				usr.name = request.user.first_name+" "+request.user.last_name
 				# usr.resume.name = request.user.username.split('@')[0]  + "_resume." + usr.resume.name.split('.')[-1]
 				# usr.resume.name = hashlib.sha256(request.user.username.split('@')[0] + "_resume." + usr.resume.name.split('.')[-1]).hexdigest() + '.pdf'
 				salt = "1eT4nfB5mR"
@@ -293,7 +294,12 @@ def openjob(request):
 			if form.is_valid():
 				tosavejob = form.save(commit=False	)
 				tosavejob.createdon = timezone.now()
+				# import pdb
+				# pdb.set_trace()
 				# allowed_batches  = tosavejob.batch
+				tosavejob.save()
+				for x in form.cleaned_data['batch']:
+					tosavejob.batch.add(x)
 				tosavejob.save()
 				recipients = []
 				for student in Student.objects.all():
