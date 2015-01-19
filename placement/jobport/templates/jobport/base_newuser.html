@@ -5,12 +5,16 @@
     {% load humanize %}
     {% load staticfiles %}
     <title>JobPort</title>
-    <link rel="stylesheet" href="{% static "css/showup.css" %}">
+          <script src="{% static "js/jquery-2.1.1.min.js" %}"></script>
     {% block pagelibraries %}{% endblock %}
 
+    <link rel="stylesheet" href="{% static "css/showup.css" %}">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static "css/ripples.min.css" %}" rel="stylesheet">
     <link href="{% static "css/material-wfont.min.css" %}" rel="stylesheet">
+
+
+<!--        <script src="{% static "js/jquery-2.1.1.min.js" %}"></script>-->
   </head>
   <body>
 
@@ -41,9 +45,20 @@
         </div><!-- /.navbar-collapse -->
       </div>
     </nav>
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
-    {% endfor %}
+  {% for message in messages %}
+    {% ifequal message.tags "error" %}
+
+    <div class="alert alert-danger alert-dismissable" style="margin-top:50px;margin-bottom:-5px">
+      <button type="button" class="close" data-dismiss="alert">x</button><p>{{ message }}</p>
+    </div>
+    {% else %}
+      <div class="alert alert-{{message.tags}} alert-dismissable" style="margin-top:50px">
+      <button type="button" class="close" data-dismiss="alert">x</button><p>{{ message }}</p>
+      </div>
+
+    {% endifequal %}
+  {% endfor %}
+
     {% block content %}{% endblock %}
     <a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
      <div class="container text-center">
@@ -59,11 +74,8 @@
         </div>
     </div>
 </div>
-    <!--    <script src="https://code.jquery.com/jquery.js"></script>-->
 
-    <script src="{% static "js/jquery-2.1.1.min.js" %}"></script>
     <script src="{% static "js/showup.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script src="{% static "js/ripples.js" %}"></script>
     <script src="{% static "js/material.min.js" %}"></script>
 
@@ -77,6 +89,7 @@
     
     <script>
       $(document).ready(function() {
+          $.material.options.autofill = false
         $.material.init();
       });
     </script>
