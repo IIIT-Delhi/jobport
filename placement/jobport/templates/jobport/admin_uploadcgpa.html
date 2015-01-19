@@ -1,12 +1,13 @@
-{% extends "jobport/base_modals.html" %}
+{% extends "jobport/base_admin.html" %}
 
 {% block content %}
 <div class="jumbotron">
   <div align="center" class="container">
+  <br/><br/>
     <h1>Upload CGPA</h1>
   </div>
 </div>
-<div class="container-fluid">
+<div class="container">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">

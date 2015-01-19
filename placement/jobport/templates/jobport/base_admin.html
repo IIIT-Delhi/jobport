@@ -1,14 +1,18 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
-	{% load staticfiles %}
 	<title>JobPort</title>
-	<link rel="stylesheet" href="{% static "css/showup.css" %}">
-	{% block pagelibraries %}{% endblock %}
+
+    <script src="{% static "js/jquery-2.1.1.min.js" %}"></script>
+      {% block pagelibraries %}{% endblock %}
+
+    <link rel="stylesheet" href="{% static "css/showup.css" %}">
 
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 	<link href="{% static "css/ripples.min.css" %}" rel="stylesheet">
 	<link href="{% static "css/material-wfont.min.css" %}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -40,7 +44,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a id="cgpa" href="#">Upload Student CGPA CSV</a></li>
+							<li><a href="/uploadcgpa">Upload Student CGPA CSV</a></li>
 							<li class="divider"></li>
 							<li><a href="/logout">Sign Out</a></li>
 						</ul>
@@ -49,9 +53,18 @@
 			</div><!-- /.navbar-collapse -->
 		</div>
 	</nav>
-
 	{% for message in messages %}
-	<div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
+		{% ifequal message.tags "error" %}
+
+		<div class="alert alert-danger alert-dismissable" style="margin-top:50px;margin-bottom:-5px">
+			<button type="button" class="close" data-dismiss="alert">x</button><p>{{ message }}</p>
+		</div>
+		{% else %}
+			<div class="alert alert-{{message.tags}} alert-dismissable" style="margin-top:50px">
+			<button type="button" class="close" data-dismiss="alert">x</button><p>{{ message }}</p>
+			</div>
+
+		{% endifequal %}
 	{% endfor %}
 	{% block content %}{% endblock %}
 	<a href="#" style="right: 70px;" class="btn back-to-top btn-dark btn-fixed-bottom"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
@@ -81,7 +94,7 @@
 		</div>
 	</div>
 
-	<div id="uploadmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+	<!-- <div id="uploadmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -91,7 +104,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div id="fbmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -106,9 +119,7 @@
 	</div>
 	<!-- Your site ends -->
 
-	<script src="{% static "js/jquery-2.1.1.min.js" %}"></script>
 	<script src="{% static "js/showup.js" %}"></script>
-	<script src="{% static "js/bootstrap.min.js" %}"></script>
 	<script src="{% static "js/ripples.js" %}"></script>
 	<script src="{% static "js/material.min.js" %}"></script>
 
@@ -149,15 +160,15 @@
 	});
 
 			})
-			$("#cgpa").on('click', function(){
-				$("#uploaddata").load("{% url 'uploadcgpa' %}",function(responseTxt,statusTxt,xhr){
-					if(statusTxt=="success")
-			// alert("External content loaded successfully!");
-		$("#uploadmodal").modal('show');
-		if(statusTxt=="error")
-			alert("Error: "+xhr.status+": "+xhr.statusText);
-	});
-			})
+	// 		$("#cgpa").on('click', function(){
+	// 			$("#uploaddata").load("{% url 'uploadcgpa' %}",function(responseTxt,statusTxt,xhr){
+	// 				if(statusTxt=="success")
+	// 		// alert("External content loaded successfully!");
+	// 	$("#uploadmodal").modal('show');
+	// 	if(statusTxt=="error")
+	// 		alert("Error: "+xhr.status+": "+xhr.statusText);
+	// });
+	// 		})
 		}
 	</script>
 
