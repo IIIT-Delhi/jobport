@@ -12,22 +12,20 @@
 
          {% if hasapplied %}
           {% if not deadlinepassed %}
-	  <div class="col-lg-6 col-center-block" style="margin-left:2.6em">
             <a href="/job/{{ job.pk }}/withdraw"><button type="button" class="btn btn-danger">Withdraw</button> </a>
-	  </div>
 		  {% endif %}
          {% else %}
          {% if deadlinepassed %}
                 <h3>Deadline has passed!</h3>
          {% elif not iseligible %}
-      <p><b>You can't apply for this Job because</b></p>
       {% for reason in iseligiblereasons %}
-      <p>{{reason}}, </p>
+      <ul>
+      <li><b>{{reason}}</b></li>
+      </ul>
 	  {% endfor %}
          {% else %}
-	  			<div class="col-lg-6 col-center-block" style="margin-left:2.1em">
       <a href="/job/{{ job.pk }}/apply" ><button type="button" class="btn btn-success">Apply</button> </a>
-        		</div>
+
 					{% endif %}
      {% endif %}
 
@@ -35,32 +33,29 @@
 
 
 </div>
-<div class="container">
+<div class="container-fluid" align="center">
   <div class="row vertical-divider">
-     <div class="col-xs-6">
-  <h4>Deadline:</h4>
-    <p>{{ job.deadline.time }}, {{ job.deadline.date }} <br>{{ job.deadline|naturaltime }}</p>
+     <div class="col-xs-5  well well-sm" style="margin-left:100px; margin-right:22px;">
+     <h3><b>Description</b></h3>
+  <h4><b>Deadline:</b></h4> {{ job.deadline.time }}, {{ job.deadline.date }} <br/>{{ job.deadline|naturaltime }}
+  <h4><b>Date of Visit:</b></h4>  {{ job.dateofvisit.time }}, {{ job.dateofvisit.date }} <br/>{{ job.dateofvisit|naturaltime }}
 
-
-  <h4>Date of Visit:</h4>  <p>{{ job.dateofvisit.time }}, {{ job.dateofvisit.date }} <br>{{ job.dateofvisit|naturaltime }}</p>
-
-    <h4>Job Description: {{ job.details }}</h4>
-    
-    <h4>Location:</h4>
+    <h4><b>Location:</b></h4>
     <p>{{ job.location }}</p>
-    <h4>Compensation:</h4>
-    {% if job.package == None %}W
+    <h4><b>Compensation:</b></h4>
+    {% if job.package == None %}
     <p>Not Disclosed</p>
     {% else %}
     <p>{{ job.package }}</p>
     {% endif %}
-    <h4>Selection Process:</h4>
+    <h4><b>Selection Process:</b></h4>
     <p>{{ job.selectionprocess }}</p>
     </div>
-    <div class="col-xs-6">
+
+    <div class="col-xs-5 well well-sm" >
 <!--    <hr class="featurette-divider">-->
-    <h4>Minimum Eligibility Criteria</h4>
-    <h4>For Batches:</h4> 
+    <h3><b>Minimum Eligibility Criteria</b></h3>
+    <h4><b>For Batches:</b></h4>
       {% ifequal job.batch.count 1 %}
           {% for b in job.batch.all %}
             {{b.title }}<p> </p>
@@ -71,11 +66,10 @@
           {% endfor %}
       {% endifequal %}
 
-        <h4>10th Marks: </h4><p>{{ job.min_tenthmarks }}</p>
-        <h4>12th Marks: </h4><p>{{ job.min_twelfthmarks }}</p>
-        <h4>Minimum CGPA: </h4><p>{{ job.cgpa_min }}</p>
-        <h4>Max Backlogs allowed: </h4><p>{{ job.max_blacklogs }}</p>
-    <hr class="featurette-divider">
+        <h4><b>10th Marks: </b></h4><p>{{ job.min_tenthmarks }}</p>
+        <h4><b>12th Marks: </b></h4><p>{{ job.min_twelfthmarks }}</p>
+        <h4><b>Minimum CGPA: </b></h4><p>{{ job.cgpa_min }}</p>
+        <h4><b>Max Backlogs allowed: </b></h4><p>{{ job.max_blacklogs }}</p>
 
     {% if job.jobfile %}
         <a href="/files/{{ job.jobfile }}"><button type="button" class="btn btn-primary">Download Job Related Files</button> </a>
