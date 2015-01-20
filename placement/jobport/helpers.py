@@ -52,9 +52,8 @@ def is_eligible(candidate, job):
         else:
             Vals.append(True)
     if not any(Vals):
-        temp = True
-        eligibility['value'] = temp
-        eligibility['reasons'].append("This job is not for you!")
+        eligibility['value'] = False
+        eligibility['reasons'].append("You are not eligible for this job!")
     return eligibility
 
 
