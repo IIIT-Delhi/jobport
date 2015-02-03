@@ -6,7 +6,7 @@ import os
 import zipfile
 import StringIO
 import csv
-
+import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -126,8 +126,7 @@ def admineditstudent(request, studentid):
 					salt = "1eT4nfB5mR"
 					usr.resume.name = Student.objects.get(pk=studentid).user.username.split('@')[
 										  0] + '_resume_' + hashlib.sha1(
-						request.user.username.split('@')[0] + salt).hexdigest() + "." + usr.resume.name.split('.')[
-										  -1]
+						request.user.username.split('@')[0] + salt).hexdigest() + str(datetime.datetime.now())+ "." + usr.resume.name.split('.')[-1]
 				usr.email = Student.objects.get(pk=studentid).user.username
 				usr.save()
 				form.save_m2m()
@@ -213,7 +212,7 @@ def profile(request):
 			else:
 				salt = "1eT4nfB5mR"
 				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(
-					request.user.username.split('@')[0] + salt).hexdigest() + "." + usr.resume.name.split('.')[-1]
+					request.user.username.split('@')[0] + salt).hexdigest() + str(datetime.datetime.now())  + "." +  usr.resume.name.split('.')[-1]
 			# print str("Hello " + str(usr.resume))
 			usr.save()
 			messages.success(request, 'Your details were saved.')
@@ -249,7 +248,8 @@ def newuser(request):
 				# usr.resume.name = hashlib.sha256(request.user.username.split('@')[0] + "_resume." + usr.resume.name.split('.')[-1]).hexdigest() + '.pdf'
 				salt = "1eT4nfB5mR"
 				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(
-					request.user.username.split('@')[0] + salt).hexdigest() + "." + usr.resume.name.split('.')[-1]
+					request.user.username.split('@')[0] + salt).hexdigest() +str(datetime.datetime.now()) +"." + usr.resume.name.split('.')[-1]
+
 				usr.save()
 				# messages.success(request, 'Your form was saved')
 				studentgroup.user_set.add(request.user)
@@ -303,7 +303,10 @@ def openjob(request):
 				tosavejob.save()
 				recipients = []
 				for student in Student.objects.all():
-					recipients.append(student.email)
+					if student.status=='B':
+						continue
+				recipients.append(student.email)
+
 				settings.EMAIL_HOST_USER+='jobportiiitd@gmail.com'
 				send_mail(
 				'New Job in JobPort!',
