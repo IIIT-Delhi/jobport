@@ -32,6 +32,13 @@ class Job(models.Model):
 	package = models.CharField("Package", max_length=10, blank=True, null=True)
 	selectionprocess = models.CharField("Selection Process", max_length=50, blank=True, null=True)
 
+	JOBSTREAMS = (
+		('CSE', 'CSE'),
+		('ECE', 'ECE'),
+		('B', 'Both'),
+		)
+	job_stream = models.CharField("Job Stream", max_length=3, choices=JOBSTREAMS, default='CSE')
+
 	CATEGORYCHOICES = (
 		('AP', 'A+'),
 		('A', 'A'),
