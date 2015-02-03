@@ -7,11 +7,11 @@ PROJECT_ROOT = os.path.abspath(
 
 SECRET_KEY = '$8gtwkoh^#$x%a4=s)j5mn2a6x5s7%yzj&@dq$%46*u^s(yc6^'
 
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',

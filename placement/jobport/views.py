@@ -596,7 +596,7 @@ def feedback(request):
 def fileview(request, filename):
 		response = HttpResponse()
 		response['Content-Type'] = 'application/pdf'
-		# response['X-Accel-Redirect'] = "/protected/%s"%filename
+		response['X-Accel-Redirect'] = "/protected/%s"%filename
 		# response['Content-Disposition'] = 'filename="somefilename.pdf"'
 		return response
 
