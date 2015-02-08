@@ -58,8 +58,6 @@ class JobForm(forms.ModelForm):
 		return deadline
 
 
-
-
 class AdminSelectedApplicantsForm(forms.ModelForm):
 	class Meta:
 		model = Job
@@ -85,7 +83,7 @@ class AdminSelectedApplicantsForm(forms.ModelForm):
 			# The widget for a ModelMultipleChoiceField expects
 			# a list of primary key for the selected data.
 			# for t in kwargs['instance'].selectedcandidates.all():
-			#    print t
+			# print t
 			initial['selected'] = [t.pk for t in kwargs['instance'].selectedcandidates.all()]  # applicants.all()]
 
 	# Overriding save allows us to process the value of 'selected' field
@@ -127,7 +125,7 @@ class StudentForm(forms.ModelForm):
 		if resumeext in EXTENSIONS:
 			if resume._size > MAX_UPLOAD_SIZE:
 				raise forms.ValidationError('Please keep filesize under %s. Current filesize %s') % (
-				filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
+					filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
 		else:
 			raise forms.ValidationError('File type is not supported')
 		return resume
@@ -206,7 +204,7 @@ class NewStudentForm(forms.ModelForm):
 		if resumeext in EXTENSIONS:
 			if resume._size > MAX_UPLOAD_SIZE:
 				raise forms.ValidationError('Please keep filesize under %s. Current filesize %s') % (
-				filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
+					filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
 		else:
 			raise forms.ValidationError('File type is not supported')
 		return resume
@@ -260,12 +258,13 @@ class AdminStudentForm(forms.ModelForm):
 	class Meta:
 		model = Student
 		exclude = ['user']
-		widgets = {'dob': DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 'gender': RadioSelect(),'companyapplications': forms.CheckboxSelectMultiple,'placedat': forms.CheckboxSelectMultiple}
+		widgets = {'dob': DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}), 'gender': RadioSelect(),
+				   'companyapplications': forms.CheckboxSelectMultiple, 'placedat': forms.CheckboxSelectMultiple}
 
 	"""def clean(self):
-        cleaned_data = super(AdminStudentForm, self).clean()
-        #raise forms.ValidationError("This error was added to show the non field errors styling.")
-        return cleaned_data"""
+		cleaned_data = super(AdminStudentForm, self).clean()
+		#raise forms.ValidationError("This error was added to show the non field errors styling.")
+		return cleaned_data"""
 
 	def clean_resume(self):
 		resume = self.cleaned_data['resume']
@@ -275,7 +274,7 @@ class AdminStudentForm(forms.ModelForm):
 		if resumeext in EXTENSIONS:
 			if resume._size > MAX_UPLOAD_SIZE:
 				raise forms.ValidationError('Please keep filesize under %s. Current filesize %s') % (
-				filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
+					filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(resume._size))
 		else:
 			raise forms.ValidationError('File type is not supported')
 		return resume

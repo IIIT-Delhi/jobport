@@ -11,14 +11,9 @@ handler500 = "jobport.views.server_error"
 handler404 = "jobport.views.not_found"
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'placement.views.home', name='home'),
-    url('', include('jobport.urls')),
-    url('', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^search/', include('haystack.urls')),
-
-    # url(r'^blog/', include('blog.urls')),
-
-    url(r'^batcave/', include(admin.site.urls)),
+	url('', include('jobport.urls')),
+	url('', include('social.apps.django_app.urls', namespace='social')),
+	url(r'^search/', include('haystack.urls')),
+	url(r'^batcave/', include(admin.site.urls)),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

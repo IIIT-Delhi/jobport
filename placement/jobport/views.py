@@ -1,6 +1,3 @@
-# TODO
-# Use decorators
-
 import hashlib
 import os
 import zipfile
@@ -44,7 +41,6 @@ def not_found(request):
 	return response
 
 
-
 def test(request):
 	return render(request, 'jobport/material.min.js.map')
 
@@ -63,7 +59,6 @@ def home(request):
 
 @login_required()
 def jobapply(request, jobid):
-#	if request.user.is_authenticated():
 	if (timezone.now() < Job.objects.get(pk=jobid).deadline):
 		if (is_eligible(request.user.student, Job.objects.get(pk=jobid))['value']):
 			request.user.student.companyapplications.add(Job.objects.get(pk=jobid))
@@ -78,7 +73,6 @@ def jobapply(request, jobid):
 
 @login_required()
 def jobwithdraw(request, jobid):
-#	if request.user.is_authenticated():
 	if (timezone.now() < Job.objects.get(pk=jobid).deadline):
 		request.user.student.companyapplications.remove(Job.objects.get(pk=jobid))
 		messages.success(request, 'You have withdrawn!')
@@ -89,7 +83,6 @@ def jobwithdraw(request, jobid):
 
 @login_required()
 def myapplications(request):
-#	if request.user.is_authenticated():
 	studentgroup = Group.objects.get(name='student')
 	if (not is_member(request.user, studentgroup)):
 		return HttpResponseRedirect('/newuser')
@@ -99,7 +92,6 @@ def myapplications(request):
 
 @login_required()
 def jobpage(request, jobid):
-#	if request.user.is_authenticated():
 	if is_admin(request.user):
 		context = {'user': request.user, 'job': Job.objects.get(pk=jobid)}
 		return render(request, 'jobport/admin_job.html', context)
@@ -238,14 +230,10 @@ def newuser(request):
 			form = forms.NewStudentForm(request.POST, request.FILES)
 			# print form.cleaned_data
 			if form.is_valid():
-				# import pdb
-				# pdb.set_trace()
 				usr = form.save(commit=False)
 				usr.user = request.user
 				usr.email = request.user.username
 				usr.name = request.user.first_name+" "+request.user.last_name
-				# usr.resume.name = request.user.username.split('@')[0]  + "_resume." + usr.resume.name.split('.')[-1]
-				# usr.resume.name = hashlib.sha256(request.user.username.split('@')[0] + "_resume." + usr.resume.name.split('.')[-1]).hexdigest() + '.pdf'
 				salt = "1eT4nfB5mR"
 				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(
 					request.user.username.split('@')[0] + salt).hexdigest() +str(datetime.datetime.now()) +"." + usr.resume.name.split('.')[-1]
@@ -279,13 +267,6 @@ def logout(request):
 def needlogin(request):
 	return render(request, 'jobport/needlogin.html')
 
-
-# def BingSearchAPI(request):
-# uri = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Query=%27"
-# appid =" hXUWxK4P+SdIi16Frvubczbv4jQVRnPMi4QOD+YpJo4"
-# return https://api.datamarket.azure.com/Bing/Search/v1/Image?Query=%27xbox%27
-
-
 @login_required()
 def openjob(request):
 	if is_admin(request.user):
@@ -294,9 +275,6 @@ def openjob(request):
 			if form.is_valid():
 				tosavejob = form.save(commit=False	)
 				tosavejob.createdon = timezone.now()
-				# import pdb
-				# pdb.set_trace()
-				# allowed_batches  = tosavejob.batch
 				tosavejob.save()
 				for x in form.cleaned_data['batch']:
 					tosavejob.batch.add(x)
@@ -597,9 +575,7 @@ def fileview(request, filename):
 		response = HttpResponse()
 		response['Content-Type'] = 'application/pdf'
 		response['X-Accel-Redirect'] = "/protected/%s"%filename
-		# response['Content-Disposition'] = 'filename="somefilename.pdf"'
 		return response
-
 
 @login_required()
 def batchcreate(request):
