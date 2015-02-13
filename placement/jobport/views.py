@@ -578,6 +578,13 @@ def fileview(request, filename):
 		return response
 
 @login_required()
+def docfileview(request, filename):
+		response = HttpResponse()
+		response['Content-Type'] = 'application/pdf'
+		response['X-Accel-Redirect'] = "/jobfiles/%s"%filename
+		return response
+
+@login_required()
 def batchcreate(request):
 	if is_admin(request.user):
 		if request.method == 'POST':

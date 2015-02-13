@@ -55,6 +55,9 @@ docs/_build/
 #staticfiles
 placement/static/
 
+#idea
+.idea
+
 #CVs
 *.pdf
 
