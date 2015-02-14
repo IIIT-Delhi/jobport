@@ -23,7 +23,7 @@ class BatchIndex(indexes.SearchIndex, indexes.Indexable):
 class JobIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     company_name = indexes.CharField(model_attr='company_name')
-    details = indexes.CharField(model_attr='details')
+    profile = indexes.CharField(model_attr='profile')
     createdon = indexes.DateTimeField(model_attr='createdon')
 
     def get_model(self):

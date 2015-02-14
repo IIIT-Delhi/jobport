@@ -63,7 +63,7 @@
 				<div class="panel-body">
 
 					<a href="/job/{{ result.pk }}">
-						<h6>{{ result.details }}</h6></a>
+						<h6>{{ result.profile }}</h6></a>
 						<h6>Posted on: {{ result.createdon }}</h6>
 						<h6>Deadline: {{ result.deadline }} {% if result.deadlineexpired %} <span class="label label-danger"> {{ result.deadline }} {% elif not result.deadlineexpired %} <span class="label label-success"> {{ result.deadline }}</span> {% endif %}</span></h6>
 						<h6 >Date of Visit: {{ result.dateofvisit }}</h6>
