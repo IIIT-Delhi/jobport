@@ -114,7 +114,7 @@ class AdminSelectedApplicantsForm(forms.ModelForm):
 class StudentForm(forms.ModelForm):
 	class Meta:
 		model = Student
-		fields = ['resume', 'phone', 'email_personal', 'percentage_tenth', 'percentage_twelfth']
+		fields = ['resume', 'phone', 'email_personal', 'percentage_tenth', 'percentage_twelfth', 'max_backlogs']
 		widgets = {'dob': DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False})}
 
 	def clean_resume(self):
