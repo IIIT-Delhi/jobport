@@ -498,22 +498,18 @@ def getjobcsv(request, jobid):
 		response['Content-Disposition'] = str('attachment; filename="' + name + '"')
 		writer = csv.writer(response)
 		writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
+		writer.writerow(
+			["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA"]
+		)
 		for student in studlist:
 			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
-				writer.writerow(
-					["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
-					 "12th Marks", "Backlogs", "Conact No."]
-				)
 				writer.writerow(
 					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
 					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
 					 student.get_backlogs_display(), student.phone]
 				)
 			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
-				writer.writerow(
-					["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
-					 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA"]
-				)
 				writer.writerow(
 					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
 					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
