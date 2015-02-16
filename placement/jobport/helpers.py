@@ -56,6 +56,25 @@ def is_eligible(candidate, job):
 		eligibility['reasons'].append("You are not eligible for this job!")
 	return eligibility
 
+def generate_csv(writer):
+	writer.writerow(
+			["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA  {for PG Students}"]
+		)
+		for student in studlist:
+			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone]
+				)
+			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
+					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone, student.cgpa_ug]
+				)
+	return writer
 
 def checkdeadline(job):
 	if (timezone.now() > job.deadline):

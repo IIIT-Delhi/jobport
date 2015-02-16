@@ -1,19 +1,19 @@
 from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
 from storage import OverwriteStorage
 
 
 class Batch(models.Model):
 	title = models.CharField("Name", max_length=120, null=True)
+	
 	QUALIFICATION = (
 		('G', 'UnderGraduate'),
 		('P', 'PostGraduate'),
 		)
 	pg_or_not = models.CharField("Graduate or Post-Graduate", max_length=1, choices=QUALIFICATION, default='G')
+	
 	createdon = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
@@ -51,12 +51,12 @@ class Job(models.Model):
 		('NT', 'Non-Technical'),
 		)
 	jobtype = models.CharField("Job Type", max_length=2, choices=JOBTYPES, default='T')
-
+	
 	batch = models.ManyToManyField(Batch, related_name='jobbatch', null=True)
-
 	cgpa_min = models.FloatField("Minimum CGPA", max_length=2, default=0)
 	min_tenthmarks = models.IntegerField("Minimum Class X Marks", max_length=3, default=0)
 	min_twelfthmarks = models.IntegerField("Minimum Class XII Marks", max_length=3, default=0)
+	
 	backs = (
 		(0, '0'),
 		(1, '1'),
@@ -72,6 +72,7 @@ class Job(models.Model):
 		('C', 'Closed')
 		)
 	status = models.CharField("Status", max_length=1, choices=OPENED_CLOSED, default='O')
+	
 	jobfile = models.FileField("File ", upload_to='jobfiles', default='', storage=OverwriteStorage(), blank=True,
 		null=True)
 
@@ -89,11 +90,13 @@ class Student(models.Model):
 	name = models.CharField("Full Name", max_length=100)
 	batch = models.ForeignKey(Batch, related_name='studentsinbatch')
 	dob = models.DateTimeField("Date of Birth")
+
 	genderchoices = (
 		('M', 'Male'),
 		('F', 'Female'),
 		)
 	gender = models.CharField("Gender", max_length=1, choices=genderchoices, default='M')
+
 	STARTYEARS = (
 		(2003, '2003'),
 		(2004, '2004'),
@@ -124,6 +127,15 @@ class Student(models.Model):
 		(2016, '2016'),
 		(2017, '2017'),
 		)
+	startyear_ug = models.IntegerField("Undergraduate Starting Year", max_length=4, choices=STARTYEARS, default="2011",
+		blank=True, null=True)
+	passingyear_ug = models.IntegerField("Undergraduate Completion Year", max_length=4, choices=ENDYEARS,
+		default="2015", blank=True, null=True)
+
+	startyear_pg = models.IntegerField("Postgraduate Starting Year", max_length=4, choices=STARTYEARS, blank=True,
+		null=True)
+	passingyear_pg = models.IntegerField("Postgraduate Completion Year", max_length=4, choices=ENDYEARS, blank=True,
+		null=True)
 
 	phone = models.CharField("Phone Number", max_length=10)
 	email = models.EmailField(max_length=70)
@@ -139,15 +151,6 @@ class Student(models.Model):
 
 	cgpa_pg = models.FloatField("Pg. CGPA", max_length=4, default=0, blank=True, null=True)
 
-	startyear_ug = models.IntegerField("Undergraduate Starting Year", max_length=4, choices=STARTYEARS, default="2011",
-		blank=True, null=True)
-	passingyear_ug = models.IntegerField("Undergraduate Completion Year", max_length=4, choices=ENDYEARS,
-		default="2015", blank=True, null=True)
-
-	startyear_pg = models.IntegerField("Postgraduate Starting Year", max_length=4, choices=STARTYEARS, blank=True,
-		null=True)
-	passingyear_pg = models.IntegerField("Postgraduate Completion Year", max_length=4, choices=ENDYEARS, blank=True,
-		null=True)
 
 	university_pg = models.CharField("Postgraduate University", max_length=100, blank=True, null=True)
 	institution_pg = models.CharField("Postgraduate College", max_length=100, blank=True, null=True)
@@ -160,6 +163,7 @@ class Student(models.Model):
 		(4, '4+'),
 		)
 	backlogs = models.IntegerField("Number of Backlogs", max_length=2, default=0, choices=backs)
+	
 	years = (
 		(0, '0'),
 		(1, '1'),
@@ -168,6 +172,7 @@ class Student(models.Model):
 		(4, '4+'),
 		)
 	work_experience = models.IntegerField("Previous Work Experience (Years)", choices=years, max_length=2, default=0)
+	
 	home_city = models.CharField("Home City", max_length=20)
 	home_state = models.CharField("Home State", max_length=20)
 
@@ -179,16 +184,13 @@ class Student(models.Model):
 	STATUS = (
 		('P', 'Placed'),
 		('N', 'Not Placed'),
-		('B', 'Blocked'),
+		('D', 'Debarred'),       #Debarred from placement
+		('NI', 'Not Interested') #for students who live a thuglife :P a+ ppl will also be categorised here
 		)
+	status = models.CharField(max_length=2, choices=STATUS, default='N')
+	
 	placedat = models.ManyToManyField(Job, related_name='selectedcandidates', null=True, blank=True)
-	status = models.CharField(max_length=1, choices=STATUS, default='N')
 	createdon = models.DateTimeField("Student Creation Date", default=datetime.now)
-
-	QUALIFICATION = (
-		('G', 'Under Graduate'),
-		('P', 'Post Graduate'),
-		)
 
 	def __str__(self):  # __unicode__ on Python 2
 		return self.pk + ' ' + self.name
