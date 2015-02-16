@@ -400,9 +400,9 @@ def uploadcgpa(request):
 				try:
 					stud = Student.objects.get(pk=row[0])
 					if (row[0][:2].upper() == 'MT'):
-						stud.cgpa_mtech = float(row[1])
+						stud.cgpa_pg = float(row[1])
 					else:
-						stud.cgpa = float(row[1])
+						stud.cgpa_ug = float(row[1])
 					stud.save()
 				except ObjectDoesNotExist:
 					notfound.append(row[0])
