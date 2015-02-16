@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from placement import settings
 from . import forms
 from .models import Job, Student, Batch
-from .helpers import is_admin, is_member, is_eligible, checkdeadline
+from .helpers import is_admin, is_member, is_eligible, checkdeadline, generate_csv
 
 
 def _send_mail(subject, text_content, host_user, recipient_list):
@@ -281,7 +281,7 @@ def openjob(request):
 				tosavejob.save()
 				recipients = []
 				for student in Student.objects.all():
-					if student.status=='B':
+					if student.status=='D' or  student.status=='NI':
 						continue
 				recipients.append(student.email)
 
@@ -420,11 +420,12 @@ def stats(request):
 	if is_admin(request.user):
 		numstudentsplaced = 0
 		cgpahistdata = []
+		uninterested_students = []
 		Students = Student.objects.all()
 		Jobs = Job.objects.all()
 		for student in Students:
-			if student.status == 'P':
-				numstudentsplaced = numstudentsplaced + 1
+			if student.status == 'P': numstudentsplaced+=1
+			if student.status == 'NI' or student.status == 'D': uninterested_students+=1
 			#CGPA Hist
 			if student.batch.pg_or_not == 'G':
 				if student.cgpa_ug != None and student.cgpa_ug != 0:
@@ -438,11 +439,12 @@ def stats(request):
 			if job.cgpa_min != None:
 				jobcgpahistdata.append([(job.company_name + ", " + job.profile), job.cgpa_min])
 
+		interested_students = len(Students) - uninterested_students
 		placedunplaceddata = [["Placed Students", numstudentsplaced],
-							  ["Unplaced Students", len(Students) - numstudentsplaced]]
+							  ["Unplaced Students", interested_students - numstudentsplaced]]
 
 		context = {'cgpahistdata': cgpahistdata, 'jobcgpahistdata': jobcgpahistdata,
-				   'placedunplaceddata': placedunplaceddata, 'numstudents': len(Student.objects.all()),
+				   'placedunplaceddata': placedunplaceddata, 'numstudents': interested_students,
 				   'numstudentsplaced': numstudentsplaced, 'numjobs': len(Job.objects.all())}
 		return render(request, 'jobport/admin_stats.html', context)
 
@@ -452,8 +454,8 @@ def blockedUnplacedlist(request):
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
 
-		if (request.GET.get('req') == 'blocked'):
-			students = Student.objects.filter(status='BL')
+		if (request.GET.get('req') == 'debarred'):
+			students = Student.objects.filter(status='D')
 			response['Content-Disposition'] = str('attachment; filename="' + 'BlockedStudents_list.csv"')
 		elif (request.GET.get('req') == 'unplaced'):
 			students = Student.objects.filter(status='N')
@@ -461,15 +463,11 @@ def blockedUnplacedlist(request):
 		elif (request.GET.get('req') == 'placed'):
 			students = Student.objects.filter(status='P')
 			response['Content-Disposition'] = str('attachment; filename="' + 'PlacedStudents_list.csv"')
+		elif (request.GET.get('req') == 'notInterested'):
+			students = Student.objects.filter(status='NI')
+			response['Content-Disposition'] = str('attachment; filename="' + 'NotInterestedStudents_list.csv"')
 		writer = csv.writer(response)
-		writer.writerow(
-			["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA", "PostGrad CGPA", "Graduating University",
-			 "PostGraduating University", "10th Marks", "12th Marks", "Backlogs", "Contact No."])
-		for student in students:
-			writer.writerow(
-				[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
-				 student.cgpa_pg, student.university_ug, student.university_pg, student.percentage_tenth,
-				 student.percentage_twelfth, student.get_backlogs_display(), student.phone])
+		writer = generate_csv(writer)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -498,23 +496,8 @@ def getjobcsv(request, jobid):
 		response['Content-Disposition'] = str('attachment; filename="' + name + '"')
 		writer = csv.writer(response)
 		writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
-		writer.writerow(
-			["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
-			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA"]
-		)
-		for student in studlist:
-			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
-				writer.writerow(
-					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
-					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
-					 student.get_backlogs_display(), student.phone]
-				)
-			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
-				writer.writerow(
-					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
-					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
-					 student.get_backlogs_display(), student.phone, student.cgpa_ug]
-				)
+		writer = csv.writer(response)
+		writer = generate_csv(writer)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -528,14 +511,9 @@ def getbatchlist(request, batchid):
 		name = Batch.objects.get(pk=batchid).title
 		response['Content-Disposition'] = str('attachment; filename="' + name + '_list.csv"')
 		writer = csv.writer(response)
-		writer.writerow(
-			["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA", "PostGrad CGPA", "Graduating University",
-			 "PostGraduating University", "10th Marks", "12th Marks", "Backlogs", "Contact No."])
-		for student in studlist:
-			writer.writerow(
-				[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
-				 student.cgpa_pg, student.university_ug, student.university_pg, student.percentage_tenth,
-				 student.percentage_twelfth, student.get_backlogs_display(), student.phone])
+		writer.writerow([Batch.objects.get(pk=batchid).title])
+		writer = csv.writer(response)
+		writer = generate_csv(writer)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
