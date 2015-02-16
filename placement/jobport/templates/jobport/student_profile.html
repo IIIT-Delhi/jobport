@@ -17,11 +17,22 @@
 <div class="container">
     <form class="form-horizontal">
     {% if student.batch.pg_or_not == 'G' %}
+
+{% ifequal student.cgpa_ug 0 %}
+      <p>Your CGPA will be updated shortly by the placement team. This field is non-editable.</p>
+    {% endifequal %}
+
+
 		<div class="form-group"><label class="col-md-2 control-label">CGPA</label><div class="col-md-4"><input class="form-control" maxlength="3" placeholder="CGPA" title="" value="{{ student.cgpa_ug }}" disabled/></div></div>
             <a class="btn btn-danger" style="margin-left:350px" href="https://docs.google.com/a/iiitd.ac.in/document/d/10uKehH-VwEWLV_KSf7Hot0j8eYjoBjPQ8Xh_UnVwKUU/edit?usp=sharing" role="button" target="_blank">Sample Resume</a>
 
 
     {% else %}
+
+{% ifequal student.cgpa_pg 0 %}
+      <p>Your CGPA will be updated shortly by the placement team. This field is non-editable.</p>
+    {% endifequal %}
+
 	        <div class="form-group"><label class="col-md-2 control-label">CGPA</label><div class="col-md-4"><input class="form-control" maxlength="3" placeholder="CGPA" title="" value="{{ student.cgpa_pg }}" disabled/></div></div>
                   <a class="btn btn-danger" style="margin-left:350px" href="http://goo.gl/UY8Yj9" role="button" target="_blank">Sample Resume</a>
 
