@@ -116,10 +116,10 @@ def admineditstudent(request, studentid):
 					usr.resume = Student.objects.get(pk=studentid).resume;
 				else:
 					salt = "1eT4nfB5mR"
-					usr.resume.name = Student.objects.get(pk=studentid).user.username.split('@')[
+					usr.resume.name = Student.objects.get(pk=studentid).user.username[
 										  0] + '_resume_' + hashlib.sha1(
-						request.user.username.split('@')[0] + salt).hexdigest() + str(datetime.datetime.now())+ "." + usr.resume.name.split('.')[-1]
-				usr.email = Student.objects.get(pk=studentid).user.username
+						request.user.username + salt + str(datetime.datetime.now())).hexdigest() + ".pdf"
+				usr.email = Student.objects.get(pk=studentid).user.username + "@iiitd.ac.in"
 				usr.save()
 				form.save_m2m()
 				messages.success(request, 'Your form was saved')
@@ -198,14 +198,13 @@ def profile(request):
 		if form.is_valid():
 			usr = form.save(commit=False)
 			usr.user = request.user
-			usr.email = request.user.username
+			usr.email = request.user.username + "@iiitd.ac.in"
 			if (request.FILES.__len__() == 0):
 				usr.resume = request.user.student.resume;
 			else:
 				salt = "1eT4nfB5mR"
-				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(
-					request.user.username.split('@')[0] + salt).hexdigest() + str(datetime.datetime.now())  + "." +  usr.resume.name.split('.')[-1]
-			# print str("Hello " + str(usr.resume))
+				usr.resume.name = request.user.username + "_resume_" + hashlib.sha1(
+					request.user.username + salt  + str(datetime.datetime.now())).hexdigest()  + ".pdf"
 			usr.save()
 			messages.success(request, 'Your details were saved.')
 			return HttpResponseRedirect('/')
@@ -235,9 +234,8 @@ def newuser(request):
 				usr.email = request.user.username
 				usr.name = request.user.first_name+" "+request.user.last_name
 				salt = "1eT4nfB5mR"
-				usr.resume.name = request.user.username.split('@')[0] + "_resume_" + hashlib.sha1(
-					request.user.username.split('@')[0] + salt).hexdigest() +str(datetime.datetime.now()) +"." + usr.resume.name.split('.')[-1]
-
+				usr.resume.name = request.user.username + "_resume_" + hashlib.sha1(
+					request.user.username + salt  + str(datetime.datetime.now())).hexdigest() +".pdf"
 				usr.save()
 				# messages.success(request, 'Your form was saved')
 				studentgroup.user_set.add(request.user)
