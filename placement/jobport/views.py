@@ -465,7 +465,7 @@ def blockedUnplacedlist(request):
 			students = Student.objects.filter(status='NI')
 			response['Content-Disposition'] = str('attachment; filename="' + 'NotInterestedStudents_list.csv"')
 		writer = csv.writer(response)
-		writer = generate_csv(writer)
+		writer = generate_csv(writer, students)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -495,7 +495,7 @@ def getjobcsv(request, jobid):
 		writer = csv.writer(response)
 		writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
 		writer = csv.writer(response)
-		writer = generate_csv(writer)
+		writer = generate_csv(writer, studlist)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -511,7 +511,7 @@ def getbatchlist(request, batchid):
 		writer = csv.writer(response)
 		writer.writerow([Batch.objects.get(pk=batchid).title])
 		writer = csv.writer(response)
-		writer = generate_csv(writer)
+		writer = generate_csv(writer, studlist)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
