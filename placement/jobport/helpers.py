@@ -56,7 +56,7 @@ def is_eligible(candidate, job):
 		eligibility['reasons'].append("You are not eligible for this job!")
 	return eligibility
 
-def generate_csv(writer):
+def generate_csv(writer, studlist):
 	writer.writerow(
 			["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
 			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA  {for PG Students}"]
