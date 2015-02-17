@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from placement import settings
 from . import forms
 from .models import Job, Student, Batch
-from .helpers import is_admin, is_member, is_eligible, checkdeadline, generate_csv
+from .helpers import is_admin, is_member, is_eligible, checkdeadline
 
 
 def _send_mail(subject, text_content, host_user, recipient_list):
@@ -465,7 +465,22 @@ def blockedUnplacedlist(request):
 			students = Student.objects.filter(status='NI')
 			response['Content-Disposition'] = str('attachment; filename="' + 'NotInterestedStudents_list.csv"')
 		writer = csv.writer(response)
-		writer = generate_csv(writer, students)
+				["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA  {for PG Students}"]
+		)
+		for student in studlist:
+			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone]
+				)
+			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
+					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone, student.cgpa_ug]
+				)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -495,7 +510,22 @@ def getjobcsv(request, jobid):
 		writer = csv.writer(response)
 		writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
 		writer = csv.writer(response)
-		writer = generate_csv(writer, studlist)
+				["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA  {for PG Students}"]
+		)
+		for student in studlist:
+			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone]
+				)
+			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
+					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone, student.cgpa_ug]
+				)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -511,7 +541,22 @@ def getbatchlist(request, batchid):
 		writer = csv.writer(response)
 		writer.writerow([Batch.objects.get(pk=batchid).title])
 		writer = csv.writer(response)
-		writer = generate_csv(writer, studlist)
+				["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA  {for PG Students}"]
+		)
+		for student in studlist:
+			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone]
+				)
+			if (student.batch.pg_or_not == 'P' and request.GET.get('qualification') != 'ug'):
+				writer.writerow(
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_pg,
+					 student.batch, student.university_pg, student.percentage_tenth, student.percentage_twelfth,
+					 student.get_backlogs_display(), student.phone, student.cgpa_ug]
+				)
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
