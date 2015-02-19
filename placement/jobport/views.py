@@ -452,8 +452,8 @@ def blockedUnplacedlist(request):
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
 
-		if (request.GET.get('req') == 'blocked'):
-			students = Student.objects.filter(status='BL')
+		if (request.GET.get('req') == 'debarred'):
+			students = Student.objects.filter(status='D')
 			response['Content-Disposition'] = str('attachment; filename="' + 'BlockedStudents_list.csv"')
 		elif (request.GET.get('req') == 'unplaced'):
 			students = Student.objects.filter(status='N')
@@ -461,13 +461,19 @@ def blockedUnplacedlist(request):
 		elif (request.GET.get('req') == 'placed'):
 			students = Student.objects.filter(status='P')
 			response['Content-Disposition'] = str('attachment; filename="' + 'PlacedStudents_list.csv"')
-		writer = csv.writer(response)
+		elif (request.GET.get('req') == 'notInterested'):
+			students = Student.objects.filter(status='NI')
+			response['Content-Disposition'] = str('attachment; filename="' + 'NotInterested_list.csv"')
+        elif (request.GET.get('req') == 'all'):
+			students = Student.objects.all()
+			response['Content-Disposition'] = str('attachment; filename="' + 'All_list.csv"')
+        writer = csv.writer(response)
 		writer.writerow(
-			["RollNo", "Name", "Email", "Gender", "UnderGrad CGPA", "PostGrad CGPA", "Graduating University",
+			["RollNo", "Name", "Email", "Gender", "Batch", "UnderGrad CGPA", "PostGrad CGPA{for PG}", "Graduating University",
 			 "PostGraduating University", "10th Marks", "12th Marks", "Backlogs", "Contact No."])
 		for student in students:
 			writer.writerow(
-				[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+				[student.rollno, student.name, student.email, student.get_gender_display(), student.batch, student.cgpa_ug,
 				 student.cgpa_pg, student.university_ug, student.university_pg, student.percentage_tenth,
 				 student.percentage_twelfth, student.get_backlogs_display(), student.phone])
 		return response
@@ -539,6 +545,7 @@ def getbatchlist(request, batchid):
 		return response
 	else:
 		return render(request, 'jobport/badboy.html')
+
 
 
 def feedback(request):
