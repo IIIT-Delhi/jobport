@@ -271,7 +271,7 @@ def openjob(request):
 		if request.method == 'POST':
 			form = forms.JobForm(request.POST)
 			if form.is_valid():
-				tosavejob = form.save(commit=False	)
+				tosavejob = form.save(commit=False  )
 				tosavejob.createdon = timezone.now()
 				tosavejob.save()
 				for x in form.cleaned_data['batch']:
@@ -464,10 +464,10 @@ def blockedUnplacedlist(request):
 		elif (request.GET.get('req') == 'notInterested'):
 			students = Student.objects.filter(status='NI')
 			response['Content-Disposition'] = str('attachment; filename="' + 'NotInterested_list.csv"')
-        elif (request.GET.get('req') == 'all'):
+		elif (request.GET.get('req') == 'all'):
 			students = Student.objects.all()
 			response['Content-Disposition'] = str('attachment; filename="' + 'All_list.csv"')
-        writer = csv.writer(response)
+		writer = csv.writer(response)
 		writer.writerow(
 			["RollNo", "Name", "Email", "Gender", "Batch", "UnderGrad CGPA", "PostGrad CGPA{for PG}", "Graduating University",
 			 "PostGraduating University", "10th Marks", "12th Marks", "Backlogs", "Contact No."])
