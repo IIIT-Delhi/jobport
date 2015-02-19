@@ -437,13 +437,13 @@ def stats(request):
 			if job.cgpa_min != None:
 				jobcgpahistdata.append([(job.company_name + ", " + job.profile), job.cgpa_min])
 
-		interested_students = len(Students) - uninterested_students
+		interested_students = len(Students) - len(uninterested_students)
 		placedunplaceddata = [["Placed Students", numstudentsplaced],
 							  ["Unplaced Students", interested_students - numstudentsplaced]]
 
 		context = {'cgpahistdata': cgpahistdata, 'jobcgpahistdata': jobcgpahistdata,
 				   'placedunplaceddata': placedunplaceddata, 'numstudents': interested_students,
-				   'numstudentsplaced': numstudentsplaced, 'numjobs': len(Job.objects.all())}
+				   'numstudentsplaced': numstudentsplaced, 'numjobs': len(Jobs)}
 		return render(request, 'jobport/admin_stats.html', context)
 
 
@@ -500,12 +500,12 @@ def getjobcsv(request, jobid):
 		writer.writerow([Job.objects.get(pk=jobid).company_name, Job.objects.get(pk=jobid).profile])
 		writer.writerow(
 			["RollNo", "Name", "Email", "Gender", "CGPA", "Batch", "Graduating University", "10th Marks",
-			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA"]
+			 "12th Marks", "Backlogs", "Conact No.", "UnderGrad CGPA{PG}"]
 		)
 		for student in studlist:
 			if (student.batch.pg_or_not == 'G' and request.GET.get('qualification') != 'pg'):
 				writer.writerow(
-					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug,
+					[student.rollno, student.name, student.email, student.get_gender_display(), student.cgpa_ug, student.batch,
 					 student.university_ug, student.percentage_tenth, student.percentage_twelfth,
 					 student.get_backlogs_display(), student.phone]
 				)
