@@ -116,13 +116,11 @@ def admineditstudent(request, studentid):
 					usr.resume = Student.objects.get(pk=studentid).resume;
 				else:
 					my_student = Student.objects.get(pk=studentid)
-					usr.resume.name = my_student.batch.title + '_' + my_Student.rollno + '_' + my_student.user.first_name + ".pdf"
+					usr.resume.name = my_student.batch.title + '_' + my_student.user.username + ".pdf"
 					if "@iiitd.ac.in" in request.user.username:
-                                		usr.email = Student.objects.get(pk=studentid).user.username              
-                        		else:
-                                		usr.email = Student.objects.get(pk=studentid).user.username + "@iiitd.ac.in"
-
-#				usr.email = Student.objects.get(pk=studentid).user.username + "@iiitd.ac.in"
+						usr.email = Student.objects.get(pk=studentid).user.username              
+					else:
+						usr.email = Student.objects.get(pk=studentid).user.username + "@iiitd.ac.in"
 				usr.save()
 				form.save_m2m()
 				messages.success(request, 'Your form was saved')
@@ -208,8 +206,7 @@ def profile(request):
 			if (request.FILES.__len__() == 0):
 				usr.resume = request.user.student.resume;
 			else:
-				my_student = Student.objects.get(pk=studentid)
-                                usr.resume.name = my_student.batch.title + '_' + my_Student.rollno + '_' + my_student.user.first_name + ".pdf"
+				usr.resume.name = usr.batch.title + '_' + request.user.username + "." + usr.resume.name.split('.')[-1]
 			usr.save()
 			messages.success(request, 'Your details were saved.')
 			return HttpResponseRedirect('/')
@@ -238,8 +235,8 @@ def newuser(request):
 				usr.user = request.user
 				usr.email = request.user.username
 				usr.name = request.user.first_name+" "+request.user.last_name
-				my_student = Student.objects.get(pk=studentid)
-                                usr.resume.name = my_student.batch.title + '_' + my_Student.rollno + '_' + my_student.user.first_name + ".pdf"
+				my_student = request.user
+				usr.resume.name = usr.username + "." + usr.resume.name.split('.')[-1]
 				usr.save()
 				# messages.success(request, 'Your form was saved')
 				studentgroup.user_set.add(request.user)
