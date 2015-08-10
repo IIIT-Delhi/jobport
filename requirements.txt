@@ -25,3 +25,4 @@ requests-oauthlib==0.4.2
 simplejson==3.6.5
 six==1.8.0
 wsgiref==0.1.2
+django-longerusernameandemail
