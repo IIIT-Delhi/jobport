@@ -1,3 +1,5 @@
+# __author__ = 'naman'
+
 from social.apps.django_app.middleware import SocialAuthExceptionMiddleware
 from django.shortcuts import render
 from social.exceptions import AuthForbidden

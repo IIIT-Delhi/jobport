@@ -1,3 +1,5 @@
+__author__ = 'naman'
+
 import hashlib
 import os
 import zipfile
@@ -66,7 +68,6 @@ def jobapply(request, jobid):
 			return HttpResponseRedirect('/')
 		else:
 			return render(request, 'jobport/badboy.html')
-
 	else:
 		return render(request, 'jobport/latedeadline.html')
 
@@ -156,33 +157,17 @@ def getresumes(request, jobid):
 			if (request.GET.get('qual') == 'P' and student.batch.pg_or_not == 'P'):
 				continue
 			filenames.append(student.resume.path)
-		# Folder name in ZIP archive which contains the above files
-		# E.g [thearchive.zip]/somefiles/file2.txt
-
 		zip_filename = "%s.zip" % zip_subdir
-
-		# Open StringIO to grab in-memory ZIP contents
 		s = StringIO.StringIO()
-
-		# The zip compressor
 		zf = zipfile.ZipFile(s, "w")
 
 		for fpath in filenames:
-			# Calculate path for file in zip
 			fdir, fname = os.path.split(fpath)
 			zip_path = os.path.join(zip_subdir, fname)
-
-			# Add file, at correct path
 			zf.write(fpath, zip_path)
-
-		# Must close zip for all contents to be written
 		zf.close()
-
-		# Grab ZIP file from in-memory, make response with correct MIME-type
 		resp = HttpResponse(s.getvalue(), mimetype="application/x-zip-compressed")
-		# ..and correct content-disposition
 		resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
-
 		return resp
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -195,7 +180,6 @@ def profile(request):
 		return HttpResponseRedirect('/newuser')
 	if request.method == 'POST':
 		form = forms.StudentForm(request.POST, request.FILES, instance=request.user.student)
-		# print form.cleaned_data
 		if form.is_valid():
 			usr = form.save(commit=False)
 			usr.user = request.user
@@ -211,8 +195,6 @@ def profile(request):
 			messages.success(request, 'Your details were saved.')
 			return HttpResponseRedirect('/')
 		else:
-			# Invalid form
-			# messages.error(request, 'Error in form!')
 			context = {'form': form, 'student': request.user.student}
 			return render(request, 'jobport/student_profile.html', context)
 	elif request.method == 'GET':
@@ -238,16 +220,12 @@ def newuser(request):
 				my_student = request.user
 				usr.resume.name = usr.username.split('@')[0] + ".pdf"
 				usr.save()
-				# messages.success(request, 'Your form was saved')
 				studentgroup.user_set.add(request.user)
-				# batch.get.objects.get(pk=batchid).
 				usr.batch = form.cleaned_data['batch']
 
 				messages.success(request, 'Your details were saved. Welcome to JobPort.')
 				return HttpResponseRedirect('/')
 			else:
-				# Invalid form
-				# messages.error(request, 'Error in form!')
 				context = {'form': form}
 				return render(request, 'jobport/newstudent.html', context)
 		elif request.method == 'GET':
@@ -315,14 +293,10 @@ def jobedit(request, jobid):
 		if request.method == 'POST':
 			form = forms.JobForm(request.POST, request.FILES, instance=Job.objects.get(pk=jobid))
 			if form.is_valid():
-				#print "Valid form"
 				form.save()  # This does the trick!
 				messages.success(request, 'Job was saved')
 				return HttpResponseRedirect('/job/' + str(jobid) + '/')
 			else:
-				#Invalid form
-				#messages.error(request, 'Error in form!')
-				#print form
 				context = {'form': form}
 				return render(request, 'jobport/admin_editjob.html', context)
 		else:
@@ -452,7 +426,6 @@ def stats(request):
 def blockedUnplacedlist(request):
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
-
 		if (request.GET.get('req') == 'debarred'):
 			students = Student.objects.filter(status='D')
 			response['Content-Disposition'] = str('attachment; filename="' + 'BlockedStudents_list.csv"')
@@ -655,43 +628,21 @@ def batchpage(request, batchid):
 @login_required()
 def getbatchresumes(request, batchid):
 	if is_admin(request.user):
-		# Files (local path) to put in the .zip
 		filenames = []
 		checklist = Batch.objects.get(pk=batchid).studentsinbatch.all()
 		zip_subdir = Batch.objects.get(pk=batchid).title + "_resumes"
 		for student in checklist:
-			# if (request.GET.get('qualification')=='btech' and student.qualification!='B'):
-			# continue
-			# if (request.GET.get('qualification')=='mtech' and student.qualification!='M'):
 			filenames.append(student.resume.path)
-		# continue
-		# Folder name in ZIP archive which contains the above files
-		# E.g [thearchive.zip]/somefiles/file2.txt
-
 		zip_filename = "%s.zip" % zip_subdir
-
-		# Open StringIO to grab in-memory ZIP contents
 		s = StringIO.StringIO()
-
-		# The zip compressor
 		zf = zipfile.ZipFile(s, "w")
-
 		for fpath in filenames:
-			# Calculate path for file in zip
 			fdir, fname = os.path.split(fpath)
 			zip_path = os.path.join(zip_subdir, fname)
-
-			# Add file, at correct path
 			zf.write(fpath, zip_path)
-
-		# Must close zip for all contents to be written
 		zf.close()
-
-		# Grab ZIP file from in-memory, make response with correct MIME-type
 		resp = HttpResponse(s.getvalue(), mimetype="application/x-zip-compressed")
-		# ..and correct content-disposition
 		resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
-
 		return resp
 	else:
 		return render(request, 'jobport/badboy.html')
@@ -708,7 +659,6 @@ def uploadstudentsinbatch(request, batchid):
 					stud = Student.objects.get(pk=row[0])
 					batch = Batch.get.objects(pk=batchid)
 					stud.batch = batch
-					# stud.cgpa=float(row[1])
 					stud.save()
 				except ObjectDoesNotExist:
 					notfound.append(row[0])

@@ -1,7 +1,7 @@
+# __author__ = 'naman'
+
 from django.conf.urls import patterns, url
-
 from . import views
-
 
 handler404 = 'views.my_404_view'
 
@@ -40,5 +40,4 @@ urlpatterns = patterns('',
 	url(r'files/jobfiles/(.+)',views.docfileview,name='docfileview'),
 	url(r'search/results/$',views.search,name='search'),
 	url(r'material.min.js.map$',views.test,name='test'),
-
 )

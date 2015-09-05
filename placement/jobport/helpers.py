@@ -1,15 +1,12 @@
-import re
+# __author__ = 'naman'
 
+import re
 from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-__author__ = 'naman'
-
-
 def is_member(user, group):
 	return user.groups.filter(name=group)
-
 
 def is_eligible(candidate, job):
 	eligibility = {}
