@@ -227,8 +227,7 @@ def newuser(request):
 				usr.user = request.user
 				usr.email = request.user.username
 				usr.name = request.user.first_name+" "+request.user.last_name
-				my_student = request.user
-				usr.resume.name = usr.username.split('@')[0] + ".pdf"
+				usr.resume.name = request.user.username.split('@')[0] + ".pdf"
 				usr.save()
 				studentgroup.user_set.add(request.user)
 				usr.batch = form.cleaned_data['batch']
