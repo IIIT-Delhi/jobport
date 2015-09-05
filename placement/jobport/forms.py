@@ -1,5 +1,6 @@
-import re
+# __author__ = 'naman'
 
+import re
 from django import forms
 from bootstrap3_datetime.widgets import DateTimePicker
 from django.template.defaultfilters import filesizeformat

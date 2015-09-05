@@ -1,7 +1,7 @@
-# import datetime
+# __author__ = 'naman'
+
 from haystack import indexes
 from django.utils import timezone
-
 from .models import Batch, Job, Student
 
 
