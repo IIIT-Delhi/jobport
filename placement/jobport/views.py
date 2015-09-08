@@ -225,7 +225,7 @@ def newuser(request):
 			if form.is_valid():
 				usr = form.save(commit=False)
 				usr.user = request.user
-				usr.email = request.user.username
+				usr.email = request.user.username + "@iiitd.ac.in"
 				usr.name = request.user.first_name+" "+request.user.last_name
 				usr.resume.name = request.user.username.split('@')[0] + ".pdf"
 				usr.save()
