@@ -16,9 +16,12 @@ from django.contrib.auth.models import User
 
 
 def is_member(user, group):
+	"""Checks if the user object is a member of the group or not."""
 	return user.groups.filter(name=group)
 
 def is_eligible(candidate, job):
+	"""Checks if the user object is a eligible candidate for the job or not.
+	All the logic for checking eligibility goes here!"""
 	eligibility = {}
 	eligibility['value'] = True
 	eligibility['reasons'] = []  # list of all the reasons that contribute towards uneligibilty
@@ -65,6 +68,7 @@ def is_eligible(candidate, job):
 
 
 def checkdeadline(job):
+	"""Checks if the deadline has passed or not."""
 	if (timezone.now() > job.deadline):
 		return True
 	else:
@@ -72,6 +76,7 @@ def checkdeadline(job):
 
 
 def is_admin(user):
+"""Checks if the user object is a member of the admin group or not."""
 	allowed_group = {'admin'}
 	usr = User.objects.get(username=user)
 	groups = [x.name for x in usr.groups.all()]

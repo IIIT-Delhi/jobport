@@ -13,7 +13,7 @@
 
 # Create your tests here.
 from django.test import TestCase
-from .models import Student, Job, Batch
+from jobport.models import Student, Job, Batch
 from django.utils import timezone
 from datetime import datetime
 
@@ -51,7 +51,8 @@ from datetime import datetime
 # 		self.assertEqual("1", True)
 
 class JobWithdrawalCheckTestCase(TestCase):
-	
+	"""Testing if the student is allowed to apply/withdraw for the job before deadline."""
+    
 	def setuUp(self):
 		t = Job.objects.create(company_name="T", deadline=datetime.now())	
 		stud = Student.objects.create(batch_id=1,user_id=1,name="Test", dob=timezone.now(), percentage_tenth=1, percentage_twelfth=1)

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>jobport.tests &mdash; JobPort 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="JobPort 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for jobport.tests</h1><div class="highlight"><pre>
+<span class="c"># //=======================================================================</span>
+<span class="c"># // Copyright JobPort, IIIT Delhi 2015.</span>
+<span class="c"># // Distributed under the MIT License.</span>
+<span class="c"># // (See accompanying file LICENSE or copy at</span>
+<span class="c"># //  http://opensource.org/licenses/MIT)</span>
+<span class="c"># //=======================================================================</span>
+
+
+
+
+<span class="c"># __author__ = &#39;naman&#39;</span>
+
+
+<span class="c"># Create your tests here.</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">jobport.models</span> <span class="kn">import</span> <span class="n">Student</span><span class="p">,</span> <span class="n">Job</span><span class="p">,</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c"># class MailSentTestCase(TestCase):</span>
+	
+	<span class="c"># def setuUp(self):</span>
+	<span class="c"># 	t = Job.objects.create(company_name=&quot;T&quot;)	</span>
+	<span class="c"># 	stud = Student.objects.create(batch_id=1,user_id=1,name=&quot;Test&quot;, dob=timezone.now(), percentage_tenth=1, percentage_twelfth=1)</span>
+	<span class="c"># 	stud.companyapplications.add(t)</span>
+
+	<span class="c"># def test_student_eligibility_for_a_job(self):</span>
+	<span class="c"># 	# test = Jobs.objects.get(name=&quot;test&quot;)</span>
+	<span class="c"># 	# print </span>
+	<span class="c"># 	# test = Job.objects.get(pk=1)</span>
+	<span class="c"># 	a = [&#39;1&#39;]</span>
+	<span class="c"># 	stud = Student.objects.filter(user_id=1)</span>
+	<span class="c"># 	stud.companyapplications.remove(Job.objects.get(company_name=&quot;T&quot;))</span>
+	<span class="c"># 	self.assertEqual(a != [], True)</span>
+
+<span class="c"># class StudentApplicationSuccessfulTest(object):</span>
+	<span class="c"># &quot;&quot;&quot;docstring for StudentApplicationSuccessfulTest&quot;&quot;&quot;</span>
+<span class="c"># 	def setuUp(self):</span>
+<span class="c"># 		Job.objects.create(name=&quot;test&quot;)</span>
+<span class="c"># 		Student.object.create(name =&quot;tester&quot;)		</span>
+
+<span class="c"># class JobEligibilityFailedTestCase(object):</span>
+	<span class="c"># &quot;&quot;&quot;student fails a single JobEligibilityFailedTestCase&quot;&quot;&quot;</span>
+<span class="c"># 	def setuUp(self):</span>
+<span class="c"># 		Job.objects.create(name=&quot;test&quot;)</span>
+<span class="c"># 		Student.object.create(name =&quot;tester&quot;)		</span>
+
+<span class="c"># class Testing_TestCase(object):</span>
+<span class="c"># 	&quot;&quot;&quot;docstring for Testing_TestCase&quot;&quot;&quot;</span>
+<span class="c"># 	def test_a(self):</span>
+<span class="c"># 		self.assertEqual(&quot;1&quot;, True)</span>
+
+<div class="viewcode-block" id="JobWithdrawalCheckTestCase"><a class="viewcode-back" href="../../jobport.html#jobport.tests.JobWithdrawalCheckTestCase">[docs]</a><span class="k">class</span> <span class="nc">JobWithdrawalCheckTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Testing if the student is allowed to apply/withdraw for the job before deadline.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="JobWithdrawalCheckTestCase.setuUp"><a class="viewcode-back" href="../../jobport.html#jobport.tests.JobWithdrawalCheckTestCase.setuUp">[docs]</a>	<span class="k">def</span> <span class="nf">setuUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">Job</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">company_name</span><span class="o">=</span><span class="s">&quot;T&quot;</span><span class="p">,</span> <span class="n">deadline</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>	
+		<span class="n">stud</span> <span class="o">=</span> <span class="n">Student</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">batch_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Test&quot;</span><span class="p">,</span> <span class="n">dob</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">percentage_tenth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">percentage_twelfth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">stud</span><span class="o">.</span><span class="n">companyapplications</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+	</div>
+<div class="viewcode-block" id="JobWithdrawalCheckTestCase.test_student_able_to_withdraw_from_a_job"><a class="viewcode-back" href="../../jobport.html#jobport.tests.JobWithdrawalCheckTestCase.test_student_able_to_withdraw_from_a_job">[docs]</a>	<span class="k">def</span> <span class="nf">test_student_able_to_withdraw_from_a_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">j</span> <span class="o">=</span> <span class="n">Job</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">company_name</span><span class="o">=</span><span class="s">&quot;T&quot;</span><span class="p">,</span> <span class="n">deadline</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+		<span class="c"># if (timezone.now() &lt; datetime(timezone.datetime(2016, 10, 11))):</span>
+		<span class="c"># if (timezone.now() &lt; j.deadline):</span>
+			<span class="c"># NOTWORKING		</span>
+			<span class="c"># stud = Student.objects.get(pk=1)</span>
+		<span class="n">stud</span> <span class="o">=</span> <span class="n">Student</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="c"># stud.companyapplications.remove(j)</span>
+		<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;1&#39;</span><span class="p">]</span>
+		<span class="c"># stud.companyapplications.remove(Job.objects.get(company_name=&quot;T&quot;))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="p">[],</span> <span class="bp">True</span><span class="p">)</span>
+	</div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Naman Gupta.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

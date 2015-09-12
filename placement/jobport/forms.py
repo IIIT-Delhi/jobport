@@ -19,7 +19,7 @@ from django.forms import RadioSelect
 from django.utils import timezone
 import haystack.forms
 
-from .models import Job, Student, Feedback, Batch
+from jobport.models import Job, Student, Feedback, Batch
 
 
 EXTENSIONS = ['pdf']

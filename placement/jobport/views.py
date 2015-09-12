@@ -28,35 +28,40 @@ from multiprocessing import Process
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from placement import settings
-from . import forms
-from .models import Job, Student, Batch
-from .helpers import is_admin, is_member, is_eligible, checkdeadline
+from jobport import forms
+from jobport.models import Job, Student, Batch
+from jobport.helpers import is_admin, is_member, is_eligible, checkdeadline
 
 
 def _send_mail(subject, text_content, host_user, recipient_list):
+	"""Sending mail to the recipient_list."""
 	msg = EmailMultiAlternatives(subject, text_content, host_user, recipient_list)
 	a=msg.send()
 	print "Mail sent"
 
 def send_mail(subject, text_content, recipient_list):
+	"""Start the process for sending mails"""
 	p = Process(target=_send_mail, args=(subject, text_content, settings.EMAIL_HOST_USER, recipient_list))
 	p.start()
 
 def server_error(request):
+	"""Error page for 500."""
 	response = render(request, "jobport/500.html")
 	response.status_code = 500
 	return response
 
 def not_found(request):
+	"""Error page for 404."""
 	response = render(request, "jobport/404.html")
 	response.status_code = 404
 	return response
 
 
-def test(request):
-	return render(request, 'jobport/material.min.js.map')
+# def test(request):
+# 	return render(request, 'jobport/material.min.js.map')
 
 def home(request):
+	"""Landing home page after login of student or admin."""
 	if request.user.is_authenticated():
 		context = {'user': request.user, 'jobs': Job.objects.all().order_by('-deadline')}
 		if is_member(request.user, 'admin'):
@@ -71,6 +76,7 @@ def home(request):
 
 @login_required()
 def jobapply(request, jobid):
+	"""Apply for a job, if deadline permits."""
 	if (timezone.now() < Job.objects.get(pk=jobid).deadline):
 		if (is_eligible(request.user.student, Job.objects.get(pk=jobid))['value']):
 			request.user.student.companyapplications.add(Job.objects.get(pk=jobid))
@@ -84,6 +90,7 @@ def jobapply(request, jobid):
 
 @login_required()
 def jobwithdraw(request, jobid):
+	"""Withdraw from the job, if deadline permits."""
 	if (timezone.now() < Job.objects.get(pk=jobid).deadline):
 		request.user.student.companyapplications.remove(Job.objects.get(pk=jobid))
 		messages.success(request, 'You have withdrawn!')
@@ -94,6 +101,7 @@ def jobwithdraw(request, jobid):
 
 @login_required()
 def myapplications(request):
+	"""Enumerate student's applications for a job."""
 	studentgroup = Group.objects.get(name='student')
 	if (not is_member(request.user, studentgroup)):
 		return HttpResponseRedirect('/newuser')
@@ -103,6 +111,7 @@ def myapplications(request):
 
 @login_required()
 def jobpage(request, jobid):
+	"""Loads the page for a particular Job."""
 	if is_admin(request.user):
 		context = {'user': request.user, 'job': Job.objects.get(pk=jobid)}
 		return render(request, 'jobport/admin_job.html', context)
@@ -118,6 +127,7 @@ def jobpage(request, jobid):
 
 @login_required()
 def admineditstudent(request, studentid):
+	"""Allows admin to change the student details."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.AdminStudentForm(request.POST, request.FILES, instance=Student.objects.get(pk=studentid))
@@ -151,6 +161,7 @@ def admineditstudent(request, studentid):
 
 @login_required()
 def getresumes(request, jobid):
+	"""Return resumes for students according to the incoming request."""
 	if is_admin(request.user):
 		filenames = []
 		if (request.GET.get('req') == 'selected'):
@@ -185,6 +196,7 @@ def getresumes(request, jobid):
 
 @login_required()
 def profile(request):
+	"""Allows editing student profile by themselves."""
 	studentgroup = Group.objects.get(name='student')
 	if (not is_member(request.user, studentgroup)):
 		return HttpResponseRedirect('/newuser')
@@ -215,6 +227,7 @@ def profile(request):
 
 
 def newuser(request):
+	"""New User Sign Up form."""
 	studentgroup, created = Group.objects.get_or_create(name='student')  # Creating user group
 	if request.user.is_authenticated():
 		if is_member(request.user, studentgroup):
@@ -251,10 +264,12 @@ def logout(request):
 
 
 def needlogin(request):
+	"""need login"""
 	return render(request, 'jobport/needlogin.html')
 
 @login_required()
 def openjob(request):
+	"""Open a new Job from admin side."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.JobForm(request.POST)
@@ -291,6 +306,7 @@ def openjob(request):
 
 @login_required()
 def jobdelete(request, jobid):
+	"""Delete a Job from admin side."""
 	if is_admin(request.user):
 		Job.objects.get(pk=jobid).delete()
 		return HttpResponseRedirect('/')
@@ -298,6 +314,7 @@ def jobdelete(request, jobid):
 
 @login_required()
 def jobedit(request, jobid):
+	"""Edit Job details from admin side."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.JobForm(request.POST, request.FILES, instance=Job.objects.get(pk=jobid))
@@ -316,6 +333,7 @@ def jobedit(request, jobid):
 
 @login_required()
 def jobapplicants(request, jobid):
+	"""See the applicants for a particular Job."""
 	if is_admin(request.user):
 		count = 0
 		for student in Student.objects.all():
@@ -328,6 +346,7 @@ def jobapplicants(request, jobid):
 
 @login_required()
 def sendselectedemail(request, jobid):
+	"""Send mail to selected students for a particular Job."""
 	if is_admin(request.user):
 		candemail = []
 		thejob = Job.objects.get(pk=jobid)
@@ -347,6 +366,7 @@ def sendselectedemail(request, jobid):
 
 @login_required()
 def adminjobselected(request, jobid):
+	"""Select the final students fot the Job :D"""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.AdminSelectedApplicantsForm(request.POST, instance=Job.objects.get(pk=jobid))
@@ -371,6 +391,7 @@ def adminjobselected(request, jobid):
 
 @login_required()
 def uploadcgpa(request):
+	"""Upload the CGPA CSV for all the students, to update student CGPAs."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			if (not request.FILES.get('cgpafile', None)) or not request.FILES['cgpafile'].size:
@@ -399,6 +420,7 @@ def uploadcgpa(request):
 
 @login_required()
 def stats(request):
+	"""Calculating statistics for the statistics page."""
 	if is_admin(request.user):
 		numstudentsplaced = 0
 		cgpahistdata = []
@@ -433,6 +455,7 @@ def stats(request):
 
 @login_required()
 def blockedUnplacedlist(request):
+	"""Retrieves the list for Unplaced or Blocked/Debarred students."""
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
 		if (request.GET.get('req') == 'debarred'):
@@ -466,6 +489,7 @@ def blockedUnplacedlist(request):
 
 @login_required()
 def getjobcsv(request, jobid):
+	"""Gets different (Eligible, Applied, Selected) CSVs for a particular Jobs."""
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
 		if (request.GET.get('req') == 'selected'):
@@ -511,6 +535,7 @@ def getjobcsv(request, jobid):
 
 @login_required()
 def getbatchlist(request, batchid):
+	"""Retrieves the list for students in a Batch."""
 	if is_admin(request.user):
 		response = HttpResponse(content_type='text/csv')
 		studlist = Batch.objects.get(pk=batchid).studentsinbatch.all()
@@ -532,6 +557,7 @@ def getbatchlist(request, batchid):
 
 
 def feedback(request):
+	"""FeedbackForm"""
 	if (request.method == 'POST'):
 		form = forms.FeedbackForm(request.POST)
 		# pdb.set_trace()
@@ -558,6 +584,7 @@ def feedback(request):
 
 @login_required()
 def fileview(request, filename):
+	"""Protect the resume location, by adding headers, using nginx."""
 		response = HttpResponse()
 		response['Content-Type'] = 'application/pdf'
 		response['X-Accel-Redirect'] = "/protected/%s"%filename
@@ -565,6 +592,7 @@ def fileview(request, filename):
 
 @login_required()
 def docfileview(request, filename):
+	"""Protect the job file location, by adding headers, using nginx."""
 		response = HttpResponse()
 		response['Content-Type'] = 'application/pdf'
 		response['X-Accel-Redirect'] = "/jobfiles/%s"%filename
@@ -572,6 +600,7 @@ def docfileview(request, filename):
 
 @login_required()
 def batchcreate(request):
+	"""Create a Batch."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.BatchForm(request.POST)
@@ -592,6 +621,7 @@ def batchcreate(request):
 
 @login_required()
 def batchdestroy(request, batchid):
+	"""Delete a Batch."""
 	if is_admin(request.user):
 		Batch.objects.get(pk=batchid).delete()
 		return HttpResponseRedirect('/')
@@ -599,6 +629,7 @@ def batchdestroy(request, batchid):
 
 @login_required()
 def batchedit(request, batchid):
+	"""Edit details of a Batch."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			form = forms.BatchForm(request.POST, instance=Batch.objects.get(pk=batchid))
@@ -617,6 +648,7 @@ def batchedit(request, batchid):
 
 @login_required()
 def viewbatches(request):
+	"""View the list of all Batches."""
 	if is_admin(request.user):
 		batches = Batch.objects.all()
 		return render(request, 'jobport/batches.html', {'batch': batches})
@@ -626,6 +658,7 @@ def viewbatches(request):
 
 @login_required()
 def batchpage(request, batchid):
+	"""Batch Page."""
 	if is_admin(request.user):
 		context = {'user': request.user, 'student': Batch.objects.get(pk=batchid).studentsinbatch.all(),
 				   'batch': Batch.objects.get(pk=batchid)}
@@ -636,6 +669,7 @@ def batchpage(request, batchid):
 
 @login_required()
 def getbatchresumes(request, batchid):
+	"""Get resumes for a Batch."""
 	if is_admin(request.user):
 		filenames = []
 		checklist = Batch.objects.get(pk=batchid).studentsinbatch.all()
@@ -659,6 +693,7 @@ def getbatchresumes(request, batchid):
 
 @login_required()
 def uploadstudentsinbatch(request, batchid):
+	"""Add students in a batch, by uploading a CSV. Will not be required IMHO."""
 	if is_admin(request.user):
 		if request.method == 'POST':
 			file = request.FILES['students']
@@ -682,6 +717,7 @@ def uploadstudentsinbatch(request, batchid):
 
 @login_required()
 def search(request):
+	"""Search, something. anything."""
 	if is_admin(request.user):
 		form = forms.RootSearchForm(request.GET)
 		query = request.GET.get('q')
