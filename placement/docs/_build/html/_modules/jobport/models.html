@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>jobport.models &mdash; JobPort 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="JobPort 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for jobport.models</h1><div class="highlight"><pre>
+<span class="c"># //=======================================================================</span>
+<span class="c"># // Copyright JobPort, IIIT Delhi 2015.</span>
+<span class="c"># // Distributed under the MIT License.</span>
+<span class="c"># // (See accompanying file LICENSE or copy at</span>
+<span class="c"># //  http://opensource.org/licenses/MIT)</span>
+<span class="c"># //=======================================================================</span>
+
+
+
+
+<span class="c"># __author__ = &#39;naman&#39;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">storage</span> <span class="kn">import</span> <span class="n">OverwriteStorage</span>
+
+
+<div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../jobport.html#jobport.models.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	
+	<span class="n">QUALIFICATION</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;G&#39;</span><span class="p">,</span> <span class="s">&#39;UnderGraduate&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;P&#39;</span><span class="p">,</span> <span class="s">&#39;PostGraduate&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">pg_or_not</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Graduate or Post-Graduate&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">QUALIFICATION</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;G&#39;</span><span class="p">)</span>
+	
+	<span class="n">createdon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+
+</div>
+<div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../jobport.html#jobport.models.Job">[docs]</a><span class="k">class</span> <span class="nc">Job</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="viewcode-block" id="Job.checkdeadline"><a class="viewcode-back" href="../../jobport.html#jobport.models.Job.checkdeadline">[docs]</a>	<span class="k">def</span> <span class="nf">checkdeadline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span><span class="p">):</span>	<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>	<span class="k">return</span> <span class="bp">False</span>
+</div>
+	<span class="n">company_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Organization&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+	<span class="n">profile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Job Profile&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+	<span class="n">location</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Location&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">dateofvisit</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">&quot;Date of Visit&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+	<span class="n">package</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Package&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">selectionprocess</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Selection Process&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">JOBSTREAMS</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;CSE&#39;</span><span class="p">,</span> <span class="s">&#39;CSE&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;ECE&#39;</span><span class="p">,</span> <span class="s">&#39;ECE&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;Both&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">job_stream</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Job Stream&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">JOBSTREAMS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;CSE&#39;</span><span class="p">)</span>
+
+	<span class="n">CATEGORYCHOICES</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;AP&#39;</span><span class="p">,</span> <span class="s">&#39;A+&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;A&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Company Category&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">CATEGORYCHOICES</span><span class="p">)</span>
+
+	<span class="n">JOBTYPES</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="s">&#39;Technical&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;NT&#39;</span><span class="p">,</span> <span class="s">&#39;Non-Technical&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">jobtype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Job Type&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">JOBTYPES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+	
+	<span class="n">batch</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Batch</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;jobbatch&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">cgpa_min</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="s">&quot;Minimum CGPA&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">min_tenthmarks</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Minimum Class X Marks&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">min_twelfthmarks</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Minimum Class XII Marks&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	
+	<span class="n">backs</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;4+&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">max_blacklogs</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Maximum Backlogs&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">backs</span><span class="p">)</span>
+
+	<span class="n">OPENED_CLOSED</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;O&#39;</span><span class="p">,</span> <span class="s">&#39;Open&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;Applications Closed&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="s">&#39;Closed&#39;</span><span class="p">)</span>
+		<span class="p">)</span>
+	<span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Status&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">OPENED_CLOSED</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;O&#39;</span><span class="p">)</span>
+	
+	<span class="n">jobfile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="s">&quot;File &quot;</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s">&#39;jobfiles&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">OverwriteStorage</span><span class="p">(),</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+		<span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">createdon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">&quot;Application Creation Date&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+	<span class="n">deadline</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">&quot;Application Deadline&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+	<span class="n">deadlineexpired</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">checkdeadline</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c"># __unicode__ on Python 2</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_name</span>
+
+</div>
+<div class="viewcode-block" id="Student"><a class="viewcode-back" href="../../jobport.html#jobport.models.Student">[docs]</a><span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+	<span class="n">rollno</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Roll No&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Full Name&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+	<span class="n">batch</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Batch</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;studentsinbatch&#39;</span><span class="p">)</span>
+	<span class="n">dob</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">&quot;Date of Birth&quot;</span><span class="p">)</span>
+
+	<span class="n">genderchoices</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="s">&#39;Male&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span> <span class="s">&#39;Female&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">gender</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Gender&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">genderchoices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+
+	<span class="n">STARTYEARS</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="mi">2003</span><span class="p">,</span> <span class="s">&#39;2003&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="s">&#39;2004&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="s">&#39;2005&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2006</span><span class="p">,</span> <span class="s">&#39;2006&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="s">&#39;2007&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="s">&#39;2008&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="s">&#39;2009&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="s">&#39;2010&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;2011&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;2012&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="s">&#39;2013&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="s">&#39;2014&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+
+	<span class="n">ENDYEARS</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="s">&#39;2007&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="s">&#39;2008&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="s">&#39;2009&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="s">&#39;2009&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="s">&#39;2010&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;2011&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;2011&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;2012&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="s">&#39;2013&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="s">&#39;2014&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="s">&#39;2015&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="s">&#39;2016&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="s">&#39;2017&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">startyear_ug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Undergraduate Starting Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STARTYEARS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;2011&quot;</span><span class="p">,</span>
+		<span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">passingyear_ug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Undergraduate Completion Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ENDYEARS</span><span class="p">,</span>
+		<span class="n">default</span><span class="o">=</span><span class="s">&quot;2015&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">startyear_pg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Postgraduate Starting Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STARTYEARS</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+		<span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">passingyear_pg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Postgraduate Completion Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ENDYEARS</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+		<span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">phone</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Phone Number&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+	<span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+	<span class="n">email_personal</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="s">&quot;Personal Email&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">cgpa_ug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="s">&quot;Ug. CGPA&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	<span class="n">university_ug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Undergraduate University&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;IIIT Delhi&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+	<span class="n">institution_ug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Undergraduate College&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;IIIT Delhi&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+	<span class="n">passingyear_tenth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Class X Passing Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2009</span><span class="p">)</span>
+	<span class="n">passingyear_twelfth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Class XII Passing Year&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2011</span><span class="p">)</span>
+	<span class="n">percentage_tenth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="s">&quot;Class X Aggregate Percent&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+	<span class="n">percentage_twelfth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="s">&quot;Class XII Aggregate Percent&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+	<span class="n">cgpa_pg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="s">&quot;Pg. CGPA&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+	<span class="n">university_pg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Postgraduate University&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">institution_pg</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Postgraduate College&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">backs</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;4+&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">backlogs</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Number of Backlogs&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">backs</span><span class="p">)</span>
+	
+	<span class="n">years</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;4+&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="n">work_experience</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">&quot;Previous Work Experience (Years)&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">years</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+	
+	<span class="n">home_city</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Home City&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+	<span class="n">home_state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Home State&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+	<span class="n">credits_completed</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Completed Credits&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">resume</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="s">&quot;resume&quot;</span><span class="p">,</span> <span class="n">upload_to</span><span class="o">=</span><span class="s">&#39;resume&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">OverwriteStorage</span><span class="p">())</span>
+	<span class="n">companyapplications</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Job</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;applicants&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+	<span class="n">STATUS</span> <span class="o">=</span> <span class="p">(</span>
+		<span class="p">(</span><span class="s">&#39;P&#39;</span><span class="p">,</span> <span class="s">&#39;Placed&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;N&#39;</span><span class="p">,</span> <span class="s">&#39;Not Placed&#39;</span><span class="p">),</span>
+		<span class="p">(</span><span class="s">&#39;D&#39;</span><span class="p">,</span> <span class="s">&#39;Debarred&#39;</span><span class="p">),</span>       <span class="c">#Debarred from placement</span>
+		<span class="p">(</span><span class="s">&#39;NI&#39;</span><span class="p">,</span> <span class="s">&#39;Not Interested&#39;</span><span class="p">)</span> <span class="c">#for students who live a thuglife :P a+ ppl will also be categorised here</span>
+		<span class="p">)</span>
+	<span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;N&#39;</span><span class="p">)</span>
+	
+	<span class="n">placedat</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Job</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;selectedcandidates&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="n">createdon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">&quot;Student Creation Date&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c"># __unicode__ on Python 2</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="Feedback"><a class="viewcode-back" href="../../jobport.html#jobport.models.Feedback">[docs]</a><span class="k">class</span> <span class="nc">Feedback</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+	<span class="n">TYPES</span> <span class="o">=</span> <span class="p">(</span>
+			<span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;Bug Report&#39;</span><span class="p">),</span>
+			<span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span> <span class="s">&#39;Feature Request&#39;</span><span class="p">),</span>
+			<span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="s">&#39;Comment&#39;</span><span class="p">),</span>
+		<span class="p">)</span>
+	<span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Feedback Type&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TYPES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;C&#39;</span><span class="p">)</span>
+	<span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s">&quot;Title&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+	<span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="s">&quot;Feedback Details&quot;</span><span class="p">)</span>
+	<span class="n">createdon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Naman Gupta.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

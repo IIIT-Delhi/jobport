@@ -11,7 +11,7 @@
 # __author__ = 'naman'
 
 from django.conf.urls import patterns, url
-from . import views
+from jobport import views
 
 handler404 = 'views.my_404_view'
 

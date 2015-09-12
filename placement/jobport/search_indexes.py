@@ -12,10 +12,11 @@
 
 from haystack import indexes
 from django.utils import timezone
-from .models import Batch, Job, Student
+from jobport.models import Batch, Job, Student
 
 
 class BatchIndex(indexes.SearchIndex, indexes.Indexable):
+    """Indexes the fields given below for a batch."""
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     pg_or_not = indexes.CharField(model_attr='pg_or_not')
@@ -31,6 +32,7 @@ class BatchIndex(indexes.SearchIndex, indexes.Indexable):
 
 
 class JobIndex(indexes.SearchIndex, indexes.Indexable):
+    """Indexes the fields given below for a Job."""
     text = indexes.CharField(document=True, use_template=True)
     company_name = indexes.CharField(model_attr='company_name')
     profile = indexes.CharField(model_attr='profile')
@@ -46,6 +48,7 @@ def index_queryset(self, using=None):
 
 
 class StudentIndex(indexes.SearchIndex, indexes.Indexable):
+    """Indexes the fields given below for a Student."""
     text = indexes.CharField(document=True, use_template=True)
     name = indexes.CharField(model_attr='name')
     rollno = indexes.CharField(model_attr='rollno')
