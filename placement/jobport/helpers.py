@@ -76,7 +76,7 @@ def checkdeadline(job):
 
 
 def is_admin(user):
-"""Checks if the user object is a member of the admin group or not."""
+	"""Checks if the user object is a member of the admin group or not."""
 	allowed_group = {'admin'}
 	usr = User.objects.get(username=user)
 	groups = [x.name for x in usr.groups.all()]
