@@ -248,11 +248,11 @@ def newuser(request):
 				messages.success(request, 'Your details were saved. Welcome to JobPort.')
 				return HttpResponseRedirect('/')
 			else:
-				context = {'form': form}
+				context = {'form': form, 'resumer_url': settings.RESUME_URL }
 				return render(request, 'jobport/newstudent.html', context)
 		elif request.method == 'GET':
 			studentform = forms.NewStudentForm()
-			context = {'user': request.user, 'form': studentform, 'layout': 'horizontal'}
+			context = {'user': request.user, 'form': studentform, 'layout': 'horizontal', 'resumer_url': settings.RESUME_URL }
 			return render(request, 'jobport/newstudent.html', context)
 	return HttpResponseRedirect('/')
 
@@ -585,18 +585,18 @@ def feedback(request):
 @login_required()
 def fileview(request, filename):
 	"""Protect the resume location, by adding headers, using nginx."""
-		response = HttpResponse()
-		response['Content-Type'] = 'application/pdf'
-		response['X-Accel-Redirect'] = "/protected/%s"%filename
-		return response
+	response = HttpResponse()
+	response['Content-Type'] = 'application/pdf'
+	response['X-Accel-Redirect'] = "/protected/%s"%filename
+	return response
 
 @login_required()
 def docfileview(request, filename):
 	"""Protect the job file location, by adding headers, using nginx."""
-		response = HttpResponse()
-		response['Content-Type'] = 'application/pdf'
-		response['X-Accel-Redirect'] = "/jobfiles/%s"%filename
-		return response
+	response = HttpResponse()
+	response['Content-Type'] = 'application/pdf'
+	response['X-Accel-Redirect'] = "/jobfiles/%s"%filename
+	return response
 
 @login_required()
 def batchcreate(request):

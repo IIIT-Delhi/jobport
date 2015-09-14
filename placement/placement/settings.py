@@ -127,3 +127,5 @@ HAYSTACK_CONNECTIONS = {
 		'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
 	},
 }
+
+RESUME_URL = "https://docs.google.com/a/iiitd.ac.in/document/d/10uKehH-VwEWLV_KSf7Hot0j8eYjoBjPQ8Xh_UnVwKUU/edit?usp=sharing"
