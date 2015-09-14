@@ -1,44 +1,38 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
+
+<head>
     {% load staticfiles %}
-
-    
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     {% block pagelibraries %}{% endblock %}
-
-     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static "css/ripples.min.css" %}" rel="stylesheet">
     <link href="{% static "css/material-wfont.min.css" %}" rel="stylesheet">
-  </head>
-  <body>
+</head>
 
+<body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/">JobPort</a>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-    </div>
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">JobPort</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+        </div>
     </nav>
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
-        {% endfor %}
-        {% block content %}{% endblock %}
-      </body>
-
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/ripples.js" %}"></script>
-    <script src="{% static "js/material.min.js" %}"></script>
-      <script>
-      $(document).ready(function() {
-        $.material.init();
-      });
-    </script>
+    <div class="alert alert-{{ message.tags }} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}</div>
+    {% endfor %} {% block content %}{% endblock %}
+</body>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/ripples.js" %}"></script>
+<script src="{% static "js/material.min.js" %}"></script>
+<script>
+$(document).ready(function() {
+    $.material.init();
+});
+</script>
 
 </html>
