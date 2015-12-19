@@ -62,7 +62,7 @@ Read the Wiki https://github.com/IIIT-Delhi/placement/wiki to set up your local 
 
 - Admin can see statistics, information about unpplaced, blocked students.
 
-	![Statistics](screenshots/stats.png)
+	![Statistics](screenshots/stats1.png)
 
 	![Statistics](screenshots/stats2.png)
 
