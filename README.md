@@ -13,81 +13,79 @@ Read the Wiki https://github.com/IIIT-Delhi/placement/wiki to set up your local 
 
 # Screenshots:
 
-1. Manage jobs, students here. Red job means the deadline is over, green means it is still open. 
+- Manage jobs, students here. Red job means the deadline is over, green means it is still open. 
 
-![Admin Home](screenshots/adminhome.png)
+	![Admin Home](screenshots/adminhome.png)
 
-2. See all the batches here, edit them or create one.
+- See all the batches here, edit them or create one.
 
-![Batches](screenshots/batches.png)
-
-
-3. Create a new batch.
-
-![New Batch](screenshots/newbatch.png)
-
-4. Edit a batch, view students in the batch.
-
-![Batch](screenshots/batchhome.png)
-
-5. Open a Job.
-
-![Open Job](screenshots/newjob.png)
-
-6. Any student can sign up easily.
-
-![User SignUp](screenshots/signup.png)
-
-7. Student homepage - access to their job applications, edit their profile.
-
-![Student Home](screenshots/studenthome.png)
-
-8. Edit profile
-
-![Edit Profile](screenshots/editprofile.png)
-
-9. Apply for Job.
-
-![Apply for a Job](screenshots/jobinfo3.png)
-
-10. Admin can edit Job details.
-
-![Edit Job](screenshots/jobinfo.png)
-
-![Edit Job details](screenshots/jobinfo2.png)
-
-11. See your applications.
+	![Batches](screenshots/batches.png)
 
 
-![Your Applications](screenshots/myjobs.png)
+- Create a new batch.
 
-12. Admin can see statistics, information about unpplaced, blocked students.
+	![New Batch](screenshots/newbatch.png)
 
-![Statistics](screenshots/stats.png)
+- Edit a batch, view students in the batch.
 
-![Statistics](screenshots/stats2.png)
+	![Batch](screenshots/batchhome.png)
 
-![Statistics](screenshots/stats3.png)
+- Open a Job.
 
-13. Admin can view job applicants.
+	![Open Job](screenshots/newjob.png)
 
-![View Applicantx](screenshots/viewapplicants.png)
+- Any student can sign up easily.
 
-14. Admin can select job applicants.
+	![User SignUp](screenshots/signup.png)
 
-![Select Applicants](screenshots/selectapplicants.png)
+- Student homepage - access to their job applications, edit their profile.
 
-15. Admin can update student CGPA.
+	![Student Home](screenshots/studenthome.png)
 
-![Update CGPA](screenshots/updatecgpa.png)
+- Edit profile
 
-16. Admin can search any student, batch or job.
+	![Edit Profile](screenshots/editprofile.png)
 
-![Search](screenshots/search.png)
+- Apply for Job.
 
+	![Apply for a Job](screenshots/jobinfo3.png)
 
-![Search Results](screenshots/searchresult.png)
+- Admin can edit Job details.
 
-17. Feedback to developer.
+	![Edit Job](screenshots/jobinfo.png)
 
-![Feedback](screenshots/feedback.png)
+	![Edit Job details](screenshots/jobinfo2.png)
+
+- See your applications.
+
+	![Your Applications](screenshots/myjobs.png)
+
+- Admin can see statistics, information about unpplaced, blocked students.
+
+	![Statistics](screenshots/stats.png)
+
+	![Statistics](screenshots/stats2.png)
+
+	![Statistics](screenshots/stats3.png)
+
+- Admin can view job applicants.
+
+	![View Applicantx](screenshots/viewapplicants.png)
+
+- Admin can select job applicants.
+
+	![Select Applicants](screenshots/selectapplicants.png)
+
+- Admin can update student CGPA.
+
+	![Update CGPA](screenshots/updatecgpa.png)
+
+- Admin can search any student, batch or job.
+
+	![Search](screenshots/search.png)
+
+	![Search Results](screenshots/searchresult.png)
+
+- Feedback to developer.
+
+	![Feedback](screenshots/feedback.png)
