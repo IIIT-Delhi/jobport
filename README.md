@@ -13,7 +13,7 @@ Read the Wiki https://github.com/IIIT-Delhi/placement/wiki to set up your local 
 
 # Screenshots:
 
-- Manage jobs, students here. Red job means the deadline is over, green means it is still open. 
+- Manage jobs, students here. Red job means the deadline is over, green means it is still open.
 
 	![Admin Home](screenshots/adminhome.png)
 

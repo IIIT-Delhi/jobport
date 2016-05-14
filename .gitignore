@@ -50,10 +50,10 @@ coverage.xml
 *.pot
 
 # Sphinx documentation
-docs/_build/
+docs/_build
 
 #staticfiles
-placement/static/
+placement/static
 
 #idea
 .idea
@@ -61,6 +61,7 @@ placement/static/
 #CVs
 *.pdf
 
-/placement/jobport/migrations/*.py
-
-placement/placement/whoosh_index/
+#Database/Index Files
+placement/jobport/migrations
+placement/placement/whoosh_index
+placement/jobport.db
