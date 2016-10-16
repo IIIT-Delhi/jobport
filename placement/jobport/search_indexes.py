@@ -6,12 +6,10 @@
 # //=======================================================================
 
 
-
-
 # __author__ = 'naman'
 
-from haystack import indexes
 from django.utils import timezone
+from haystack import indexes
 from jobport.models import Batch, Job, Student
 
 
