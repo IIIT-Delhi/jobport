@@ -253,3 +253,4 @@ class Feedback(models.Model):
     title = models.CharField("Title", max_length=100)
     body = models.TextField("Feedback Details")
     createdon = models.DateTimeField(auto_now_add=True)
+    screenshot = models.FileField("feedback_screenshot ",upload_to='feedback',default='', storage=OverwriteStorage())
