@@ -31,7 +31,7 @@ from placement import settings
 
 
 def _send_mail(subject, text_content, host_user, recipient_list):
-    """Sending mail to the recipient_list."""
+    """Sending mail to the recipient_list. Written by http://darkryder.me/."""
     msg = EmailMultiAlternatives(
         subject, text_content, host_user, recipient_list)
     a = msg.send()
@@ -39,7 +39,7 @@ def _send_mail(subject, text_content, host_user, recipient_list):
 
 
 def send_mail(subject, text_content, recipient_list):
-    """Start the process for sending mails"""
+    """Start the process for sending mails. Written by http://darkryder.me/."""
     p = Process(target=_send_mail, args=(subject, text_content,
                                          settings.EMAIL_HOST_USER, recipient_list))
     p.start()
