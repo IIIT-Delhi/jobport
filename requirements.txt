@@ -33,6 +33,7 @@ requests-oauthlib==0.8.0
 simplejson==3.11.1
 six==1.11.0
 snowballstemmer==1.2.1
+social-auth-app-django==1.2.0
 social-auth-core==1.4.0
 Sphinx==1.6.4
 sphinx-rtd-theme==0.2.4

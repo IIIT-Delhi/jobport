@@ -24,7 +24,6 @@ MAX_UPLOAD_SIZE = "5242880"
 
 
 class JobForm(forms.ModelForm):
-
     class Meta:
         model = Job
         exclude = ['createdon']
@@ -72,7 +71,6 @@ class JobForm(forms.ModelForm):
 
 
 class AdminSelectedApplicantsForm(forms.ModelForm):
-
     class Meta:
         model = Job
         fields = ['selected']
@@ -128,7 +126,6 @@ class AdminSelectedApplicantsForm(forms.ModelForm):
 
 
 class StudentForm(forms.ModelForm):
-
     class Meta:
         model = Student
         fields = ['resume', 'phone', 'email_personal',
@@ -184,7 +181,6 @@ class StudentForm(forms.ModelForm):
 
 
 class NewStudentForm(forms.ModelForm):
-
     class Meta:
         model = Student
         exclude = ['user', 'email', 'companyapplications', 'status', 'placedat', 'cgpa_ug', 'cgpa_pg', 'name',
@@ -287,7 +283,6 @@ def onlynumbers(strg, search=re.compile(r'^[0-9]').search):
 
 
 class AdminStudentForm(forms.ModelForm):
-
     class Meta:
         model = Student
         exclude = ['user']
@@ -365,21 +360,19 @@ class AdminStudentForm(forms.ModelForm):
 
 
 class FeedbackForm(forms.ModelForm):
-
     class Meta:
         model = Feedback
         widgets = {'type': RadioSelect()}
+        fields = '__all__'
 
 
 class BatchForm(forms.ModelForm):
-
     class Meta:
         model = Batch
         exclude = ['createdon']
 
 
 class RootSearchForm(haystack.forms.SearchForm):
-
     def no_query_found(self):
         return self.searchqueryset.all()
 
