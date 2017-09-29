@@ -20,25 +20,24 @@ TEMPLATE_DEBUG = True
 # ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
-    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.default',
     'django.contrib.humanize',
-    'jobport',
-    'south',
+    'social.apps.django_app.default',
+    'suit',
     'bootstrap3',
     'timezone_field',
-    'datetimezone_field',
+    # 'datetimezone_field',
     'bootstrap3_datetime',
     'googlecharts',
     'haystack',
     'djrill',
     'longerusernameandemail',
+    'jobport',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,11 +57,11 @@ WSGI_APPLICATION = 'placement.wsgi.application'
 # Uncomment below lines to use postgresql OR Comment below lines to use SQLite3
 # DATABASES = {
 # 	'default': {
-# 			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+# 			'ENGINE': 'django.db.backends.postgresql_psycopg2', #Add'postgresql_psycopg2','mysql','sqlite3' or 'oracle'.
 # 			'NAME': 'jobport',                      # Or path to database file if using sqlite3.
 # 			'USER': '',
 # 			'PASSWORD': '',
-# 			'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
+# 			'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
 # 			'PORT': '',                      # Set to empty string for default.
 # 		}
 # }

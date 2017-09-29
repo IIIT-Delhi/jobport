@@ -9,12 +9,12 @@
 # __author__ = 'naman'
 
 from datetime import datetime
+from time import timezone
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 
-from storage import OverwriteStorage
+from jobport.storage import OverwriteStorage
 
 
 class Batch(models.Model):
@@ -34,9 +34,8 @@ class Batch(models.Model):
 
 
 class Job(models.Model):
-
     def checkdeadline(self):
-        if (timezone.now() > self.deadline):
+        if timezone.now() > self.deadline:
             return True
         else:
             return False
@@ -73,12 +72,10 @@ class Job(models.Model):
     jobtype = models.CharField(
         "Job Type", max_length=2, choices=JOBTYPES, default='T')
 
-    batch = models.ManyToManyField(Batch, related_name='jobbatch', null=True)
+    batch = models.ManyToManyField(Batch, related_name='jobbatch')
     cgpa_min = models.FloatField("Minimum CGPA", max_length=2, default=0)
-    min_tenthmarks = models.IntegerField(
-        "Minimum Class X Marks", max_length=3, default=0)
-    min_twelfthmarks = models.IntegerField(
-        "Minimum Class XII Marks", max_length=3, default=0)
+    min_tenthmarks = models.IntegerField("Minimum Class X Marks", default=0)
+    min_twelfthmarks = models.IntegerField("Minimum Class XII Marks", default=0)
 
     backs = (
         (0, '0'),
@@ -87,16 +84,14 @@ class Job(models.Model):
         (3, '3'),
         (4, '4+'),
     )
-    max_blacklogs = models.IntegerField(
-        "Maximum Backlogs", max_length=2, default=5, choices=backs)
+    max_blacklogs = models.IntegerField("Maximum Backlogs", default=5, choices=backs)
 
     OPENED_CLOSED = (
         ('O', 'Open'),
         ('A', 'Applications Closed'),
         ('C', 'Closed')
     )
-    status = models.CharField("Status", max_length=1,
-                              choices=OPENED_CLOSED, default='O')
+    status = models.CharField("Status", max_length=1, choices=OPENED_CLOSED, default='O')
 
     jobfile = models.FileField("File ", upload_to='jobfiles', default='', storage=OverwriteStorage(), blank=True,
                                null=True)
@@ -155,14 +150,14 @@ class Student(models.Model):
         (2016, '2016'),
         (2017, '2017'),
     )
-    startyear_ug = models.IntegerField("Undergraduate Starting Year", max_length=4, choices=STARTYEARS, default="2011",
+    startyear_ug = models.IntegerField("Undergraduate Starting Year", choices=STARTYEARS, default="2011",
                                        blank=True, null=True)
-    passingyear_ug = models.IntegerField("Undergraduate Completion Year", max_length=4, choices=ENDYEARS,
+    passingyear_ug = models.IntegerField("Undergraduate Completion Year", choices=ENDYEARS,
                                          default="2015", blank=True, null=True)
 
-    startyear_pg = models.IntegerField("Postgraduate Starting Year", max_length=4, choices=STARTYEARS, blank=True,
+    startyear_pg = models.IntegerField("Postgraduate Starting Year", choices=STARTYEARS, blank=True,
                                        null=True)
-    passingyear_pg = models.IntegerField("Postgraduate Completion Year", max_length=4, choices=ENDYEARS, blank=True,
+    passingyear_pg = models.IntegerField("Postgraduate Completion Year", choices=ENDYEARS, blank=True,
                                          null=True)
 
     phone = models.CharField("Phone Number", max_length=10)
@@ -175,10 +170,8 @@ class Student(models.Model):
     institution_ug = models.CharField(
         "Undergraduate College", default="IIIT Delhi", max_length=100)
 
-    passingyear_tenth = models.IntegerField(
-        "Class X Passing Year", max_length=4, default=2009)
-    passingyear_twelfth = models.IntegerField(
-        "Class XII Passing Year", max_length=4, default=2011)
+    passingyear_tenth = models.IntegerField("Class X Passing Year", default=2009)
+    passingyear_twelfth = models.IntegerField("Class XII Passing Year", default=2011)
     percentage_tenth = models.FloatField(
         "Class X Aggregate Percent", max_length=4)
     percentage_twelfth = models.FloatField(
@@ -199,8 +192,7 @@ class Student(models.Model):
         (3, '3'),
         (4, '4+'),
     )
-    backlogs = models.IntegerField(
-        "Number of Backlogs", max_length=2, default=0, choices=backs)
+    backlogs = models.IntegerField("Number of Backlogs", default=0, choices=backs)
 
     years = (
         (0, '0'),
@@ -209,8 +201,7 @@ class Student(models.Model):
         (3, '3'),
         (4, '4+'),
     )
-    work_experience = models.IntegerField(
-        "Previous Work Experience (Years)", choices=years, max_length=2, default=0)
+    work_experience = models.IntegerField("Previous Work Experience (Years)", choices=years, default=0)
 
     home_city = models.CharField("Home City", max_length=20)
     home_state = models.CharField("Home State", max_length=20)
@@ -218,10 +209,8 @@ class Student(models.Model):
     credits_completed = models.CharField(
         "Completed Credits", max_length=3, default=0, blank=True)
 
-    resume = models.FileField(
-        "resume", upload_to='resume', default='', storage=OverwriteStorage())
-    companyapplications = models.ManyToManyField(
-        Job, related_name='applicants', null=True, blank=True)
+    resume = models.FileField("resume", upload_to='resume', default='', storage=OverwriteStorage())
+    companyapplications = models.ManyToManyField(Job, related_name='applicants', blank=True)
 
     STATUS = (
         ('P', 'Placed'),
@@ -233,8 +222,7 @@ class Student(models.Model):
     )
     status = models.CharField(max_length=2, choices=STATUS, default='N')
 
-    placedat = models.ManyToManyField(
-        Job, related_name='selectedcandidates', null=True, blank=True)
+    placedat = models.ManyToManyField(Job, related_name='selectedcandidates', blank=True)
     createdon = models.DateTimeField(
         "Student Creation Date", default=datetime.now)
 
