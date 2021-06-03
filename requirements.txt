@@ -2,7 +2,7 @@ alabaster==0.7.10
 Babel==2.5.1
 certifi==2017.7.27.1
 chardet==3.0.4
-Django==1.8.11
+Django==2.2.24
 django-bootstrap3==9.0.0
 django-bootstrap3-datetimepicker==2.2.3
 django-datetimezone-field==0.1.8
