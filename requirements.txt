@@ -35,7 +35,7 @@ six==1.11.0
 snowballstemmer==1.2.1
 social-auth-app-django==1.2.0
 social-auth-core==1.4.0
-Sphinx==1.6.4
+Sphinx==3.0.4
 sphinx-rtd-theme==0.2.4
 sphinxcontrib-websupport==1.0.1
 typing==3.6.2
