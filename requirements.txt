@@ -22,7 +22,7 @@ jsonfield==2.0.2
 MarkupSafe==1.0
 oauthlib==2.0.4
 Pygments==2.2.0
-PyJWT==1.5.3
+PyJWT==2.4.0
 python-dateutil==2.6.1
 python-openid==2.2.5
 python-ptrace==0.9.3
