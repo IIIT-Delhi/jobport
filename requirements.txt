@@ -41,3 +41,4 @@ sphinxcontrib-websupport==1.0.1
 typing==3.6.2
 urllib3==1.22
 Whoosh==2.7.4
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
