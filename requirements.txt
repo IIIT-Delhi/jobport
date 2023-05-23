@@ -28,7 +28,7 @@ python-openid==2.2.5
 python-ptrace==0.9.3
 python-social-auth==0.3.6
 pytz==2017.2
-requests==2.18.4
+requests==2.31.0
 requests-oauthlib==0.8.0
 simplejson==3.11.1
 six==1.11.0
