@@ -15,7 +15,7 @@ django-timezone-field==2.0
 djrill==2.1.0
 docutils==0.14
 html2text==2016.9.19
-idna==2.6
+idna==3.7
 imagesize==0.7.1
 Jinja2==2.9.6
 jsonfield==2.0.2
